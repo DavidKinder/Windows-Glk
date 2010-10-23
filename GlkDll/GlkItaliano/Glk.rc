@@ -1,0 +1,465 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOGEX 0, 0, 183, 151
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_FIXEDSYS | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Info"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,126,130,50,14
+    GROUPBOX        "Glk Info",IDC_ABOUT_GROUP,7,7,169,50
+    ICON            IDR_GLK,IDC_STATIC,15,21,20,20,0,WS_EX_CLIENTEDGE
+    LTEXT           "Versione per Windows di David Kinder\nTraduzione di Tommaso Caldarola\nSpecifiche Glk di Andrew Plotkin\nGlk %glk%, versione %winglk%",
+                    IDC_ABOUT_TEXT,42,19,130,33
+    GROUPBOX        "Ringraziamenti",IDC_ADDITION_GROUP,7,59,169,65
+    LTEXT           "jpeglib di 'Independent JPEG Group'.\nlibpng di Guy Eric Schalnat, Andreas Dilger,\nGlenn Randers-Pehrson, e altri.\nzlib di Jean-loup Gailly e Mark Adler.\nModPlug di Olivier Lapicque.\nlibogg e libvorbis di Xiph.org Foundation.",
+                    IDC_ADDITION_TEXT,13,71,150,50
+END
+
+IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+CAPTION "Buffer di scorrimento"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Chiudi window",IDOK,2,2,65,13
+    PUSHBUTTON      "Copia &testo selezionato",IDC_COPY,73,2,100,13
+    CONTROL         "",IDC_TEXT,"RichEdit20A",TCS_HOTTRACK | TCS_VERTICAL | 
+                    TCS_RAGGEDRIGHT | TCS_FOCUSONBUTTONDOWN | 
+                    TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_TABSTOP,2,
+                    17,283,100
+END
+
+IDD_OPTIONS_STYLE DIALOGEX 0, 0, 227, 148
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "&Stili"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    RTEXT           "&Window",IDC_STATIC,16,19,29,8
+    COMBOBOX        IDC_WINDOW_TYPE,49,16,65,36,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Sti&le",IDC_STATIC,121,19,14,8
+    COMBOBOX        IDC_WINDOW_STYLE,144,16,68,75,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    ICON            "",IDC_WARNICON,36,35,20,20
+    CTEXT           "MESSAGE",IDC_MESSAGE,61,37,130,16
+    RTEXT           "&Indentazione",IDC_STATIC,10,62,42,8
+    EDITTEXT        IDC_INDENTATION,57,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "Indentazione del &paragrafo",IDC_STATIC,111,58,45,16
+    EDITTEXT        IDC_PARAGRAPH,162,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "&Allineamento",IDC_STATIC,4,84,47,8
+    COMBOBOX        IDC_JUSTIFICATION,57,82,52,48,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Dimensione testo",IDC_STATIC,115,80,41,16
+    EDITTEXT        IDC_TEXT_SIZE,162,82,52,12,ES_AUTOHSCROLL
+    RTEXT           "Stile &testo",IDC_STATIC,12,105,39,8
+    COMBOBOX        IDC_WEIGHT,57,103,52,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Corsivo",IDC_OBLIQUE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,120,100,38,9
+    CONTROL         "P&roporzionale",IDC_PROPORTIONAL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,162,100,58,9
+    CONTROL         "Ro&vesciato",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,162,112,54,9
+    RTEXT           "C&olore testo",IDC_STATIC,14,127,37,9
+    CONTROL         "",IDC_TEXT_COLOUR,"Button",WS_TABSTOP,57,
+                    125,52,13
+    RTEXT           "S&fondo",IDC_STATIC,131,127,25,9
+    CONTROL         "",IDC_BACK_COLOUR,"Button",WS_TABSTOP,
+                    162,125,52,13
+    GROUPBOX        "Proprietà",IDC_STYLE_STATIC,4,5,218,139
+END
+
+IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 227, 148
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "&Generale"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Opzioni",IDC_OPTIONS_STATIC,4,5,218,51
+    CONTROL         "&Visualizza i bordi delle windows",IDC_BORDERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,16,132,8
+    CONTROL         "&Abilita menu, barra di stato e barra degli strumenti",
+                    IDC_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,28,185,
+                    8
+    CONTROL         "Abilita &stili personalizzati",IDC_STYLEHINT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,41,175,8
+    GROUPBOX        "Collegamenti ipertestuali",IDC_LINKS_STATIC,4,59,218,42
+    CONTROL         "&Imposta colori personalizzati",IDC_USE_LINK_COLOUR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,73,137,9
+    CONTROL         "",IDC_LINK_COLOUR,"Button",WS_TABSTOP,
+                    177,70,27,13
+    CONTROL         "Sottolinea &collegamenti",IDC_USE_LINK_UNDER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,86,129,9
+    GROUPBOX        "Avvio",IDC_STARTUP,4,105,218,39
+    LTEXT           "Se il gioco contiene un i&Fiction record, mostra le informazioni",
+                    IDC_LABEL_IFICTION,19,116,111,18
+    COMBOBOX        IDC_SHOW_IFICTION,133,118,71,58,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 227, 147
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Voce"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Discorso opzioni",IDC_STATIC,4,5,218,67
+    CONTROL         "&Abilita sintesi",IDC_SPEAK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,20,69,8
+    LTEXT           "&Seleziona voce",IDC_STATIC,15,36,54,9
+    COMBOBOX        IDC_VOICE,72,34,136,95,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Velocità",IDC_STATIC,15,55,48,8
+    CONTROL         "",IDC_SPEECH_RATE,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,72,52,136,13,WS_EX_TRANSPARENT
+END
+
+IDD_ABOUTGAME DIALOGEX 0, 0, 111, 68
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,47,97,14
+    CONTROL         "",IDC_INFO,"RichEdit20A",ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL,7,7,97,34
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_GLK ACCELERATORS 
+BEGIN
+    "L",            IDM_SYS_SCROLLBACK,     VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_RETURN,      ID_FULLSCREEN,          VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_OPTIONS_STYLE DLGINIT
+BEGIN
+    IDC_WINDOW_TYPE, 0x403, 16, 0
+0x7542, 0x6666, 0x7265, 0x6420, 0x2069, 0x6574, 0x7473, 0x006f, 
+    IDC_WINDOW_TYPE, 0x403, 17, 0
+0x7247, 0x6769, 0x696c, 0x2061, 0x6964, 0x7420, 0x7365, 0x6f74, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 8, 0
+0x6f4e, 0x6d72, 0x6c61, 0x0065, 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0x7247, 0x7361, 0x6573, 0x7474, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 14, 0
+0x7250, 0x6665, 0x726f, 0x616d, 0x7474, 0x7461, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 13, 0
+0x6e49, 0x6574, 0x7473, 0x7a61, 0x6f69, 0x656e, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0x6150, 0x6172, 0x7267, 0x6661, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 7, 0
+0x7641, 0x6976, 0x6f73, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 8, 0
+0x6f43, 0x7372, 0x7669, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0x6943, 0x6174, 0x697a, 0x6e6f, 0x0065, 
+    IDC_WINDOW_STYLE, 0x403, 9, 0
+0x6944, 0x6967, 0x6174, 0x6f74, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 16, 0
+0x6550, 0x7372, 0x6e6f, 0x6c61, 0x7a69, 0x617a, 0x6f74, 0x0031, 
+    IDC_WINDOW_STYLE, 0x403, 16, 0
+0x6550, 0x7372, 0x6e6f, 0x6c61, 0x7a69, 0x617a, 0x6f74, 0x0032, 
+    IDC_JUSTIFICATION, 0x403, 9, 0
+0x6953, 0x696e, 0x7473, 0x6172, "\000" 
+    IDC_JUSTIFICATION, 0x403, 13, 0
+0x6947, 0x7375, 0x6974, 0x6966, 0x6163, 0x6f74, "\000" 
+    IDC_JUSTIFICATION, 0x403, 7, 0
+0x6544, 0x7473, 0x6172, "\000" 
+    IDC_JUSTIFICATION, 0x403, 9, 0
+0x6543, 0x746e, 0x6172, 0x6f74, "\000" 
+    IDC_WEIGHT, 0x403, 8, 0
+0x6f4e, 0x6d72, 0x6c61, 0x0065, 
+    IDC_WEIGHT, 0x403, 10, 0
+0x7247, 0x7361, 0x6573, 0x7474, 0x006f, 
+    IDC_WEIGHT, 0x403, 8, 0
+0x654c, 0x6767, 0x7265, 0x006f, 
+    0
+END
+
+IDD_OPTIONS_GENERAL DLGINIT
+BEGIN
+    IDC_SHOW_IFICTION, 0x403, 4, 0
+0x614d, 0x0069, 
+    IDC_SHOW_IFICTION, 0x403, 12, 0
+0x7250, 0x6d69, 0x2061, 0x6f76, 0x746c, 0x0061, 
+    IDC_SHOW_IFICTION, 0x403, 7, 0
+0x6553, 0x706d, 0x6572, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_FONTS MENU 
+BEGIN
+    MENUITEM "Carattere &proporzionale",    IDM_FONT_PROPORTIONAL
+    MENUITEM "Carattere a larghezza fissa", IDM_FONT_FIXED
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_GLK                 ICON                    "..\\res\\Glk.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_GLK                 BITMAP                  "..\\res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_GLK TOOLBAR  16, 15
+BEGIN
+    BUTTON      IDM_SYS_SCROLLBACK
+    BUTTON      IDM_FONT_PROPORTIONAL
+    BUTTON      IDM_FONT_FIXED
+    BUTTON      IDM_SYS_OPTIONS
+    BUTTON      IDM_SYS_HELP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_SCROLLBACK      "Mostra il buffer di scorrimento\nBuffer di scorrimento"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_OPTIONS         "Mostra le opzioni\nOpzioni"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_HELP            "Mostra la guida\nGuida"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_ABOUT           "Mostra la maschera di Informazioni\nInfo"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_ABOUT_GAME      "Mostra la descrizione e la copertina della storia"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_FONT_PROPORTIONAL   "Cambia il tipo di carattere in proporzionale\nCarattere proporzionale"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_FONT_FIXED          "Cambia il tipo di carattere a larghezza fissa\nCarattere a larghezza fissa"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_EXIT             "Chiudi l'applicazione\nChiudi"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Modifica la dimensione della finestra"
+    AFX_IDS_SCMOVE          "Modifica la posizione della finestra"
+    AFX_IDS_SCMINIMIZE      "Riduce a icona la finestra"
+    AFX_IDS_SCMAXIMIZE      "Ingrandisce la finestra"
+    AFX_IDS_SCCLOSE         "Chiudi la finestra e esci dall'applicazione"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GLULXE_TITLE        "Interprete Glulxe"
+    IDS_GLULXE_OPEN         "Seleziona un file Glulx"
+    IDS_GLULXE_FILTER       "File Glulx (.ulx;.blb;.blorb;.glb;.gblorb)|*.ulx;*.blb;*.blorb;*.glb;*.gblorb|Tutti i file (*.*)|*.*||"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STYLE_NOTE          "Attenzione, le modifiche saranno effettive per le nuove windows"
+    IDS_STYLE_NOEDIT        "Lo stile è stato impostato dal programma e non può essere modificato"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENU_SCROLLBACK     "Buffer di &scorrimento\tCtrl+L"
+    IDS_MENU_FONTS          "&Tipo di carattere"
+    IDS_MENU_OPTIONS        "&Opzioni..."
+    IDS_MENU_HELP           "&Guida"
+    IDS_MENU_ABOUT          "Glk &Informazioni"
+    IDS_MENU_PROPFONT       "Carattere &proporzionale..."
+    IDS_MENU_FIXEDFONT      "Carattere a larghezza &fissa..."
+    IDS_MENU_EXIT           "Chiu&di\tAlt+F4"
+    IDS_MENU_ABOUT_GAME     "Informazioni sulla sto&ria"
+    IDS_STORY               "Titolo storia"
+    IDS_NEWER               "Questo programma richiede una versione più recente di Glk."
+    IDS_HITEXIT             "[Premi un tasto per uscire]"
+    IDS_OPTIONS             "Opzioni"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_DSOUND           "Inizializzazione di DirectSound non riuscita"
+    IDS_MORE                "[Continua]"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FREF_OPEN           "Apri"
+    IDS_FREF_SAVE           "Salva"
+    IDS_FREF_DATA           "file di dati"
+    IDS_FREF_STATE          "posizione"
+    IDS_FREF_SCRIPT         "trascrizione"
+    IDS_FREF_INPUT          "record file"
+    IDS_FREF_FILTER         "Tutti i file (*.*)|*.*||"
+    IDS_FULLSCREEN          "Questa applicazione sarà eseguito in modalità a schermo intero. Continuare?\n\nAttenzione: per ritornare alla visualizzazione normale, premere Alt+Invio"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Ripristina la dimensione originale della finestra "
+END
+
+#endif    // Italian (Italy) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Glk.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Glk.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

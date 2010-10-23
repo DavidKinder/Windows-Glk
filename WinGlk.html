@@ -1,0 +1,1024 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Windows Glk 1.40</title>
+</head>
+
+<body>
+
+<h1>Windows Glk 1.40</h1>
+
+<h2>Contents</h2>
+
+<blockquote>
+<a href="#Overview">Overview</a><br>
+<a href="#License">License</a><br>
+<a href="#Install">Installation</a><br>
+<a href="#Using">Using a Windows Glk Program</a><br>
+<a href="#Visual C">Using Windows Glk with Visual C++</a><br>
+<a href="#Cygwin">Using Windows Glk with Cygwin</a><br>
+<a href="#Other Compilers">Using Windows Glk with other C compilers</a><br>
+<a href="#Manifest">Example Manifest for a Windows Glk program</a><br>
+<a href="#Startup">Start-up of a Windows Glk program</a><br>
+<a href="#Functions">Windows specific Glk functions</a><br>
+<a href="#Examples">Example Programs</a><br>
+<a href="#Resources">Graphics and Sound Resources</a><br>
+<a href="#Acknowledgements">Acknowledgements</a><br>
+<a href="#History">Release History</a><br>
+</blockquote>
+
+<h2><a name="Overview"></a>Overview</h2>
+<h3>Glk API version 0.7.0, Windows Glk release 1.40</h3>
+
+Windows Glk was written by David Kinder.<br>
+Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
+Email: <a href="mailto:davidk.kinder@virgin.net">davidk.kinder@virgin.net</a><br>
+
+<p>This is a Windows implementation of Andrew Plotkin's Glk library specification, an attempt to define
+a portable API for text adventures, and more generally, any program with primarily textual input and output.
+It works with any version of Windows from Windows 95 onwards.
+
+<p>This help file describes the specifics of the Windows version of Glk, and should be read
+in conjunction with Andrew's Glk specification document. This and other relevant files on Glk
+can be found at the Interactive Fiction Archive, in the directory
+
+<blockquote>
+<a href="http://www.ifarchive.org/indexes/if-archiveXprogrammingXglulx.html">http://www.ifarchive.org/indexes/if-archiveXprogrammingXglulx.html</a>
+</blockquote>
+
+<p>and Andrew's Glk web page
+
+<blockquote>
+<a href="http://www.eblong.com/zarf/glk/">http://www.eblong.com/zarf/glk/</a>
+</blockquote>
+
+<h2><a name="License"></a>License</h2>
+
+<p>The source code and compiled Glk DLL in this package are copyright 1998-2010 by David
+Kinder. You may copy and distribute both the source code and the compiled DLL freely, by any
+means and under any conditions, as long as the code and documentation is not changed. You
+may also incorporate this code into your own program and distribute that, or modify this code
+and use and distribute the modified version, as long as you retain a notice in your program or
+documentation which mentions my name and the
+<a href="http://www.eblong.com/zarf/glk/">Glk web page</a>.
+
+<p>Ogg Vorbis music resources are played using libogg and libvorbis by the Xiph.org Foundation.
+The license for these libraries is as follows:
+
+<blockquote>
+Copyright (c) 2002, Xiph.org Foundation
+<br>
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+<br>
+- Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+<br>
+- Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+<br>
+- Neither the name of the Xiph.org Foundation nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+<br>
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</blockquote>
+
+<h2><a name="Install"></a>Installation</h2>
+
+<p>This Windows version of Glk is implemented as a dynamic link library Glk.dll, which should be 
+in the same directory as the Glk application.
+
+<h3>Translations</h3>
+
+Windows Glk supports localization into languages other than English. If the appropriate
+translation DLL (such as GlkEspañol.dll for Spanish) is present for the language Windows
+is configured to use, then all Glk dialogs and menus are localized.
+
+<h3>Windows XP</h3>
+
+<p>Windows Glk is aware of Windows XP's themes, and can display dialogs, etc. appropriately.
+However, in order for this to happen the Glk application must either have a manifest file with
+the same name as the executable (For example, for "Foo.exe" the manifest file would be
+"Foo.exe.manifest") or a manifest included in the application's resources. For a suitable
+manifest see the <a href="#Examples">example</a> programs.
+
+<h3>Speech</h3>
+
+<p>Windows Glk can use Microsoft's Speech Engine (SAPI) version 5 to speak text. This is
+included in Windows XP and later, and for earlier versions of Windows is available as a
+download from Microsoft.
+
+<h2><a name="Using"></a>Using a Windows Glk Program</h2>
+
+<p>Programs using Windows Glk appear to the user as a single Windows frame window containing
+child windows that correspond with the Glk definition of windows.
+
+<p>By default, Windows Glk adds a toolbar and menu to the frame window, which allows the user
+to bring up the options dialog, change font settings and review the previous output shown in
+text buffer windows. These options can also be accessed from the system menu (this is the menu
+which appears when single-clicking on the icon at the left of the title bar), which is the only
+means of access if toolbars and menus have been switched off in the options dialog.
+
+<h2><a name="Visual C"></a>Using Windows Glk with Visual C++</h2>
+
+<p>To use Windows Glk with Microsoft Visual C++, use the 'New Project' wizard accessed from the
+File/New menu to create a new Win32 application project.
+
+<p>The application should include the file
+<a href="#Startup">Glk.c</a>
+and a file winglk_startup.c, which should contain an implementation of the function
+<a href="#winglk_startup_code">winglk_startup_code()</a>.
+An example of this function is given in the
+<a href="#Examples">example</a>
+programs.
+
+<p>The application must also be linked with Glk.lib, which is the import library for Glk.dll.
+
+<p>Although not required, the appearance of the application under Windows XP onwards will be
+improved if an application manifest is included that specifies a dependency on version 6.0 of
+the common controls library. The details of how to set up a manifest vary significantly
+between Visual C++ versions, so you should consult the Visual C++ help for more information.
+An example of the XML for a manifest is given below.
+
+<h2><a name="Cygwin"></a>Using Windows Glk with Cygwin</h2>
+
+<p>To use Windows Glk with Cygwin's version of the GCC compiler (available from
+<a href="http://www.cygwin.com/">http://www.cygwin.com/</a>), open a Cygwin Bash shell and
+generate an import library to link against:
+
+<pre>    dlltool --dllname=Glk.dll --def=Glk.def --output-lib=libglk.a</pre>
+
+<p>The application should include the file
+<a href="#Startup">Glk.c</a>
+and a file winglk_startup.c, which should contain an implementation of the function
+<a href="#winglk_startup_code">winglk_startup_code()</a>.
+An example of this function is given in the
+<a href="#Examples">example</a>
+programs.
+
+<p>The application must also be linked with the library libglk.a; should not use the Cygwin
+DLL; and should be marked as being a Windows GUI application. For example, the command line
+to build the example model program under Cygwin is
+<pre>    gcc model.c winglk_startup.c Glk.c -o model -lglk -L. -mno-cygwin -mwindows</pre>
+
+<p>As noted above, though not required, it is good practice to include an application manifest
+such as the example one given below. To use this with Cygwin, create a file Glk.manifest that
+contains the XML. Create a resource compiler script containing the following line
+<pre>    1    24    "Glk.manifest"</pre>
+
+<p>Compile the manifest to an object file with the command line
+<pre>    windres Glk.rc GlkRes.o</pre>
+
+Finally, include the generated GlkRes.o file in the list of files passed to the compiler in
+order to create the final executable.
+
+<h2><a name="Other Compilers"></a>Using Windows Glk with other C compilers</h2>
+
+<p>In general, how Windows Glk is used with other compilers is very dependant on that compiler.
+However, the following rules must be followed.
+
+<p>The application produced must be a standard Win32 application (not a Win32 console
+application), whose entry point is the WinMain() function.
+
+<p>The application should include the file
+<a href="#Startup">Glk.c</a>
+and a file winglk_startup.c, which should contain an implementation of the function
+<a href="#winglk_startup_code">winglk_startup_code()</a>.
+An example of this function is given in the
+<a href="#Examples">example</a>
+programs.
+
+<p>The application must be linked with a suitable import library to ensure dynamic linking
+with Glk.dll. For most compilers a tool is supplied which takes a dynamic link library and
+produces a suitable import library (for Microsoft Visual C++ this tool is lib.exe; for
+Borland C++ it is implib.exe). The supplied import library Glk.lib is for Microsoft Visual
+C++, but may work with other compilers. For further information, you should consult your
+compiler documentation.
+
+<p>As noted above, though not required, it is good practice to include an application manifest
+such as the example one given below. How this is to be done will depend on the compiler: most
+Windows compiler include some way to generate an object file containing resources that can then
+be linked into the final executable.
+
+<h2><a name="Manifest"></a>Example Manifest for a Windows Glk program</h2>
+
+When creating a manifest file from the example below, change the strings containing "GlkApp" to
+whatever is appropriate for your application.
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;assembly xmlns="urn:schemas-microsoft-com:asm.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" manifestVersion="1.0"&gt;
+ &lt;assemblyIdentity version="1.0.0.0" processorArchitecture="X86" name="GlkApp name" type="win32"/&gt;
+ &lt;description&gt;GlkApp description&lt;/description&gt;
+ &lt;asmv3:application&gt;
+  &lt;asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings"&gt;
+   &lt;dpiAware&gt;true&lt;/dpiAware&gt;
+  &lt;/asmv3:windowsSettings&gt;
+ &lt;/asmv3:application&gt;
+ &lt;dependency&gt;
+  &lt;dependentAssembly&gt;
+   &lt;assemblyIdentity
+    type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0"
+    processorArchitecture="X86" publicKeyToken="6595b64144ccf1df" language="*"/&gt;
+  &lt;/dependentAssembly&gt;
+ &lt;/dependency&gt;
+&lt;/assembly&gt;
+</pre>
+
+<h2><a name="Startup"></a>Start-up of a Windows Glk program</h2>
+
+<p>A Windows Glk program should include the source file Glk.c, which implements the WinMain()
+entry point into the program. The implementation of WinMain() initializes Glk.dll and checks
+that the version of Glk is suitable for the program. After this, the function
+<a href="#winglk_startup_code">winglk_startup_code()</a>
+is called. This is a function that must be supplied by the author of the Windows Glk program,
+though at its simplest the function need not do anything at all.
+
+<p>Experienced Win32 developers may wish to implement their own WinMain() function, bypassing
+the normal Windows Glk startup code. If you do this, you should make sure that InitGlk() is
+called before glk_main().
+
+<h2><a name="Functions"></a>Windows specific Glk functions</h2>
+
+<p>The prototypes for all these functions can be obtained by including the file WinGlk.h.
+These functions are all implemented by Windows Glk, except for winglk_startup_code().
+
+<blockquote>
+
+<h3><a name="winglk_startup_code"></a>int winglk_startup_code(const char* cmdline)</h3>
+
+<p>This function must be supplied by the author of the Windows Glk program, and is called
+before glk_main() in order to allow platform specific initialization. The function should
+return zero if an error occurred, or a non-zero value if successful. The simplest
+implementation of the function is
+
+<pre>
+  int winglk_startup_code(const char* cmdline)
+  {
+    return 1;
+  }
+</pre>
+
+<p>The cmdline argument passed to winglk_startup_code() is a pointer to the command line with
+which the program was started up. See the
+<a href="#Examples">example</a>
+program WinGlkStart for an example of this routine which sets the application name and window
+title, then brings up a file dialog to request a file from the user.
+
+<p>This function is only called from within the WinMain() function in Glk.c. If you decide to
+write your own WinMain() (only recommended for experienced Win32 developers) then there is no
+need to supply the winglk_startup_code() function.
+
+<h3><a name="winglk_app_set_name"></a>void winglk_app_set_name(const char* name)</h3>
+
+<p>Call this function to set the name of the Windows Glk program. This name is used as the
+title for the main window, and for storing user settings such as font and window size. This
+function should be called in winglk_startup_code(), e.g.
+
+<pre>
+  int winglk_startup_code(void)
+  {
+    winglk_app_set_name("Glk Example");
+    return 1;
+  }
+</pre>
+
+<h3>void winglk_window_set_title(const char* title)</h3>
+
+<p>Call this function to change the window title. This function can be called at any point,
+either before or after the main window opens. It should be called after
+<a href="#winglk_app_set_name">winglk_app_set_name()</a>.
+
+<h3>void winglk_set_about_text(const char* text)</h3>
+
+<p>Call this function to set the text that appears in the first line of the About dialog box. The
+text should contain the name and version number of the application.
+
+<h3>void winglk_set_menu_name(const char* name)</h3>
+
+<p>Call this function to set the name of the default Glk menu. The short cut key is indicated by
+a leading ampersand; for example, a name of "&Glulxe" produces the menu name <b><u>G</u>lulxe</b>.
+The menu name is also used in the name of the menu item showing the About dialog, and in the text
+in that dialog.
+
+<h3>void winglk_set_help_file(const char* filename)</h3>
+
+<p>Call this function to set the path of a HTMLHelp format help file. Calling this function causes
+a "Help" item to appear in the menu and a "Help" button on the toolbar.
+
+<h3>const char* winglk_get_initial_filename(const char* cmdline, const char* title, const char* filter)</h3>
+
+<p>This function is designed to simplify writing startup code for a Windows Glk program. It
+examines the cmdline argument (which will usually be the cmdline argument passed to
+winglk_startup_code()) and attempts to extract a file name from it. If you don't want a
+command line string to be processed, just pass NULL for cmdline.
+
+<p>If a file name cannot be extracted from cmdline, a file dialog appears prompting the user
+for a file. The title argument will be used as the title of the file dialog, and the filter
+argument used as the file dialog's filter.
+
+<p>The filter string contains pairs of strings, the first part of which is the text describing
+the file type and the second is the actual filter. Each part is separated by a vertical bar
+and the end of the filter indicated by two vertical bars. For example, the filter string in
+Windows Glulxe is
+
+<blockquote>
+<pre>
+"Glulx Files (.ulx;.blb;.blorb;.glb;.gblorb)|*.ulx;*.blb;*.blorb;*.glb;*.gblorb|All Files (*.*)|*.*||"
+</pre>
+</blockquote>
+
+<p>The function returns a pointer to the file name if successful, or NULL. If the function
+does not return NULL, it will also use the filename to set the default filenames for calls to 
+glk_fileref_create_by_prompt().
+
+<p>See the
+<a href="#Examples">example</a>
+program WinGlkStart for an example of this routine.
+
+<h3><a name="winglk_set_resource_directory"></a>void winglk_set_resource_directory(const char* dir)</h3>
+
+<p>Call this function to change the directory from which Glk.dll will attempt to load
+<a href="#Resources">resources</a>.
+
+The default is the current directory for the program.
+
+<h3>void winglk_set_gui(unsigned int id)</h3>
+
+<p>Call this function in winglk_startup_code() to set up any or all of a custom menu, a
+custom toolbar and a custom icon for the application's window. The function takes the numeric
+identifier of the menu, toolbar and icon in your application, e.g.
+
+<pre>
+  winglk_set_gui(IDR_EXAMPLE);
+</pre>
+
+<p>When setting up menus and toolbars, you should keep resource identifiers below 0x7500 and
+command identifiers below 0xD000. This is not usually a problem as most development
+environments generate identifiers well below these values.
+
+<p>If the user selects a menu item or clicks on a toolbar button, your application will
+receive an event of type winglk_evtype_GuiInput. val1 will be the command identifier, and
+val2 zero.
+
+<p>See the
+<a href="#Examples">example</a>
+program WinGlkStart for an example of this routine.
+
+<h3>void winglk_load_config_file(const char* gamename)</h3>
+
+<p>Call this function to load a Windows Glk configuration file appropriate to the given
+game file name. For example, if the function is passed an argument of "Photopia.blb", it
+will attempt to load a configuration file called "Photopia.cfg".
+
+<p>The configuration file is a text file where each line contains a key name, followed by an
+equals sign, then a value, e.g. "WindowBorders=no". Possible keys are:<br>
+
+<table border="0" cellpadding="4" cellspacing="0">
+  <tr>
+    <td nowrap><strong>WindowBorders=[yes/no]</strong></td>
+    <td>Turns on or off borders between Glk windows.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>WindowFrame=[yes/no]</strong></td>
+    <td>Turns on or off the Glk application window frame, that is, the title bar and the
+        border around the whole window.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>WindowMask=[number]</strong></td>
+    <td>Uses the given Blorb resource number to set the mask for the window from the
+        graphic. If a particular pixel in the graphic is white then the window is
+        transparent at that point, else it is opaque. This key only takes effect if
+        "WindowFrame=no".</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>WindowWidth=[width]</strong></td>
+    <td>Sets the width of the Glk application window so that a single, full-size Glk window
+        will have a width of the given value.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>WindowHeight=[height]</strong></td>
+    <td>Sets the height of the Glk application window so that a single, full-size Glk window
+        will have a height of the given value.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>FullScreen=[yes/no]</strong></td>
+    <td>If set to "yes", the Glk application window opens filling the entire screen.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>FontName=[font]</strong></td>
+    <td>Sets the font used for proportional text to the given font name,
+        e.g. "Times New Roman".</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>FontSize=[size]</strong></td>
+    <td>Sets the size of the font used for proportional text to the given value,
+        measured in points.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>FixedFontName=[font]</strong></td>
+    <td>Sets the font used for fixed width text to the given font name.</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>FixedFontSize=[size]</strong></td>
+    <td>Sets the size of the font used for fixed width text to the given value.</td>
+  </tr>
+</table>
+
+<h3>strid_t winglk_stream_open_resource(const char* name, const char* type, glui32 rock)</h3>
+
+<p>This function opens a Glk memory stream using a resource. The first two arguments specify
+the name and type of the resource. For example, if data has been stored in the resources of
+the executable as "EXAMPLE" in the resource type "DATA", then the stream could be opened with
+rock value 1 by the following call:
+
+<pre>
+  strid_t str = winglk_stream_open_resource("EXAMPLE","DATA",1);
+</pre>
+
+<h3>void* winglk_get_resource_handle(void)</h3>
+
+<p>This function returns a handle to the resource module being used by Glk.dll. This is
+the resource handle of Glk.dll itself unless a translation is being used, in which case
+it is the resource handle of the translation DLL.
+
+<h3>frefid_t winglk_fileref_create_by_name(glui32 usage, char *name, glui32 rock, int validate)</h3>
+
+<p>This function is the same as glk_fileref_create_by_name(), except that it takes an extra
+validate argument. If validate is non-zero then the name argument is validated to remove
+directory separator characters; if it is zero then the name argument is not checked.
+
+<h3>void winglk_show_game_dialog(void)</h3>
+
+<p>This function tells Glk.dll to show the "About This Game" dialog when a Blorb file is set
+by a call to giblorb_set_resource_map(), provided that the Blorb file contains an "IFmd" chunk,
+and that the dialog has not been shown for this game before. If the "IFmd" chunk is present,
+an "About This Game" menu item is also added to the application's menu, the game's title is
+included in the title of the Windows Glulxe window, and an option to control whether the dialog
+is shown initially appears in the options dialog.
+
+<h3>void sglk_set_basename(char *s)</h3>
+
+<p>This function sets the default filenames for calls to glk_fileref_create_by_prompt(),
+which may be useful if you do not use winglk_get_initial_filename() in your startup code.
+This function is part of L. Ross Raszewski's (the maintainer of DOS Glk) suggested additions
+to Glk.
+
+</blockquote>
+
+<h2><a name="Examples"></a>Example Programs</h2>
+
+<p>The Examples directory contains three example programs. Model and Multiwin are generic Glk
+example programs written by Andrew Plotkin. WinGlkStart is a Windows Glk specific example,
+which demonstrates the common requirement of asking the user for a file name at startup.
+
+<p>If you have Visual C++, load up the workspace Examples.dsw, which contains each example as
+a separate project.<br>
+If you are not using Visual C++, then for each example you need to compile the following
+source files:
+
+<blockquote>
+<table border="0" cellpadding="4" cellspacing="0">
+  <tr>
+    <td nowrap><strong>Model</strong></td>
+    <td>model.c, winglk_startup.c, Glk.c</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>Multiwin</strong></td>
+    <td>multiwin.c, winglk_startup.c, Glk.c</td>
+  </tr>
+  <tr>
+    <td nowrap><strong>WinGlkStart</strong></td>
+    <td>WinGlkStart.c, Glk.c</td>
+  </tr>
+</table>
+</blockquote>
+
+<p>where Glk.c is the standard Windows Glk source file in the main Glk directory. To create
+executables you will need to link all the source files in each example together and link along
+with a suitable import library for Glk.dll.
+<p>For example, with Cygwin, the command to build the model example would be:
+<pre>    gcc model.c winglk_startup.c Glk.c -o model -lglk -L. -mno-cygwin -Wl,--subsystem,windows</pre>
+
+<h2><a name="Resources"></a>Graphics and Sound Resources</h2>
+
+<p>Windows Glk supports resources stored either in Blorb files or as separate files.
+
+<p>If a Glk program is to use resources from a Blorb file, the standard Blorb function
+giblorb_set_resource_map() (which is part of Glk.dll) must be called with the identifier of
+a stream opened on the Blorb file. If this is done then Windows Glk will first look for
+resources in the Blorb file.
+
+<p>If Windows Glk cannot find a requested resource in the Blorb file (or no Blorb file has
+been set up), it will look for a suitably named file in the current directory (or the directory
+specified by a call to
+<a href="#winglk_set_resource_directory">winglk_set_resource_directory()</a>,
+if such a call has been made).
+
+<p>If a resource was found in either the Blorb file or in a directory, it will be loaded. The
+resource formats currently supported are shown below, along with the filename for which
+Windows Glk will look if the resource is not in the Blorb file (as an example, the filename is
+for resource number 1):
+
+<blockquote>
+<table border="0" cellpadding="4" cellspacing="0">
+  <tr>
+    <td nowrap><strong>Format</strong></td>
+    <td nowrap><strong>Type</strong></td>
+    <td><strong>Example Filename</strong></td>
+  </tr>
+  <tr>
+    <td nowrap>PNG</td>
+    <td nowrap>image</td>
+    <td>pic1.png</td>
+  </tr>
+  <tr>
+    <td nowrap>JPEG</td>
+    <td nowrap>image</td>
+    <td>pic1.jpg</td>
+  </tr>
+  <tr>
+    <td nowrap>AIFF</td>
+    <td nowrap>sound</td>
+    <td>snd1.aif <strong>or</strong> snd1.aiff</td>
+  </tr>
+  <tr>
+    <td nowrap>MOD</td>
+    <td nowrap>music</td>
+    <td>mus1.mod</td>
+  </tr>
+  <tr>
+    <td nowrap>OGGV</td>
+    <td nowrap>music</td>
+    <td>mus1.ogg</td>
+  </tr>
+</table>
+</blockquote>
+
+<p>If PNG images have an alpha channel or transparency information, Windows Glk will use it.
+In graphics windows PNG images are alpha blended with the graphic window bitmap; in text buffer
+windows PNG images are alpha blended with the default background colour.
+
+<h2><a name="Acknowledgements"></a>Acknowledgements</h2>
+
+<p>The user interface for Windows Glk has been translated into Spanish by Javier San José, and into
+Italian by Tommaso Caldarola.
+
+<p>Windows Glk contains bitmap scaling code written by Eran Yariv.
+The code that handles Ogg Vorbis music resources is based on code submitted by David Moreno.
+
+<p>Windows Glk uses the following libraries:
+
+<blockquote>
+jpeglib by the Independent JPEG Group.<br>
+libpng by Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, and others.<br>
+zlib by Jean-loup Gailly and Mark Adler.<br>
+libogg and libvorbis by the Xiph.org Foundation.<br>
+ModPlug by Olivier Lapicque.
+</blockquote>
+
+<h2><a name="History"></a>Release History</h2>
+
+<h3>1.40</h3>
+
+<ul>
+<li>Corrected problems with formatting and line input when margin images are present.
+
+<li>Corrected a mistake in the handling of alpha-blended images.
+</ul>
+
+<h3>1.39</h3>
+
+<ul>
+<li>The window can be made to fill the entire screen; press <b>Alt+Enter</b> to toggle
+this full screen mode on and off.
+
+<li>A new configuration file option, "FullScreen", also makes the window fill the entire screen.
+
+<li>During line input, Ctrl+Left moves the cursor to the start of the current word, and Ctrl+Right
+moves to the end.
+
+<li>The logic when scaling alpha-blended images has been improved, so there should no longer be
+artifacts round the edges of such images.
+
+<li>Data being written to files is now flushed whenever input is requested from the user.
+This allows, for example, transcript files to update as a game is being played, and not only
+when the Glk program closes the stream or shuts down.
+
+<li>Corrected a problem which could result in the options dialog using the wrong font.
+</ul>
+
+<h3>1.38</h3>
+
+<ul>
+<li>Fixed a file creation bug in glk_stream_open_file().
+</ul>
+
+<h3>1.37</h3>
+
+<ul>
+<li>Clicking on a Glk window now only shifts the keyboard input focus to that window if the
+window is capable of text input: this means that after clicking on a graphics window, text can
+still be input in a text buffer window without having to click back to the text buffer window.
+
+<li>The implementation of the algorithm for scaling images has been sped up again.
+</ul>
+
+<h3>1.36</h3>
+
+<ul>
+<li>Fixed a bug with glk_stylehint_clear() ignoring any user set values.
+</ul>
+
+<h3>1.35</h3>
+
+<ul>
+<li>The implementation of the algorithm for scaling images has been sped up.
+
+<li>When the user tries to enter an input line wider than the window, the input is split
+over multiple lines.
+
+<li>Fixed a bug with sound volumes not being set correctly if the main window was
+not yet open.
+
+<li>Fixed a bug with the scrollback dialog not appearing when a translation DLL was in use.
+
+<li>Fixed another bug that occasionally led to a [More] prompt not appearing when it should.
+</ul>
+
+<h3>1.34</h3>
+
+<ul>
+<li>Improved the logic used to output Unicode text: now if a character can be drawn in
+any font on the system, that font will be used where needed. For best results a 'Unicode'
+font (e.g. "Arial Unicode MS" or "Code 2000") should be installed, though it doesn't need
+to be selected as either the proportional or fixed width font.
+</ul>
+
+<h3>1.33</h3>
+
+<ul>
+<li>Fixed a bug that occasionally led to a [More] prompt not appearing when it should.
+
+<li>Fixed a bug that caused an initial carriage return printed in a text buffer window
+to be ignored.
+
+<li>Rewrote the speech support to use SAPI 5, which comes with Windows XP and later.
+
+<li>Speech options are now set in a separate "Speech" tab on the options dialog.
+
+<li>Pressing the Break key (Ctrl+Pause) stops any currently playing speech.
+</ul>
+
+<h3>1.32</h3>
+
+<ul>
+<li>Updated to the latest version of ModPlug, which is now compiled into the library.
+
+<li>glk_fileref_create_by_name() now removes directory separator characters from its file name
+argument, replacing them with dashes. The Windows Glk only function winglk_fileref_create_by_name()
+is available if the old behaviour is required.
+
+<li>The name set by winglk_set_menu_name() is also used in the text of the menu item that shows
+the About dialog, and in the text in that dialog.
+
+<li>Added the winglk_show_game_dialog() function.
+</ul>
+
+<h3>1.31</h3>
+
+<ul>
+
+<li>Minor improvements to the interpreter's appearance under Windows Vista.
+
+<li>Fixed a long-standing bug in glk_window_set_arrangement() when changing the direction
+of the window sizing constraint.
+
+<li>Fixed the incorrect clipping of italic text.
+
+<li>Pressing a key in any window will now clear any pending [More] prompts in any other windows,
+rather than requiring the user to select the affected window.
+
+<li>Changed the default values of a few options: window borders are now off by default, and the
+default indentation in text buffer windows is one unit, rather than zero.
+
+</ul>
+
+<h3>1.30</h3>
+<ul>
+
+<li>Updated to Glk 0.7.0, which adds Unicode support to Glk.
+
+</ul>
+
+<h3>1.27</h3>
+<ul>
+
+<li>Added support for Ogg Vorbis music resources, based on code submitted by David Moreno.
+
+<li>The file extensions <b>.blorb</b>, <b>.glb</b> and <b>.gblorb</b> can be used for Blorb
+files. The latter two indicate that the Blorb file contains a Glulx game.
+
+</ul>
+
+<h3>1.26</h3>
+<ul>
+
+<li>The input caret is now correctly restored after a save or restore file dialog.
+
+<li>The mouse cursor now changes to the correct image over hyperlinks when a translation
+DLL is in use.
+
+<li>Pressing Ctrl+V with the focus on a text buffer window that is waiting for input now pastes
+the contents of the clipboard into the input line. 
+
+<li>Changed the logic that sets up non-rectangular windows to work with Windows Git.
+
+<li>The WindowWidth and WindowHeight keys in a configuration file now refer to the size of a single,
+full-size Glk window, rather than the entire window of the application.
+
+<li>The WindowMask key in a configuration file now only takes effect if the WindowFrame key is set to "no".
+
+</ul>
+
+<h3>1.25</h3>
+<ul>
+
+<li>Images are now scaled with a bilinear filter, resulting in greatly improved appearance
+of scaled images.
+
+<li>Added the winglk_set_help_file() function.
+
+<li>If a configuration file is loaded that specifies a window size, whether or not the window
+was previously maximized is now ignored: the window always appears with the specified size.
+
+<li>Text grid windows in which the game asks for input don't now steal the focus from text
+buffer windows in which the game is also asking for input.
+
+<li>Images in the left or right margins of text buffer windows are now displayed correctly
+after a flow break.
+
+<li>The AIFF decoder now correctly handles chunks that are an odd number of bytes long.
+
+</ul>
+
+<h3>1.24</h3>
+<ul>
+
+<li>Fixed a serious resource leak under Windows 95/98/Me.
+
+<li>Pressing the Pause key causes any windows blocking on a [More] prompt to update,
+regardless of whether or not they are the active window.
+
+</ul>
+
+<h3>1.23</h3>
+<ul>
+
+<li>The speed at which the text to speech output is spoken can now be set from the options dialog.
+
+<li>The scrollback dialog now opens at the end of the text, not the start.
+
+<li>Added winglk_set_about_text() and winglk_set_menu_name() functions.
+
+<li>Added information to this document about compiling Glk applications with the Cygwin
+environment, which includes a port of the GCC C++ compiler.
+
+</ul>
+
+<h3>1.22</h3>
+<ul>
+
+<li>Fixed the annoying cursor flickering visible when games request timer events
+faster than about 100ms.
+
+<li>Added support for SONG music resources. The SONG format is essentially the same as MOD,
+only with the music samples stored as separate AIFF sample resources.
+
+<li>Added an Italian translation of Windows Glk, by Tommaso Caldarola.
+
+<li>Updated Glk.dll for Windows XP. In order to get XP style dialogs each Glk application
+needs a manifest file or a manifest in its resources.
+
+<li>Switched to Visual C++ .NET. Glk.dll now statically links to MFC and the CRT. This makes
+the DLL larger but means that there are no dependencies on the new DLLs that come with .NET.
+
+</ul>
+
+<h3>1.21</h3>
+<ul>
+
+<li>Added a Spanish translation of Windows Glk, by Javier San José. If GlkEspañol.dll
+is present on a PC with the language set to Spanish, all Glk dialogs and menus are
+localized into Spanish.
+
+<li>The scrollback buffer is no longer emptied when a text buffer window is cleared.
+
+<li>winglk_set_gui() will now set the window's icon, if one is available with the
+given resource id.
+
+<li>Added winglk_load_config_file(), which allows a configuration file to be loaded
+to set various Windows Glk display properties.
+
+<li>Added winglk_get_resource_handle(), which allows access to Glk.dll's resources.
+
+<li>Updated Windows Glk to use the latest version of MODPlug's mppsdk.dll.
+
+<li>Fixed a problem which could lead to glk_select_poll() discarding some
+events, especially timer events.
+
+<li>Fixed a problem with the speech routines excluding accented characters.
+
+</ul>
+
+<h3>1.20</h3>
+<ul>
+
+<li>Completely rewrote the sound code. Windows Glk now uses DirectSound directly.
+AIFFs no longer require Windows MediaPlayer, and MODs use mppsdk.dll rather than
+npmod32.dll (although both are part of MODPlug). This allows AIFF samples and MOD
+music to be played simultaneously.
+
+<li>The text printed in text buffer windows can now be spoken using Microsoft's
+Speech Engine.
+
+<li>Fixed the graphics scaling to produce better results.
+
+<li>Fixed a bug in gi_dispa.c which caused glk_fileref_does_file_exist() to not
+return a useful result when called through the dispatch layer (i.e. by Glulxe).
+Note that at the time of writing this bug is present in all implementations of Glk.
+
+<li>Calling glk_stream_open_file(filemode_ReadWrite) will now create the file
+if it does not already exist.
+
+<li>The current style for a window is now set to its previous value after line input,
+rather than reverting to style_Normal.
+
+</ul>
+
+<h3>1.17</h3>
+<ul>
+
+<li>Converted this document to HTML format.
+
+<li>Added winglk_set_gui(), which allows a custom menu and toolbar to be used.
+
+<li>winglk_get_initial_filename() now remembers the directory of the file chosen, so that
+the next time the application is opened, it will start in that directory.
+
+<li>Added a check box to the options dialog to determine if stylehints set by the Glk program
+override user settings or not.
+
+<li>Added support for hyperlinks in text grid windows.
+
+<li>The size of text in text grid windows is now determined by the size style hint for
+the text grid window's normal style.
+
+<li>The JPEG and PNG decoding routines have been moved into Glk.dll, so the support
+DLLs GlkJPEG.dll and GlkPNG.dll are no longer required.
+
+<li>Fixed style hints for text grid windows being stored as user changes.
+</ul>
+
+<h3>1.16</h3>
+<ul>
+
+<li>The background colour for text buffer and text grid windows now defaults to the background
+colour for the "Normal" style. As a result of this, the option to set a background colour has
+been removed from the options dialog as it is no longer necessary.
+
+<li>Previously, if the program set style hints then the style hint acted exactly as if the user
+had edited the style in the options dialog, resulting in the style hint being saved with the
+user settings. Now if the Glk program sets a style hint then the style can no longer be edited
+by the user and is not saved in the user settings.
+
+<li>Added sglk_set_basename(), which sets the default filenames for calls to
+glk_fileref_create_by_prompt(). This function is part of L. Ross Raszewski's (maintainer of DOS
+Glk) suggested additions to Glk.
+
+<li>Fixed a problem with the JPEG decoder which caused some JPEGs to not appear.
+
+<li>Fixed a bug which resulted in style hints set before any window opened being ignored.
+</ul>
+
+<h3>1.15</h3>
+<ul>
+
+<li>Updated to Glk 0.61.
+
+<li>Added support for MOD music resources, which are played using Olivier Lapicque's ModPlug
+player.
+
+<li>winglk_get_initial_filename() now sets the default filenames for calls to 
+glk_fileref_create_by_prompt().
+</ul>
+
+<h3>1.14</h3>
+<ul>
+
+<li>Added support for menus, toolbars and status bars. By default these are on, but can be
+turned off in the options dialog.
+
+<li>PNG pictures with transparency and alpha channels are now supported. If an alpha channel
+is supplied, WinGlk will alpha blend the picture with whatever is underneath it.
+
+<li>AIFF sound resources can have the file extension ".aiff", as well as ".aif".
+
+<li>winglk_startup_code() now takes an argument, which is a pointer to the command line passed
+by Windows to the program at startup.
+
+<li>Added winglk_get_initial_filename(). This function takes a string (usually the program's
+command line arguments) and attempts to extract a file name. If this fails, a file dialog
+appears from which the user can select a file. Hopefully this will stop Windows Glk
+developers from having to cope with the arcane complexities of the Win32 GetOpenFileName()
+function when writing startup code.
+</ul>
+
+<h3>1.13</h3>
+<ul>
+
+<li>Updated to Glk 0.60.
+
+<li>Added an example showing how to use Window's file dialog at the start of a Glk program.
+</ul>
+
+<h3>1.12</h3>
+<ul>
+
+<li>Recompiled Glk.dll to use mfc42.dll, rather than statically linking to MFC.
+
+<li>Improved handling of indentation style hints.
+
+<li>Stopped Glk from using CPU time while waiting for input.
+
+<li>Various other bug fixes.
+</ul>
+
+<h3>1.11</h3>
+<ul>
+
+<li>Added support for AIFF sound resources.
+</ul>
+
+<h3>1.10</h3>
+<ul>
+
+<li>Updated to Glk 0.52.
+
+<li>Completely rewrote the text buffer window routines from scratch. Text buffer windows now
+fully support all style hints (e.g. different text sizes within a single paragraph) as well
+as margin and in-line graphics.
+
+<li>Added winglk_set_resource_directory() function.
+
+<li>Added support for JPEG images.
+
+<li>Included all the style hint settings in the options dialog.
+</ul>
+
+<h3>1.03</h3>
+<ul>
+
+<li>Implemented graphics in graphics windows.
+
+<li>Added winglk_window_set_title() function.
+
+<li>Implemented fully justified text in text buffer windows.
+</ul>
+
+<h3>1.02</h3>
+<ul>
+
+<li>Updated to Glk 0.51.
+
+<li>Various bugs have been fixed.
+</ul>
+
+<h3>1.01</h3>
+<ul>
+
+<li>Updated to Glk 0.5.
+</ul>
+
+<h3>1.00</h3>
+<ul>
+
+<li>First Windows release.
+</ul>
+
+</body>
+</html>
+

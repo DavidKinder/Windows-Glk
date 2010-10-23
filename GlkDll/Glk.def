@@ -1,0 +1,174 @@
+LIBRARY      "Glk"
+EXPORTS
+
+; Windows Glk initialization
+InitGlk                                @01
+
+; Glk 0.4 API functions
+glk_exit                               @02
+glk_set_interrupt_handler              @03
+glk_tick                               @04
+glk_gestalt                            @05
+glk_gestalt_ext                        @06
+glk_window_iterate                     @07
+glk_window_get_rock                    @08
+glk_window_get_root                    @09
+glk_window_open                        @10
+glk_window_close                       @11
+glk_window_get_size                    @12
+glk_window_set_arrangement             @13
+glk_window_get_arrangement             @14
+glk_window_get_type                    @15
+glk_window_get_parent                  @16
+glk_window_clear                       @17
+glk_window_move_cursor                 @18
+glk_window_get_stream                  @19
+glk_window_set_echo_stream             @20
+glk_window_get_echo_stream             @21
+glk_set_window                         @22
+glk_stream_iterate                     @23
+glk_stream_get_rock                    @24
+glk_stream_open_file                   @25
+glk_stream_open_memory                 @26
+glk_stream_close                       @27
+glk_stream_set_position                @28
+glk_stream_get_position                @29
+glk_stream_set_current                 @30
+glk_stream_get_current                 @31
+glk_fileref_create_temp                @32
+glk_fileref_create_by_name             @33
+glk_fileref_create_by_prompt           @34
+glk_fileref_destroy                    @35
+glk_fileref_iterate                    @36
+glk_fileref_get_rock                   @37
+glk_fileref_delete_file                @38
+glk_fileref_does_file_exist            @39
+glk_put_char                           @40
+glk_put_char_stream                    @41
+glk_put_string                         @42
+glk_put_string_stream                  @43
+glk_put_buffer                         @44
+glk_put_buffer_stream                  @45
+glk_set_style                          @46
+glk_set_style_stream                   @47
+glk_get_char_stream                    @48
+glk_get_line_stream                    @49
+glk_get_buffer_stream                  @50
+glk_char_to_lower                      @51
+glk_char_to_upper                      @52
+glk_stylehint_set                      @53
+glk_stylehint_clear                    @54
+glk_style_distinguish                  @55
+glk_style_measure                      @56
+glk_select                             @57
+glk_select_poll                        @58
+glk_request_line_event                 @59
+glk_cancel_line_event                  @60
+glk_request_char_event                 @61
+glk_cancel_char_event                  @62
+glk_request_mouse_event                @63
+glk_cancel_mouse_event                 @64
+glk_request_timer_events               @65
+
+; Windows Glk functions
+winglk_stream_open_resource            @66
+winglk_app_set_name                    @67
+
+; Glk 0.5 API function
+glk_window_get_sibling                 @68
+
+; Glk 0.5 Dispatch layer functions
+gidispatch_call                        @69
+gidispatch_prototype                   @70
+gidispatch_count_classes               @71
+gidispatch_count_intconst              @72
+gidispatch_get_intconst                @73
+gidispatch_count_functions             @74
+gidispatch_get_function                @75
+gidispatch_get_function_by_id          @76
+gidispatch_set_object_registry         @77
+gidispatch_get_objrock                 @78
+gidispatch_set_retained_registry       @79
+
+; Glk 0.51 API functions
+glk_image_draw                         @80
+glk_image_draw_scaled                  @81
+glk_image_get_info                     @82
+glk_window_flow_break                  @83
+glk_window_erase_rect                  @84
+glk_window_fill_rect                   @85
+glk_window_set_background_color        @86
+
+; Glk 0.51 Blorb function
+giblorb_set_resource_map               @87
+
+; Windows Glk function
+winglk_window_set_title                @88
+
+; Glk 0.52 API functions
+glk_fileref_create_from_fileref        @89
+glk_schannel_create                    @90
+glk_schannel_destroy                   @91
+glk_schannel_iterate                   @92
+glk_schannel_get_rock                  @93
+glk_schannel_play                      @94
+glk_schannel_play_ext                  @95
+glk_schannel_stop                      @96
+glk_schannel_set_volume                @97
+glk_sound_load_hint                    @98
+
+; Windows Glk function
+winglk_set_resource_directory          @99
+
+; Glk 0.52 Blorb function
+giblorb_get_resource_map              @100
+
+; Standard Blorb functions
+giblorb_create_map                    @101
+giblorb_destroy_map                   @102
+giblorb_load_chunk_by_type            @103
+giblorb_load_chunk_by_number          @104
+giblorb_load_resource                 @105
+giblorb_count_resources               @106
+
+; Glk 0.60 API functions
+glk_set_hyperlink                     @107
+glk_set_hyperlink_stream              @108
+glk_request_hyperlink_event           @109
+glk_cancel_hyperlink_event            @110
+
+; Windows Glk function
+winglk_get_initial_filename           @111
+
+; Unofficial Glk extension
+sglk_set_basename                     @112
+
+; Windows Glk functions
+winglk_set_gui                        @113
+winglk_load_config_file               @114
+winglk_get_resource_handle            @115
+winglk_set_about_text                 @116
+winglk_set_menu_name                  @117
+winglk_set_help_file                  @118
+
+; Glk 0.7.0 API functions
+glk_buffer_to_lower_case_uni          @119
+glk_buffer_to_upper_case_uni          @120
+glk_buffer_to_title_case_uni          @121
+glk_put_char_uni                      @122
+glk_put_string_uni                    @123
+glk_put_buffer_uni                    @124
+glk_put_char_stream_uni               @125
+glk_put_string_stream_uni             @126
+glk_put_buffer_stream_uni             @127
+glk_get_char_stream_uni               @128
+glk_get_buffer_stream_uni             @129
+glk_get_line_stream_uni               @130
+glk_stream_open_file_uni              @131
+glk_stream_open_memory_uni            @132
+glk_request_char_event_uni            @133
+glk_request_line_event_uni            @134
+
+; Windows Glk functions
+winglk_fileref_create_by_name         @135
+winglk_show_game_dialog               @136

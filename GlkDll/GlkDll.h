@@ -1,0 +1,218 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// Windows MFC Glk Libraries
+//
+// GlkDLL
+// Glk dll entry and exit points
+//
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef WINGLK_DLL_H_
+#define WINGLK_DLL_H_
+
+extern "C"
+{
+#include "glk.h"
+#include "gi_blorb.h"
+#include "gi_dispa.h"
+
+extern void (*InterruptFn)(void);
+extern gidispatch_rock_t (*RegisterObjFn)(void *obj, glui32 objclass);
+extern void (*UnregisterObjFn)(void *obj, glui32 objclass, gidispatch_rock_t objrock);
+extern gidispatch_rock_t (*RegisterArrFn)(void *array, glui32 len, char *typecode);
+extern void (*UnregisterArrFn)(void *array, glui32 len, char *typecode, gidispatch_rock_t objrock);
+}
+
+#include "GlkGraphic.h"
+#include "GlkSound.h"
+#include "Resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// CGlkApp
+/////////////////////////////////////////////////////////////////////////////
+
+class CGlkApp : public CWinApp
+{
+public:
+  CGlkApp();
+
+// Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CGlkApp)
+  public:
+  virtual BOOL InitInstance();
+  virtual int ExitInstance();
+  //}}AFX_VIRTUAL
+
+  //{{AFX_MSG(CGlkApp)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
+
+public:
+  LOGFONT* GetPropFont(void) { return &m_PropFont; }
+  LOGFONT* GetFixedFont(void) { return &m_FixedFont; }
+  CRect& GetWindowRect(void) { return m_WindowRect; }
+  CRect& GetInnerRect(void) { return m_InnerRect; }
+  int& GetWindowState(void) { return m_iWindowState; }
+
+  void ReadSettings(void);
+  void WriteSettings(void);
+  void LoadConfigFile(const char* pszConfigName);
+  void SetSaveOptions(bool bSave) { m_bSaveSettings = bSave; }
+
+  bool GetWindowBorders(void) { return m_bWindowBorders; }
+  bool SetWindowBorders(bool bBorders);
+
+  bool GetEnableGUI(void) { return m_bEnableGUI; }
+  bool SetEnableGUI(bool bEnableGUI);
+
+  bool GetStyleHints(void) { return m_bStyleHints; }
+  void SetStyleHints(bool bHints) { m_bStyleHints = bHints; }
+
+  bool GetCanSpeak(void) { return m_bSpeak; }
+  void SetCanSpeak(bool bSpeak) { m_bSpeak = bSpeak; }
+
+  CString GetSpeechVoice(void) { return m_strVoice; }
+  void SetSpeechVoice(LPCSTR strVoice) { m_strVoice = strVoice; }
+
+  int GetSpeechRate(void) { return m_iSpeakRate; }
+  void SetSpeechRate(int iRate) { m_iSpeakRate = iRate; }
+
+  int GetMaskID(void) { return m_iMaskID; }
+
+  bool GetColourLinks(void) { return m_bColourLinks; }
+  void SetColourLinks(bool bColour) { m_bColourLinks = bColour; }
+  bool GetUnderlineLinks(void) { return m_bUnderlineLinks; }
+  void SetUnderlineLinks(bool bUnderline) { m_bUnderlineLinks = bUnderline; }
+  COLORREF GetCustomLinkColour(void) { return m_CustomLinkColour; }
+  void SetCustomLinkColour(COLORREF Colour) { m_CustomLinkColour = Colour; }
+  COLORREF GetLinkColour(void);
+
+  CString& GetAppName(void) { return m_strAppName; }
+  CString& GetAppTitle(void) { return m_strAppTitle; }
+  CString& GetAppAboutText(void) { return m_strAppAboutText; }
+  CString& GetMenuName(void) { return m_strMenuName; }
+  CString& GetResourceDir(void) { return m_strResDir; }
+  CString& GetInitialDir(void) { return m_strInitialDir; }
+  void AddMenuName(CString& text);
+
+  UINT GetUserGuiID(void) { return m_UserGuiID; }
+  void SetUserGuiID(UINT id) { m_UserGuiID = id; }
+
+  void SetHelpFile(const char* filename);
+  bool HasHelpFile(void) { return m_bHasHelpFile; }
+
+  bool GetNotifyFullScreen(void) { return m_bNotifyFull; }
+  void SetNotifyFullScreen(bool notify) { m_bNotifyFull = notify; }
+
+  bool GetStartFullScreen(void) { return m_bStartFull; }
+
+  giblorb_map_t*& GetBlorbMap(void) { return m_pBlorbMap; }
+  strid_t& GetBlorbFile(void) { return m_BlorbFile; }
+
+  bool CreateMainWindow(void);
+  HICON GetIcon(void);
+  bool EventQueuesEmpty(void);
+  void GetNextEvent(event_t* pEvent, bool bPoll);
+  void AddEvent(glui32 Type, winid_t Win, glui32 Value1, glui32 Value2);
+  void MessagePump(BOOL bWait);
+
+  CWinGlkGraphic* LoadGraphic(int iNumber, BOOL bLoad, BOOL bApplyAlpha);
+  CWinGlkSound* LoadSound(int iNumber);
+
+  bool CanSpeakChar(wchar_t c);
+  void Speak(LPCSTR pszText);
+  void Speak(LPCWSTR pszText);
+  void InitSoundEngine(void);
+
+  struct GameInfo
+  {
+    GameInfo() : cover(-1), showOptions(false)
+    {
+    }
+
+    int cover;
+    CString ifid;
+    CString title;
+    CString headline;
+    CString description;
+    CString author;
+    CString year;
+    CString series;
+    CString seriesNumber;
+    bool showOptions;
+  };
+  void LoadBabelMetadata(void);
+  bool CheckGameId(void);
+  GameInfo& GetGameInfo(void) { return m_GameInfo; }
+  CRect GetScreenSize(bool full);
+
+  enum Show_iFiction
+  {
+    Show_iF_Never = 0,
+    Show_iF_First_Time = 1,
+    Show_iF_Always = 2
+  };
+  Show_iFiction Get_iFiction(void) { return m_iFiction; }
+  void Set_iFiction(Show_iFiction iF) { m_iFiction = iF; }
+
+  bool CanOutputChar(glui32 c);
+
+protected:
+  CString FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix);
+  void DeleteOldTempFiles(void);
+  void LoadInternationalResources(void);
+  CString GetDefaultFont(void);
+  CString GetDefaultFixedFont(void);
+  CString StrFromXML(IXMLDOMDocument* doc, LPCWSTR path);
+
+protected:
+  bool m_bSettingsRead;
+  bool m_bSaveSettings;
+
+  LOGFONT m_PropFont;
+  LOGFONT m_FixedFont;
+  CRect m_WindowRect;
+  CRect m_InnerRect;
+  int m_iWindowState;
+  bool m_bWindowBorders;
+  bool m_bWindowFrame;
+  bool m_bEnableGUI;
+  bool m_bStyleHints;
+  bool m_bHasHelpFile;
+  int m_iMaskID;
+  bool m_bNotifyFull;
+  bool m_bStartFull;
+
+  bool m_bSpeak;
+  CString m_strVoice;
+  int m_iSpeakRate;
+
+  bool m_bColourLinks;
+  bool m_bUnderlineLinks;
+  COLORREF m_CustomLinkColour;
+
+  CString m_strAppName;
+  CString m_strAppTitle;
+  CString m_strAppAboutText;
+  CString m_strMenuName;
+  CString m_strResDir;
+  CString m_strInitialDir;
+
+  UINT m_UserGuiID;
+
+  CArray<event_t,event_t&> InputEvents;
+  CArray<event_t,event_t&> TimerEvents;
+  CArray<event_t,event_t&> ArrangeEvents;
+  CArray<event_t,event_t&> SoundEvents;
+
+  strid_t m_BlorbFile;
+  giblorb_map_t* m_pBlorbMap;
+
+  Show_iFiction m_iFiction;
+  GameInfo m_GameInfo;
+};
+
+#endif // WINGLK_DLL_H_

@@ -1,0 +1,494 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Glk.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Spanish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESN)
+#ifdef _WIN32
+LANGUAGE LANG_SPANISH, SUBLANG_SPANISH_MODERN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOGEX 0, 0, 183, 152
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_FIXEDSYS | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Acerca"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Aceptar",IDOK,126,131,50,14
+    GROUPBOX        "Acerca de Glk",IDC_ABOUT_GROUP,7,7,169,50
+    ICON            IDR_GLK,IDC_STATIC,15,21,20,20,0,WS_EX_CLIENTEDGE
+    LTEXT           "Versión para Windows de David Kinder\nTraducción por Javier San José\nEspecificación Glk de Andrew Plotkin\nGlk %glk%, versión de Windows %winglk%",
+                    IDC_ABOUT_TEXT,42,19,132,33
+    GROUPBOX        "Créditos adicionales",IDC_ADDITION_GROUP,7,59,169,66
+    LTEXT           "jpeglib del Independent JPEG Group.\nlibpng de Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, y otros.\nzlib de Jean-loup Gailly y Mark Adler.\nModPlug de Olivier Lapicque.\nlibogg y libvorbis de Xiph.org Foundation.",
+                    IDC_ADDITION_TEXT,13,71,158,50
+END
+
+IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+CAPTION "Buffer de scroll"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Cerrar ventana",IDOK,2,2,65,13
+    PUSHBUTTON      "Copiar texto seleccionado",IDC_COPY,73,2,100,13
+    CONTROL         "",IDC_TEXT,"RichEdit20A",TCS_HOTTRACK | TCS_VERTICAL | 
+                    TCS_RAGGEDRIGHT | TCS_FOCUSONBUTTONDOWN | 
+                    TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_TABSTOP,2,
+                    17,283,100
+END
+
+IDD_OPTIONS_STYLE DIALOGEX 0, 0, 227, 146
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Estilos"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    RTEXT           "&Ventana",IDC_STATIC,16,19,29,8
+    COMBOBOX        IDC_WINDOW_TYPE,49,16,65,36,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "E&stilo",IDC_STATIC,121,19,18,8
+    COMBOBOX        IDC_WINDOW_STYLE,144,16,68,75,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    ICON            "",IDC_WARNICON,36,35,20,20
+    CTEXT           "MESSAGE",IDC_MESSAGE,61,37,130,16
+    RTEXT           "&Indentación",IDC_STATIC,12,62,39,8
+    EDITTEXT        IDC_INDENTATION,57,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "Indentación de &párrafo",IDC_STATIC,115,58,41,16
+    EDITTEXT        IDC_PARAGRAPH,162,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "&Alineación",IDC_STATIC,16,81,35,8
+    COMBOBOX        IDC_JUSTIFICATION,57,79,52,48,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Tamaño te&xto",IDC_STATIC,112,81,46,8
+    EDITTEXT        IDC_TEXT_SIZE,162,79,52,12,ES_AUTOHSCROLL
+    RTEXT           "Tipo de l&etra",IDC_STATIC,4,99,47,8
+    COMBOBOX        IDC_WEIGHT,57,97,52,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Cursiva",IDC_OBLIQUE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,120,94,38,9
+    CONTROL         "P&roporcional",IDC_PROPORTIONAL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,162,94,53,9
+    CONTROL         "In&vertido",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,162,106,43,9
+    RTEXT           "Color &texto",IDC_STATIC,14,121,37,9
+    CONTROL         "",IDC_TEXT_COLOUR,"Button",WS_TABSTOP,57,
+                    119,52,13
+    RTEXT           "&Fondo",IDC_STATIC,131,121,25,9
+    CONTROL         "",IDC_BACK_COLOUR,"Button",WS_TABSTOP,
+                    162,119,52,13
+    GROUPBOX        "Propiedades de estilo",IDC_STYLE_STATIC,4,5,218,136
+END
+
+IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 227, 146
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Opciones",IDC_OPTIONS_STATIC,4,5,218,51
+    CONTROL         "&Bordes entre las ventanas",IDC_BORDERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,16,112,8
+    CONTROL         "&Activar menú, barra de estado y barra de herramientas",
+                    IDC_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,28,196,
+                    8
+    CONTROL         "E&stilos sugeridos prevalecen sobre los del usuario",
+                    IDC_STYLEHINT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,
+                    41,175,8
+    GROUPBOX        "Hiperenlaces",IDC_LINKS_STATIC,4,59,218,42
+    CONTROL         "Usar color personalizado para &hiperenlaces",
+                    IDC_USE_LINK_COLOUR,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,19,73,158,9
+    CONTROL         "",IDC_LINK_COLOUR,"Button",WS_TABSTOP,
+                    185,70,27,13
+    CONTROL         "S&ubrayar hiperenlaces",IDC_USE_LINK_UNDER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,86,93,9
+    GROUPBOX        "Inicio",IDC_STARTUP,4,105,218,36
+    LTEXT           "Si el juego tiene registro de información iFiction, entonces, ¿mostrar diálogo?",
+                    IDC_LABEL_IFICTION,13,116,136,18
+    COMBOBOX        IDC_SHOW_IFICTION,153,120,59,58,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 227, 146
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Voz"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Opciones de voz",IDC_STATIC,4,5,218,67
+    CONTROL         "&Pronunciar el texto",IDC_SPEAK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,93,8
+    LTEXT           "&Selección de voz",IDC_STATIC,15,36,57,9
+    COMBOBOX        IDC_VOICE,76,34,132,95,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Velocidad",IDC_STATIC,15,55,37,8
+    CONTROL         "",IDC_SPEECH_RATE,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,76,52,132,13,WS_EX_TRANSPARENT
+END
+
+IDD_ABOUTGAME DIALOGEX 0, 0, 111, 68
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Aceptar",IDOK,7,47,97,14
+    CONTROL         "",IDC_INFO,"RichEdit20A",ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL,7,7,97,34
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+    END
+
+    IDD_SCROLLBACK, DIALOG
+    BEGIN
+    END
+
+    IDD_OPTIONS_STYLE, DIALOG
+    BEGIN
+    END
+
+    IDD_OPTIONS_GENERAL, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_GLK ACCELERATORS 
+BEGIN
+    "L",            IDM_SYS_SCROLLBACK,     VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_RETURN,      ID_FULLSCREEN,          VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_FONTS MENU 
+BEGIN
+    MENUITEM "Tipo de letra &proporcional...", IDM_FONT_PROPORTIONAL
+    MENUITEM "Tipo de letra de anchura &fija...", IDM_FONT_FIXED
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_OPTIONS_STYLE DLGINIT
+BEGIN
+    IDC_WINDOW_TYPE, 0x403, 16, 0
+0x7542, 0x6666, 0x7265, 0x6420, 0x2065, 0x6574, 0x7478, 0x006f, 
+    IDC_WINDOW_TYPE, 0x403, 17, 0
+0x6552, 0x696a, 0x6c6c, 0x2061, 0x6564, 0x7420, 0x7865, 0x6f74, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 11, 0
+0x6e45, 0x6166, 0x6974, 0x617a, 0x6f64, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 14, 0
+0x7250, 0x6665, 0x726f, 0x616d, 0x6574, 0x6461, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 9, 0
+0x6143, 0x6562, 0x6563, 0x6172, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 13, 0
+0x7553, 0x2d62, 0x6163, 0x6562, 0x6563, 0x6172, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 7, 0
+0x6c41, 0x7265, 0x6174, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 5, 0
+0x6f4e, 0x6174, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 16, 0
+0x6c42, 0x716f, 0x6575, 0x6420, 0x2065, 0x6574, 0x7478, 0x006f, 
+    IDC_WINDOW_STYLE, 0x403, 6, 0
+0x6e49, 0x7570, 0x0074, 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0x7355, 0x6175, 0x6972, 0x206f, 0x0031, 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0x7355, 0x6175, 0x6972, 0x206f, 0x0032, 
+    IDC_JUSTIFICATION, 0x403, 10, 0
+0x7a49, 0x7571, 0x6569, 0x6472, 0x0061, 
+    IDC_JUSTIFICATION, 0x403, 9, 0
+0x6f43, 0x706d, 0x656c, 0x6174, "\000" 
+    IDC_JUSTIFICATION, 0x403, 8, 0
+0x6544, 0x6572, 0x6863, 0x0061, 
+    IDC_JUSTIFICATION, 0x403, 7, 0
+0x6543, 0x746e, 0x6f72, "\000" 
+    IDC_WEIGHT, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_WEIGHT, 0x403, 8, 0
+0x654e, 0x7267, 0x7469, 0x0061, 
+    IDC_WEIGHT, 0x403, 5, 0
+0x6946, 0x616e, "\000" 
+    0
+END
+
+IDD_OPTIONS_GENERAL DLGINIT
+BEGIN
+    IDC_SHOW_IFICTION, 0x403, 6, 0
+0x754e, 0x636e, 0x0061, 
+    IDC_SHOW_IFICTION, 0x403, 12, 0
+0x7250, 0x6d69, 0x7265, 0x2061, 0x6576, 0x007a, 
+    IDC_SHOW_IFICTION, 0x403, 8, 0
+0x6953, 0x6d65, 0x7270, 0x0065, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_GLK                 ICON                    "..\\res\\Glk.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_GLK                 BITMAP                  "..\\res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_GLK TOOLBAR  16, 15
+BEGIN
+    BUTTON      IDM_SYS_SCROLLBACK
+    BUTTON      IDM_FONT_PROPORTIONAL
+    BUTTON      IDM_FONT_FIXED
+    BUTTON      IDM_SYS_OPTIONS
+    BUTTON      IDM_SYS_HELP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_SCROLLBACK      "Muestra el buffer de scroll\nBuffer de scroll"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_OPTIONS         "Muestra las opciones\nOpciones"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_ABOUT           "Muestra el diálogo Acerca de...\nAcerca"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_ABOUT_GAME      "Muestra la descripción y la portada de este juego"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_SYS_HELP            "Muestra la ayuda\nAyuda"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_FONT_PROPORTIONAL   "Cambia el tipo de letra proporcional\nTipo de letra proporcional"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_FONT_FIXED          "Cambia el tipo de letra de anchura fija\nTipo de letra de anchura fija"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_EXIT             "Salir del programa\nSalir"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GLULXE_TITLE        "Intérprete Glulxe"
+    IDS_GLULXE_OPEN         "Selecciona un fichero Glulx"
+    IDS_GLULXE_FILTER       "Ficheros Glulx (.ulx;.blb;.blorb;.glb;.gblorb)|*.ulx;*.blb;*.blorb;*.glb;*.gblorb|Todos los ficheros (*.*)|*.*||"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STYLE_NOTE          "El cambio de estos valores sólo afectará a nuevas ventanas."
+    IDS_STYLE_NOEDIT        "Este estilo ha sido definido por el programa y no puede ser modificado."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENU_SCROLLBACK     "Buffer de &scroll\tCtrl+L"
+    IDS_MENU_FONTS          "&Tipos de letra"
+    IDS_MENU_OPTIONS        "&Opciones..."
+    IDS_MENU_HELP           "&Ayuda"
+    IDS_MENU_ABOUT          "A&cerca de Glk"
+    IDS_MENU_PROPFONT       "Tipo de letra &proporcional..."
+    IDS_MENU_FIXEDFONT      "Tipo de letra de anchura &fija..."
+    IDS_MENU_EXIT           "Sa&lir\tAlt+F4"
+    IDS_MENU_ABOUT_GAME     "Acerca de este &Juego"
+    IDS_STORY               "Programa Glk"
+    IDS_NEWER               "Este programa necesita de una versión más reciente de Glk."
+    IDS_HITEXIT             "[Pulsa una tecla para salir]"
+    IDS_OPTIONS             "Opciones"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_DSOUND           "Fallo al inicializar DirectSound"
+    IDS_MORE                "[Más]"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FREF_OPEN           "Abrir"
+    IDS_FREF_SAVE           "Guardar"
+    IDS_FREF_DATA           "fichero de datos"
+    IDS_FREF_STATE          "estado de juego"
+    IDS_FREF_SCRIPT         "transcripción"
+    IDS_FREF_INPUT          "grabación de teclas"
+    IDS_FREF_FILTER         "Todos los ficheros (*.*)|*.*||"
+    IDS_FULLSCREEN          "Este programa va a entrar en el modo de pantalla completa. ¿Quieres continuar?.\n\nNota: Para volver al modo normal pulsa Alt+Enter de nuevo."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Modifica el tamaño de la ventana"
+    AFX_IDS_SCMOVE          "Modifica la posición de la ventana"
+    AFX_IDS_SCMINIMIZE      "Reduce la ventana a un icono"
+    AFX_IDS_SCMAXIMIZE      "Maximiza la ventana"
+    AFX_IDS_SCCLOSE         "Cierra la ventana y sale del programa"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Recupera las dimensiones originales de la ventana"
+END
+
+#endif    // Spanish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Glk.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
