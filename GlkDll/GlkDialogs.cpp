@@ -747,7 +747,7 @@ BOOL CAboutDialog::OnInitDialog()
   CString about;
   ctrl->GetWindowText(about);
   about.Replace("%glk%","0.7.0");
-  about.Replace("%winglk%","1.40");
+  about.Replace("%winglk%","1.41");
   ctrl->SetWindowText(about);
 
   const CString& appAbout = pApp->GetAppAboutText();

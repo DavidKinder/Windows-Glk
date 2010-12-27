@@ -1,6 +1,6 @@
 /*
    Header file for Windows specific Glk features.
-   Glk API version 0.7.0, WinGlk release 1.40.
+   Glk API version 0.7.0, WinGlk release 1.41.
 */
 
 #ifndef WINGLK_H_
