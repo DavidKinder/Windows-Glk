@@ -526,14 +526,10 @@ void CWinGlkWndTextBuffer::Scrollback(void)
   CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
   pMainWnd->GetWindowRect(ScrollDlg.m_DialogRect);
 
-  int len = m_ScrollBuffer.GetSize();
-  LPTSTR pszScrollback = ScrollDlg.m_strScrollback.GetBuffer(len+1);
-
-  ::WideCharToMultiByte(CP_ACP,0,m_ScrollBuffer.GetData(),len,pszScrollback,len,NULL,NULL);
-  pszScrollback[m_ScrollBuffer.GetSize()] = '\0';
-  ScrollDlg.m_strScrollback.ReleaseBuffer();
-
+  ScrollDlg.m_Text = m_ScrollBuffer.GetData();
+  ScrollDlg.m_TextLen = m_ScrollBuffer.GetSize();
   ScrollDlg.DoModal();
+
   if (m_pActiveWnd)
     m_pActiveWnd->SetActiveWindow();
 }
@@ -1400,7 +1396,7 @@ bool CWinGlkWndTextBuffer::CParagraph::AddGraphic(CWinGlkGraphic* pGraphic)
     m_MarginGraphics.Add(pGraphic);
 
     // Add a marker into the text stream
-    m_Text.Add(TextCodes::MarginGraphic);
+    m_Text.Add(MarginGraphic);
     AddInteger(m_MarginGraphics.GetUpperBound());
     added = true;
     break;
@@ -1412,7 +1408,7 @@ bool CWinGlkWndTextBuffer::CParagraph::AddGraphic(CWinGlkGraphic* pGraphic)
     m_InlineGraphics.Add(pGraphic);
 
     // Add a marker into the text stream
-    m_Text.Add(TextCodes::InlineGraphic);
+    m_Text.Add(InlineGraphic);
     AddInteger(m_InlineGraphics.GetUpperBound());
     added = true;
     break;
@@ -1432,7 +1428,7 @@ void CWinGlkWndTextBuffer::CParagraph::SetInitialStyle(int iStyle)
 
 void CWinGlkWndTextBuffer::CParagraph::AddStyleChange(int iStyle)
 {
-  m_Text.Add(TextCodes::StyleChange);
+  m_Text.Add(StyleChange);
   m_Text.Add((wchar_t)iStyle);
 }
 
@@ -1443,7 +1439,7 @@ void CWinGlkWndTextBuffer::CParagraph::SetInitialLink(unsigned int iLink)
 
 void CWinGlkWndTextBuffer::CParagraph::AddLinkChange(unsigned int iLink)
 {
-  m_Text.Add(TextCodes::LinkChange);
+  m_Text.Add(LinkChange);
   AddInteger(iLink);
 }
 
@@ -1529,8 +1525,8 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
 
     switch (c)
     {
-    case TextCodes::StyleChange:
-    case TextCodes::LinkChange:
+    case StyleChange:
+    case LinkChange:
       {
         CSize sz;
         bool bTest = TestLineLength(Info,str,sz,left,in1,false,i,
@@ -1545,7 +1541,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
           str.Empty();
 
           i++;
-          if (c == TextCodes::StyleChange)
+          if (c == StyleChange)
           {
             // Switch to the new style
             int iNewStyle = style_Normal;
@@ -1553,7 +1549,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
               iNewStyle = m_Text[i];
             Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink());
           }
-          else if (c == TextCodes::LinkChange)
+          else if (c == LinkChange)
           {
             // Switch to the new link
             unsigned int iNewLink = GetInteger(i);
@@ -1581,7 +1577,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
       }
       newLine = false;
       break;
-    case TextCodes::InlineGraphic:
+    case InlineGraphic:
       {
         CSize sz;
         bool bTest = TestLineLength(Info,str,sz,left,in1,false,i,
@@ -1644,7 +1640,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
       }
       newLine = false;
       break;
-    case TextCodes::FlowBreak:
+    case FlowBreak:
       {
         CSize sz;
         bool bTest = TestLineLength(Info,str,sz,left,in1,false,i,
@@ -1676,7 +1672,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
         }
       }
       break;
-    case TextCodes::MarginGraphic:
+    case MarginGraphic:
       {
         i++;
         int pic_num = GetInteger(i);
@@ -1873,7 +1869,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
       {
         switch (m_Text[j])
         {
-        case TextCodes::StyleChange:
+        case StyleChange:
           {
             TextOut(lf,Info,left,buffer,pos);
             if (bMark)
@@ -1886,7 +1882,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
             Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink());
           }
           break;
-        case TextCodes::LinkChange:
+        case LinkChange:
           {
             TextOut(lf,Info,left,buffer,pos);
             if (bMark)
@@ -1898,7 +1894,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
             Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),iNewLink);
           }
           break;
-        case TextCodes::InlineGraphic:
+        case InlineGraphic:
           {
             TextOut(lf,Info,left,buffer,pos);
             if (bMark)
@@ -1948,9 +1944,9 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
             }
           }
           break;
-        case TextCodes::FlowBreak:
+        case FlowBreak:
           break;
-        case TextCodes::MarginGraphic:
+        case MarginGraphic:
           {
             j++;
             int pic_num = GetInteger(j);
@@ -2137,7 +2133,7 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
     {
       switch (m_Text[i])
       {
-      case TextCodes::StyleChange:
+      case StyleChange:
         {
           length += Info.m_DeviceContext.GetTextExtent(pBuffer,pos).cx;
           pos = 0;
@@ -2149,7 +2145,7 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
           Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink());
         }
         break;
-      case TextCodes::LinkChange:
+      case LinkChange:
         {
           length += Info.m_DeviceContext.GetTextExtent(pBuffer,pos).cx;
           pos = 0;
@@ -2159,7 +2155,7 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
           Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),iNewLink);
         }
         break;
-      case TextCodes::InlineGraphic:
+      case InlineGraphic:
         {
           length += Info.m_DeviceContext.GetTextExtent(pBuffer,pos).cx;
           pos = 0;
@@ -2176,9 +2172,9 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
             length += gfx->m_iWidth;
         }
         break;
-      case TextCodes::FlowBreak:
+      case FlowBreak:
         break;
-      case TextCodes::MarginGraphic:
+      case MarginGraphic:
         i += 2;
         break;
       case L' ':    // Space
@@ -2212,19 +2208,19 @@ int CWinGlkWndTextBuffer::CParagraph::GetCharCount(void) const
   {
     switch (m_Text[i])
     {
-    case TextCodes::StyleChange:
+    case StyleChange:
       i++;
       break;
-    case TextCodes::LinkChange:
+    case LinkChange:
       i += 2;
       break;
-    case TextCodes::InlineGraphic:
+    case InlineGraphic:
       i += 2;
       break;
-    case TextCodes::MarginGraphic:
+    case MarginGraphic:
       i += 2;
       break;
-    case TextCodes::FlowBreak:
+    case FlowBreak:
       break;
     default:    // Normal character
       count++;
@@ -2336,19 +2332,19 @@ void CWinGlkWndTextBuffer::CParagraph::Speak(void)
   {
     switch (m_Text[i])
     {
-    case TextCodes::StyleChange:
+    case StyleChange:
       i++;
       break;
-    case TextCodes::LinkChange:
+    case LinkChange:
       i += 2;
       break;
-    case TextCodes::InlineGraphic:
+    case InlineGraphic:
       i += 2;
       break;
-    case TextCodes::MarginGraphic:
+    case MarginGraphic:
       i += 2;
       break;
-    case TextCodes::FlowBreak:
+    case FlowBreak:
       break;
     default:
       if (pApp->CanSpeakChar(m_Text[i]))

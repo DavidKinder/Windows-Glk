@@ -53,7 +53,8 @@ protected:
 
 public:
   CRect m_DialogRect;
-  CString m_strScrollback;
+  wchar_t* m_Text;
+  INT_PTR m_TextLen;
 
 protected:
   CRichEditCtrl m_RichEdit;
@@ -299,9 +300,6 @@ public:
 
   void SetText(int format, UINT id);
   void SetText(int format, const CString& text);
-
-protected:
-  static DWORD CALLBACK StreamInCB(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb);
 };
 
 class AboutGameDialog : public BaseDialog

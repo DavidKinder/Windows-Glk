@@ -26,6 +26,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
+// Call-back function for streaming into rich edit controls
+/////////////////////////////////////////////////////////////////////////////
+
+static DWORD CALLBACK RichStreamCB(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb)
+{
+  CFile* pFile = (CFile*)dwCookie;
+  *pcb = pFile->Read(pbBuff,cb);
+  return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // Implementation of the CScrollBackDlg dialog
 /////////////////////////////////////////////////////////////////////////////
 
@@ -34,6 +45,8 @@ CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, 
   //{{AFX_DATA_INIT(CScrollBackDlg)
     // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
+  m_Text = NULL;
+  m_TextLen = 0;
 }
 
 void CScrollBackDlg::DoDataExchange(CDataExchange* pDX)
@@ -75,15 +88,24 @@ BOOL CScrollBackDlg::OnInitDialog()
   // Resize the dialog
   MoveWindow(m_DialogRect);
 
-  // Set the control to format the text so that it fits
-  // into the window
+  // Set the control to only show plain text, but allow all code pages
+  m_RichEdit.SetTextMode(TM_PLAINTEXT|TM_SINGLELEVELUNDO|TM_MULTICODEPAGE);
+
+  // Set the control to format the text so that it fits into the window
   m_RichEdit.SetTargetDevice(NULL,0);
   
   // Set the background colour
   m_RichEdit.SetBackgroundColor(FALSE,GetSysColor(COLOR_3DFACE));
 
   // Put the text into the control
-  m_RichEdit.SetWindowText(m_strScrollback);
+  if (m_Text != NULL)
+  {
+    CMemFile inFile((BYTE*)m_Text,m_TextLen*sizeof(wchar_t));
+    EDITSTREAM stream;
+    stream.dwCookie = (DWORD)&inFile;
+    stream.pfnCallback = RichStreamCB;
+    m_RichEdit.StreamIn(SF_TEXT|SF_UNICODE,stream);
+  }
 
   // Put the cursor at the end of the buffer
   m_RichEdit.SetFocus();
@@ -820,15 +842,8 @@ void CRichInfo::SetText(int format, const CString& text)
 
   EDITSTREAM stream;
   stream.dwCookie = (DWORD)&inFile;
-  stream.pfnCallback = StreamInCB;
+  stream.pfnCallback = RichStreamCB;
   StreamIn(format,stream);
-}
-
-DWORD CALLBACK CRichInfo::StreamInCB(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG *pcb)
-{
-  CFile* pFile = (CFile*)dwCookie;
-  *pcb = pFile->Read(pbBuff,cb);
-  return 0;
 }
 
 IMPLEMENT_DYNAMIC(AboutGameDialog, BaseDialog)
