@@ -1237,7 +1237,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000700; // Glk 0.7.0
+    return 0x00000701; // Glk 0.7.1
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
