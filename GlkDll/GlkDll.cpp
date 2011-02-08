@@ -2612,6 +2612,24 @@ extern "C" void glk_request_line_event_uni(winid_t win, glui32 *buf, glui32 maxl
   }
 }
 
+extern "C" void glk_set_echo_line_event(winid_t win, glui32 val)
+{
+}
+
+extern "C" void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, glui32 count)
+{
+}
+
+extern "C" glui32 glk_buffer_canon_decompose_uni(glui32 *buf, glui32 len, glui32 numchars)
+{
+  return 0;
+}
+
+extern "C" glui32 glk_buffer_canon_normalize_uni(glui32 *buf, glui32 len, glui32 numchars)
+{
+  return 0;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Glk dispatch functions
 /////////////////////////////////////////////////////////////////////////////

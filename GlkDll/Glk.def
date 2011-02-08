@@ -172,3 +172,9 @@ glk_request_line_event_uni            @134
 ; Windows Glk functions
 winglk_fileref_create_by_name         @135
 winglk_show_game_dialog               @136
+
+; Glk 0.7.1 API functions
+glk_set_echo_line_event               @137
+glk_set_terminators_line_event        @138
+glk_buffer_canon_decompose_uni        @139
+glk_buffer_canon_normalize_uni        @140

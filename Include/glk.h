@@ -19,9 +19,15 @@
     really a 32-bit unsigned integer type, and glsi32 to make sure
     it's really a 32-bit signed integer type. If they're not, horrible
     things will happen. */
+#if defined(_MSC_VER)
+/* Microsoft Visual C++ doesn't support C99 */
+typedef unsigned long glui32;
+typedef signed long glsi32;
+#else
 #include <stdint.h>
 typedef uint32_t glui32;
 typedef int32_t glsi32;
+#endif
 
 /* These are the compile-time conditionals that reveal various Glk optional
     modules. */
