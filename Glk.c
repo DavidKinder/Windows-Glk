@@ -13,7 +13,7 @@ int InitGlk(unsigned int iVersion);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
   /* Attempt to initialise Glk */
-  if (InitGlk(0x00000700) == 0)
+  if (InitGlk(0x00000701) == 0)
     exit(0);
 
   /* Call the Windows specific initialization routine */
