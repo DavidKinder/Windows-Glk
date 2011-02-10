@@ -4351,7 +4351,7 @@ glui32 buffer_change_case(glui32 *buf, glui32 len,
   {
     glui32 copycount = (outcount > len) ? len : outcount;
     if (copycount)
-      memcpy(buf, newoutbuf, outcount * sizeof(glui32));
+      memcpy(buf, newoutbuf, copycount * sizeof(glui32));
     free(newoutbuf);
   }
 
