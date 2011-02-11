@@ -1341,6 +1341,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_Unicode:
     return 1;
+
+  case gestalt_UnicodeNorm:
+    return 1;
   }
   return 0;
 }
@@ -2622,12 +2625,35 @@ extern "C" void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, gl
 
 extern "C" glui32 glk_buffer_canon_decompose_uni(glui32 *buf, glui32 len, glui32 numchars)
 {
-  return 0;
+  glui32 *dest = buffer_canon_decompose(buf,&numchars);
+  if (dest == NULL)
+    return 0;
+
+  glui32 newlen = numchars;
+  if (newlen > len)
+    newlen = len;
+  if (newlen > 0)
+    memcpy(buf,dest,newlen * sizeof(glui32));
+  free(dest);
+
+  return numchars;
 }
 
 extern "C" glui32 glk_buffer_canon_normalize_uni(glui32 *buf, glui32 len, glui32 numchars)
 {
-  return 0;
+  glui32 *dest = buffer_canon_decompose(buf,&numchars);
+  if (dest == NULL)
+    return 0;
+  numchars = buffer_canon_compose(dest,numchars);
+
+  glui32 newlen = numchars;
+  if (newlen > len)
+    newlen = len;
+  if (newlen)
+    memcpy(buf,dest,newlen * sizeof(glui32));
+  free(dest);
+
+  return numchars;
 }
 
 /////////////////////////////////////////////////////////////////////////////

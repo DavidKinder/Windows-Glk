@@ -10,13 +10,13 @@
 #ifndef WINGLK_UNICODE_H_
 #define WINGLK_UNICODE_H_
 
-#define CASE_UPPER (0)
-#define CASE_LOWER (1)
-#define CASE_TITLE (2)
-#define CASE_IDENT (3)
+#define CASE_UPPER 0
+#define CASE_LOWER 1
+#define CASE_TITLE 2
+#define CASE_IDENT 3
 
-#define COND_ALL (0)
-#define COND_LINESTART (1)
+#define COND_ALL 0
+#define COND_LINESTART 1
 
 extern "C"
 {
@@ -25,5 +25,9 @@ extern "C"
 
 glui32 buffer_change_case(glui32 *buf, glui32 len,
   glui32 numchars, int destcase, int cond, int changerest);
+
+glui32 *buffer_canon_decompose(glui32 *buf, glui32 *numcharsref);
+
+glui32 buffer_canon_compose(glui32 *buf, glui32 len);
 
 #endif // WINGLK_UNICODE_H_
