@@ -136,6 +136,7 @@ protected:
   CArray<CStringW,CStringW&> m_History;
   int m_iHistory;
   int m_iPrevStyle;
+  bool m_bEchoLineInput;
 
 /////////////////////////////////////////////////////////////////////////////
 // Message handlers

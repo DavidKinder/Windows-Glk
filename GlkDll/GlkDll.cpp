@@ -59,6 +59,7 @@ CGlkApp::CGlkApp()
   m_iMaskID = -1;
   m_bNotifyFull = true;
   m_bStartFull = false;
+  m_bEchoLineInput = true;
 
   m_bSpeak = false;
   m_iSpeakRate = 0;
@@ -1344,6 +1345,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_UnicodeNorm:
     return 1;
+
+  case gestalt_LineInputEcho:
+    return 1;
   }
   return 0;
 }
@@ -2617,6 +2621,9 @@ extern "C" void glk_request_line_event_uni(winid_t win, glui32 *buf, glui32 maxl
 
 extern "C" void glk_set_echo_line_event(winid_t win, glui32 val)
 {
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  theApp.SetEchoLineInput(val != 0);
 }
 
 extern "C" void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, glui32 count)

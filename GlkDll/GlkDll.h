@@ -82,6 +82,9 @@ public:
 
   int GetMaskID(void) { return m_iMaskID; }
 
+  bool GetEchoLineInput(void) { return m_bEchoLineInput; }
+  void SetEchoLineInput(bool bEcho) { m_bEchoLineInput = bEcho; }
+
   bool GetColourLinks(void) { return m_bColourLinks; }
   void SetColourLinks(bool bColour) { m_bColourLinks = bColour; }
   bool GetUnderlineLinks(void) { return m_bUnderlineLinks; }
@@ -185,6 +188,7 @@ protected:
   int m_iMaskID;
   bool m_bNotifyFull;
   bool m_bStartFull;
+  bool m_bEchoLineInput;
 
   bool m_bSpeak;
   CString m_strVoice;

@@ -251,6 +251,8 @@ void CWinGlkWndTextBuffer::StartLineEvent(void* pBuffer, bool bUnicode, int iMax
       // Mark the current paragraph as having been associated with input
       m_TextBuffer[m_TextBuffer.GetUpperBound()]->HasHadInput();
     }
+
+    m_bEchoLineInput = ((CGlkApp*)AfxGetApp())->GetEchoLineInput();
   }
   CWinGlkWnd::StartLineEvent(pBuffer,bUnicode,iMaxLength,iStartLength);
 }
