@@ -12486,7 +12486,7 @@ glui32 buffer_canon_compose(glui32 *buf, glui32 len)
   ix = 1;
   jx = ix;
 
-  while (1)
+  for (;;)
   {
     if (jx >= len)
     {
