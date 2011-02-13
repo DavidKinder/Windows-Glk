@@ -313,6 +313,7 @@ void CWinGlkWnd::StartLineEvent(void* pBuffer, bool bUnicode, int iMaxLength, in
     m_iHistory = -1;
     m_iPrevStyle = GetStyle();
     SetStyle(style_Input);
+    m_InputTerminators = ((CGlkApp*)AfxGetApp())->GetInputTerminators();
 
     if (RegisterArrFn)
     {
@@ -448,18 +449,6 @@ void CWinGlkWnd::InputChar(unsigned long InputChar)
       {
         switch (InputChar)
         {
-        case L'\r':
-          pApp->AddEvent(evtype_LineInput,(winid_t)this,m_iLineEnd,0);
-
-          if (m_iLineEnd > 0)
-          {
-            CStringW line = GetUniLineBuffer();
-            m_History.InsertAt(0,line);
-            if (m_History.GetSize() > 20)
-              m_History.RemoveAt(m_History.GetSize()-1);
-          }
-          EndLineEvent(NULL);
-          break;
         case 0x10000+VK_LEFT:
           if (m_iLinePos > 0)
           {
@@ -552,7 +541,69 @@ void CWinGlkWnd::InputChar(unsigned long InputChar)
           }
           break;
         default:
-          if (m_bInputUnicode)
+          if ((InputChar == L'\r') || (m_InputTerminators.count(InputChar) > 0))
+          {
+            glui32 Value2 = 0;
+            switch (InputChar)
+            {
+            case 0x10000+VK_ESCAPE:
+              Value2 = keycode_Escape;
+              break;
+            case 0x10000+VK_PRIOR:
+              Value2 = keycode_PageUp;
+              break;
+            case 0x10000+VK_NEXT:
+              Value2 = keycode_PageDown;
+              break;
+            case 0x10000+VK_F1:
+              Value2 = keycode_Func1;
+              break;
+            case 0x10000+VK_F2:
+              Value2 = keycode_Func2;
+              break;
+            case 0x10000+VK_F3:
+              Value2 = keycode_Func3;
+              break;
+            case 0x10000+VK_F4:
+              Value2 = keycode_Func4;
+              break;
+            case 0x10000+VK_F5:
+              Value2 = keycode_Func5;
+              break;
+            case 0x10000+VK_F6:
+              Value2 = keycode_Func6;
+              break;
+            case 0x10000+VK_F7:
+              Value2 = keycode_Func7;
+              break;
+            case 0x10000+VK_F8:
+              Value2 = keycode_Func8;
+              break;
+            case 0x10000+VK_F9:
+              Value2 = keycode_Func9;
+              break;
+            case 0x10000+VK_F10:
+              Value2 = keycode_Func10;
+              break;
+            case 0x10000+VK_F11:
+              Value2 = keycode_Func11;
+              break;
+            case 0x10000+VK_F12:
+              Value2 = keycode_Func12;
+              break;
+            }
+            pApp->AddEvent(evtype_LineInput,(winid_t)this,m_iLineEnd,Value2);
+
+            if (m_iLineEnd > 0)
+            {
+              CStringW line = GetUniLineBuffer();
+              m_History.InsertAt(0,line);
+              if (m_History.GetSize() > 20)
+                m_History.RemoveAt(m_History.GetSize()-1);
+            }
+            EndLineEvent(NULL);
+          }
+          else if (m_bInputUnicode)
           {
             if ((InputChar >= 32 && InputChar <= 126) || (InputChar >= 160 && InputChar <= 0xFFFF))
             {

@@ -30,8 +30,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CString AFXAPI AfxStringFromCLSID(REFCLSID rclsid);
-
 /////////////////////////////////////////////////////////////////////////////
 // CGlkApp
 /////////////////////////////////////////////////////////////////////////////
@@ -1348,6 +1346,33 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_LineInputEcho:
     return 1;
+
+  case gestalt_LineTerminators:
+    return 1;
+
+  case gestalt_LineTerminatorKey:
+    switch (val)
+    {
+    case keycode_Escape:
+    case keycode_PageUp:
+    case keycode_PageDown:
+    case keycode_Func1:
+    case keycode_Func2:
+    case keycode_Func3:
+    case keycode_Func4:
+    case keycode_Func5:
+    case keycode_Func6:
+    case keycode_Func7:
+    case keycode_Func8:
+    case keycode_Func9:
+    case keycode_Func10:
+    case keycode_Func11:
+    case keycode_Func12:
+      return 1;
+    default:
+      return 0;
+    }
+    break;
   }
   return 0;
 }
@@ -2628,6 +2653,61 @@ extern "C" void glk_set_echo_line_event(winid_t win, glui32 val)
 
 extern "C" void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, glui32 count)
 {
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  std::set<unsigned long> keys;
+  for (glui32 i = 0; i < count; i++)
+  {
+    switch (keycodes[i])
+    {
+    case keycode_Escape:
+      keys.insert(0x10000+VK_ESCAPE);
+      break;
+    case keycode_PageUp:
+      keys.insert(0x10000+VK_PRIOR);
+      break;
+    case keycode_PageDown:
+      keys.insert(0x10000+VK_NEXT);
+      break;
+    case keycode_Func1:
+      keys.insert(0x10000+VK_F1);
+      break;
+    case keycode_Func2:
+      keys.insert(0x10000+VK_F2);
+      break;
+    case keycode_Func3:
+      keys.insert(0x10000+VK_F3);
+      break;
+    case keycode_Func4:
+      keys.insert(0x10000+VK_F4);
+      break;
+    case keycode_Func5:
+      keys.insert(0x10000+VK_F5);
+      break;
+    case keycode_Func6:
+      keys.insert(0x10000+VK_F6);
+      break;
+    case keycode_Func7:
+      keys.insert(0x10000+VK_F7);
+      break;
+    case keycode_Func8:
+      keys.insert(0x10000+VK_F8);
+      break;
+    case keycode_Func9:
+      keys.insert(0x10000+VK_F9);
+      break;
+    case keycode_Func10:
+      keys.insert(0x10000+VK_F10);
+      break;
+    case keycode_Func11:
+      keys.insert(0x10000+VK_F11);
+      break;
+    case keycode_Func12:
+      keys.insert(0x10000+VK_F12);
+      break;
+    }
+  }
+  theApp.SetInputTerminators(keys);
 }
 
 extern "C" glui32 glk_buffer_canon_decompose_uni(glui32 *buf, glui32 len, glui32 numchars)

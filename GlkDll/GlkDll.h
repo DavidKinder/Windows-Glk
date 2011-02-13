@@ -27,6 +27,8 @@ extern void (*UnregisterArrFn)(void *array, glui32 len, char *typecode, gidispat
 #include "GlkSound.h"
 #include "Resource.h"
 
+#include <set>
+
 /////////////////////////////////////////////////////////////////////////////
 // CGlkApp
 /////////////////////////////////////////////////////////////////////////////
@@ -84,6 +86,8 @@ public:
 
   bool GetEchoLineInput(void) { return m_bEchoLineInput; }
   void SetEchoLineInput(bool bEcho) { m_bEchoLineInput = bEcho; }
+  const std::set<unsigned long>& GetInputTerminators(void) { return m_InputTerminators; }
+  void SetInputTerminators(const std::set<unsigned long>& term) { m_InputTerminators = term; }
 
   bool GetColourLinks(void) { return m_bColourLinks; }
   void SetColourLinks(bool bColour) { m_bColourLinks = bColour; }
@@ -188,7 +192,9 @@ protected:
   int m_iMaskID;
   bool m_bNotifyFull;
   bool m_bStartFull;
+
   bool m_bEchoLineInput;
+  std::set<unsigned long> m_InputTerminators;
 
   bool m_bSpeak;
   CString m_strVoice;
