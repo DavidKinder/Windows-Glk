@@ -1,0 +1,33 @@
+# Makefile for Windows Glulxe, compiled with Cygwin/MinGW GCC 3.4.4
+
+CC = gcc -O3 -mno-cygwin -mwindows
+LIBS = -L. -lglk
+OUTPUT = ../Executables/Release/Glulxe
+
+OBJS = accel.o exec.o files.o float.o funcs.o gestalt.o glkop.o heap.o \
+	main.o operand.o osdepend.o profile.o search.o serial.o string.o \
+	vm.o winstart.o res.o
+
+CFLAGS = -I../Include -DFLOAT_USE_OWN_POWF
+
+all: glulxe chm
+
+glulxe: $(OBJS) libglk.a
+	$(CC) -s -o $(OUTPUT) $(OBJS) $(LIBS)
+
+glulxe_profile: CFLAGS = -I../Include -DVM_PROFILING
+glulxe_profile: $(OBJS) libglk.a
+	$(CC) -s -o $(OUTPUT)_profile $(OBJS) $(LIBS)
+
+res.o: glulxe.rc
+	windres $^ $@
+
+libglk.a:
+	dlltool --dllname=Glk.dll --def=../GlkDll/Glk.def --output-lib=libglk.a
+
+chm:
+	-/cygdrive/c/Program\ Files/HTML\ Help\ Workshop/hhc help\\Glulxe.hhp
+	mv help/Glulxe.chm ../Executables/Release
+
+clean:
+	rm -f *.o *.a

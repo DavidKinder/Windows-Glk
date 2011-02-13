@@ -1,0 +1,228 @@
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link rel="stylesheet" type="text/css" href="Glulxe.css">
+ </head>
+ <body>
+<h1>Revision History</h1>
+
+<b>Glulxe 0.4.6 (Windows Glk 1.41)</b>
+<ul>
+<li>Updated to support Glk 0.7.1, which includes functions for Unicode string decomposition and
+normalization, and control over line input echoing and terminator characters.
+<li>Unicode characters now appear correctly in the scrollback dialog, provided that the dialog
+font supports them.
+</ul>
+
+<b>Glulxe 0.4.6 (Windows Glk 1.40)</b>
+<ul>
+<li>Corrected problems with formatting and line input when margin images are present.
+<li>Corrected a mistake in the handling of alpha-blended images.
+</ul>
+
+<b>Glulxe 0.4.6 (Windows Glk 1.39)</b>
+<ul>
+<li>Updated to Glulxe 0.4.6, which implements the Glulx 3.1.2 specification.
+This adds support for floating point calculations (that is, non-integer numbers).
+<li>The window can be made to fill the entire screen; press <b>Alt+Enter</b> to toggle
+this full screen mode on and off.
+<li>A new configuration file option, "FullScreen", also makes the window fill the entire screen.
+<li>During line input, Ctrl+Left moves the cursor to the start of the current word, and Ctrl+Right
+moves to the end.
+<li>The logic when scaling alpha-blended images has been improved, so there should no longer be
+artifacts round the edges of such images.
+<li>Data being written to files is now flushed whenever input is requested from the user.
+This allows, for example, transcript files to update as a game is being played, and not only
+when the interpreter closes the file.
+<li>Corrected a problem which could result in the options dialog using the wrong font.
+</ul>
+
+<b>Glulxe 0.4.5 (Windows Glk 1.38)</b>
+<ul>
+<li>Fixed a file creation bug in glk_stream_open_file().
+</ul>
+
+<b>Glulxe 0.4.5 (Windows Glk 1.37)</b>
+<ul>
+<li>Updated to Glulxe 0.4.5, which fixes various obscure bugs that have been revealed by
+unit-testing.
+</ul>
+
+<b>Glulxe 0.4.4 (Windows Glk 1.37)</b>
+<ul>
+<li>Clicking on a Glk window now only shifts the keyboard input focus to that window if the
+window is capable of text input: this means that after clicking on a graphics window, text can
+still be input in a text buffer window without having to click back to the text buffer window.
+<li>The implementation of the algorithm for scaling images has been sped up again.
+</ul>
+
+<b>Glulxe 0.4.4 (Windows Glk 1.36)</b>
+<ul>
+<li>Updated to Glulxe 0.4.4, which implements the Glulx 3.1.1 specification.
+This adds support for Inform 6 veneer acceleration, which can greatly increase
+the performance of games compiled to take advantage of this.
+</ul>
+
+<b>Glulxe 0.4.3 (Windows Glk 1.36)</b>
+<ul>
+<li>Fixed a bug with glk_stylehint_clear() ignoring any user set values.
+</ul>
+
+<b>Glulxe 0.4.3 (Windows Glk 1.35)</b>
+<ul>
+<li>The implementation of the algorithm for scaling images has been sped up.
+<li>When the user tries to enter an input line wider than the window, the input is split
+over multiple lines.
+<li>Fixed a bug with sound volumes not being set correctly if the main window was
+not yet open.
+<li>Fixed a bug with the scrollback dialog not appearing when a translation DLL was in use. 
+<li>Fixed another bug that occasionally led to a [More] prompt not appearing when it should.
+<li>The C compiler used to compile Glulxe has been changed to GCC, resulting in an increase
+in the speed of the interpreter.
+</ul>
+
+<b>Glulxe 0.4.3 (Windows Glk 1.34)</b>
+<ul>
+<li>Improved the logic used to output Unicode text: now if a character can be drawn in
+any font on the system, that font will be used where needed. For best results a 'Unicode'
+font (e.g. "Arial Unicode MS" or "Code 2000") should be installed, though it doesn't need
+to be selected as either the proportional or fixed width font.
+</ul>
+
+<b>Glulxe 0.4.3 (Windows Glk 1.33)</b>
+<ul>
+<li>Fixed a bug that occasionally led to a [More] prompt not appearing when it should.
+<li>Fixed a bug that caused an initial carriage return printed in a text buffer window to be
+ignored.
+<li>Rewrote the speech support to use SAPI 5, which comes with Windows XP and later.
+<li>Speech options are now set in a separate "Speech" tab on the options dialog.
+<li>Pressing the Break key (Ctrl+Pause) stops any currently playing speech.
+</ul>
+
+<b>Glulxe 0.4.3 (Windows Glk 1.32)</b>
+<ul>
+<li>Updated to Glulxe 0.4.3, which fixes several bugs in 0.4.2.
+</ul>
+
+<b>Glulxe 0.4.2 (Windows Glk 1.32)</b>
+<ul>
+<li>Added the menu item <b>About This Game</b> which, when playing an appropriately packaged
+Blorb file, shows a dialog with the cover art and description of the game. This dialog is also
+shown the first time a game is played.
+<li>Added an option to say whether, for a game with an iFiction record, the <b>About This Game</b>
+dialog is never shown, only shown the first time a game is loaded, or shown every time.
+<li>Updated to the latest version of ModPlug, which is now compiled into the library.
+<li>glk_fileref_create_by_name() now removes directory separator characters from its file name
+argument, replacing them with dashes.
+</ul>
+
+<b>Glulxe 0.4.2 (Windows Glk 1.31)</b>
+<ul>
+<li>Minor improvements to the interpreter's appearance under Windows Vista.
+<li>Fixed a long-standing bug in glk_window_set_arrangement() when changing the direction
+of the window sizing constraint.
+<li>Fixed the incorrect clipping of italic text.
+<li>Pressing a key in any window will now clear any pending [More] prompts in any other windows,
+rather than requiring the user to select the affected window.
+<li>Changed the default values of a few options: window borders are now off by default, and the
+default indentation in text buffer windows is one unit, rather than zero.
+</ul>
+
+<b>Glulxe 0.4.1 (Windows Glk 1.30)</b>
+<ul>
+<li>Updated to Glulxe 0.4.1, which implements the Glulx 3.1.0 specification.
+</ul>
+
+<b>Glulxe 0.4.0 (Windows Glk 1.30)</b>
+<ul>
+<li>Updated to Glulxe 0.4.0, which implements the Glulx 3.0.0 specification.
+<li>Updated to Glk 0.7.0, which adds Unicode support.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.27)</b>
+<ul>
+<li>Added support for Ogg Vorbis music resources, based on code submitted by David Moreno.
+<li>The file extensions <b>.blorb</b>, <b>.glb</b> and <b>.gblorb</b> can be used for Blorb
+files. The latter two indicate that the Blorb file contains a Glulx game.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.26)</b>
+<ul>
+<li>The input caret is now correctly restored after a save or restore file dialog.
+<li>The mouse cursor now changes to the correct image over hyperlinks when a translation
+DLL is in use.
+<li>Pressing Ctrl+V with the focus on a text buffer window that is waiting for input now
+pastes the contents of the clipboard into the input line.
+<li>The WindowWidth and WindowHeight keys in a configuration file now refer to the size of
+a single, full-size Glk window, rather than the entire window of the interpreter.
+<li>The WindowMask key in a configuration file now only takes effect if the WindowFrame
+key is set to "no".
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.25)</b>
+<ul>
+<li>Images are now scaled with a bilinear filter, resulting in greatly improved appearance
+of scaled images.
+<li>When the interpreter is started, it attempts to load a Blorb file with the same name as
+the executable, so that you can rename the interpreter Foo.exe, distribute it with your game
+Foo.blb, and have the user start the game simply by starting Foo.exe.
+<li>Added true colour icons drawn by Javier San José.
+<li>Added this help file.
+<li>If a configuration file is loaded that specifies a window size, whether or not the window
+was previously maximized is now ignored: the window always appears with the specified size.
+<li>Images in the left or right margins of text buffer windows are now displayed correctly
+after a flow break.
+<li>The AIFF decoder now correctly handles chunks that are an odd number of bytes long.
+<li>Text grid windows in which the game asks for input don't now steal the focus from text
+buffer windows in which the game is also asking for input.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.24)</b>
+<ul>
+<li>Fixed a serious resource leak under Windows 95/98/Me.
+<li>Pressing the Pause key causes any windows blocking on a [More] prompt to update,
+regardless of whether or not they are the active window.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.23)</b>
+<ul>
+<li>The speed at which the text to speech output is spoken can now be set from the options dialog.
+<li>The scrollback dialog now opens at the end of the text, not the start.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.22)</b>
+<ul>
+<li>Fixed the annoying cursor flickering visible when games request timer events
+faster than about 100ms.
+<li>Added support for SONG music resources. The SONG format is essentially the same as MOD,
+only with the music samples stored as separate AIFF sample resources.
+<li>Added an Italian translation, by Tommaso Caldarola.
+<li>Updated to use the new look GUI elements under Windows XP.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.21)</b>
+<ul>
+<li>Added a Spanish translation, by Javier San José.
+<li>The scrollback buffer is no longer emptied when a text buffer window is cleared.
+<li>Added support for configuration files, which allow various properties of the
+interpreter's window to be set.
+<li>Now using the latest version of MODPlug's mppsdk.dll.
+<li>Fixed a problem with the speech routines excluding accented characters.
+</ul>
+
+<b>Glulxe 0.3.5 (Windows Glk 1.20)</b>
+<ul>
+<li>Completely rewrote the sound code to use DirectSound directly.
+<li>The text printed in text buffer windows can now be spoken using Microsoft's
+Speech Engine.
+<li>Fixed the graphics scaling to produce better results.
+<li>Fixed a bug which caused glk_fileref_does_file_exist() to not return a useful
+result when called by a game.
+<li>Calling glk_stream_open_file(filemode_ReadWrite) will now create the file
+if it does not already exist.
+<li>The current style for a window is now set to its previous value after line input,
+rather than reverting to style_Normal.
+</ul>
+ </body>
+</html>
+
