@@ -1236,7 +1236,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000701; // Glk 0.7.1
+    return 0x00000702; // Glk 0.7.2
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
@@ -1373,6 +1373,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
       return 0;
     }
     break;
+
+  case gestalt_DateTime:
+    return 1;
   }
   return 0;
 }
@@ -2741,6 +2744,49 @@ extern "C" glui32 glk_buffer_canon_normalize_uni(glui32 *buf, glui32 len, glui32
   free(dest);
 
   return numchars;
+}
+
+extern "C" void glk_current_time(glktimeval_t *time)
+{
+}
+
+extern "C" glsi32 glk_current_simple_time(glui32 factor)
+{
+  return 0;
+}
+
+extern "C" void glk_time_to_date_utc(glktimeval_t *time, glkdate_t *date)
+{
+}
+
+extern "C" void glk_time_to_date_local(glktimeval_t *time, glkdate_t *date)
+{
+}
+
+extern "C" void glk_simple_time_to_date_utc(glsi32 time, glui32 factor, glkdate_t *date)
+{
+}
+
+extern "C" void glk_simple_time_to_date_local(glsi32 time, glui32 factor, glkdate_t *date)
+{
+}
+
+extern "C" void glk_date_to_time_utc(glkdate_t *date, glktimeval_t *time)
+{
+}
+
+extern "C" void glk_date_to_time_local(glkdate_t *date, glktimeval_t *time)
+{
+}
+
+extern "C" glsi32 glk_date_to_simple_time_utc(glkdate_t *date, glui32 factor)
+{
+  return 0;
+}
+
+extern "C" glsi32 glk_date_to_simple_time_local(glkdate_t *date, glui32 factor)
+{
+  return 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////

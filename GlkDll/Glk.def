@@ -178,3 +178,15 @@ glk_set_echo_line_event               @137
 glk_set_terminators_line_event        @138
 glk_buffer_canon_decompose_uni        @139
 glk_buffer_canon_normalize_uni        @140
+
+; Glk 0.7.2 API functions             @141
+glk_current_time                      @142
+glk_current_simple_time               @143
+glk_time_to_date_utc                  @144
+glk_time_to_date_local                @145
+glk_simple_time_to_date_utc           @146
+glk_simple_time_to_date_local         @147
+glk_date_to_time_utc                  @148
+glk_date_to_time_local                @149
+glk_date_to_simple_time_utc           @150
+glk_date_to_simple_time_local         @151
