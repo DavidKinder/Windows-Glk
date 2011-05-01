@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="dsound.lib scalegfx.lib"
+				AdditionalDependencies="winmm.lib dsound.lib scalegfx.lib"
 				OutputFile=".\..\Executables\Debug/Glk.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -109,7 +109,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="dsound.lib scalegfx.lib"
+				AdditionalDependencies="winmm.lib dsound.lib scalegfx.lib"
 				OutputFile=".\..\Executables\Release/Glk.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -380,6 +380,21 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="GlkTime.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="GlkUnicode.cpp">
 					<FileConfiguration
 						Name="Debug|Win32">
@@ -522,6 +537,9 @@
 				</File>
 				<File
 					RelativePath=".\GlkTalk.h">
+				</File>
+				<File
+					RelativePath="GlkTime.h">
 				</File>
 				<File
 					RelativePath="GlkUnicode.h">
