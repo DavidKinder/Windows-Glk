@@ -12,6 +12,15 @@
 #include <windows.h>
 
 #include "GlkTime.h"
+#include <stdlib.h>
+
+#ifdef _MSC_VER
+#define LONGABS(x) _abs64(x)
+#define LONGCONST(x) (x##ui64)
+#else
+#define LONGABS(x) llabs(x)
+#define LONGCONST(x) (x##ULL)
+#endif
 
 namespace {
 
@@ -196,7 +205,7 @@ FILETIME GetNow(void)
     lastNow = now;
 
     // Check for clock skew
-    if (_abs64(FileTimeToValue(ft) - now) > 2 * GetTimeIncrement())
+    if (LONGABS(FileTimeToValue(ft) - now) > 2 * GetTimeIncrement())
     {
       NeedCalibration = true;
       lastNow = 0;
@@ -233,7 +242,7 @@ void ToGlkTime(const FILETIME& ft, glktimeval_t* time)
 
   // Convert to seconds since the start of 1970
   ULONGLONG ticks = FileTimeToValue(ft);
-  LONGLONG secs = (ticks / 10000000) - 11644473600;
+  LONGLONG secs = (ticks / 10000000) - LONGCONST(11644473600);
 
   time->high_sec = (glsi32)(secs >> 32);
   time->low_sec = (glsi32)(secs & 0xFFFFFFFF);
@@ -243,7 +252,7 @@ void ToGlkTime(const FILETIME& ft, glktimeval_t* time)
 FILETIME FromGlkTime(const glktimeval_t* time)
 {
   LONGLONG secs = ((LONGLONG)time->high_sec << 32) + time->low_sec;
-  ULONGLONG ticks = ((secs + 11644473600) * 10000000) + (time->microsec * 10);
+  ULONGLONG ticks = ((secs + LONGCONST(11644473600)) * 10000000) + (time->microsec * 10);
   return ValueToFileTime(ticks);
 }
 
@@ -254,7 +263,7 @@ glsi32 ToSimpleTime(const FILETIME& ft, glui32 factor)
 
   // Convert to seconds since the start of 1970
   ULONGLONG ticks = FileTimeToValue(ft);
-  LONGLONG secs = (ticks / 10000000) - 11644473600;
+  LONGLONG secs = (ticks / 10000000) - LONGCONST(11644473600);
 
   // Round towards negative infinity
   if (secs < 0)
@@ -265,7 +274,7 @@ glsi32 ToSimpleTime(const FILETIME& ft, glui32 factor)
 FILETIME FromSimpleTime(glsi32 time, glui32 factor)
 {
   LONGLONG secs = time * factor;
-  ULONGLONG ticks = (secs + 11644473600) * 10000000;
+  ULONGLONG ticks = (secs + LONGCONST(11644473600)) * 10000000;
   return ValueToFileTime(ticks);
 }
 
