@@ -1,7 +1,7 @@
 ; Installer for Windows Glulxe
 ;--------------------------------
 
-!define GLULXE_VERSION "0.4.6.142"
+!define GLULXE_VERSION "0.4.6.143"
 
 ;--------------------------------
 ;Configuration
