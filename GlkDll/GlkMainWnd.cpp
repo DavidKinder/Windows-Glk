@@ -564,7 +564,7 @@ BOOL CWinGlkMainWnd::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERI
 
 void CWinGlkMainWnd::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
 {
-  if (CWinGlkWnd::GetExiting())
+  if (CWinGlkWnd::GetExiting() && (CheckMorePending(false) == false))
   {
     ::PostQuitMessage(0);
     return;
@@ -583,13 +583,13 @@ void CWinGlkMainWnd::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
       {
       case L'\b':
       case L'\r':
-        if (CheckMorePending() == false)
+        if (CheckMorePending(true) == false)
           pActiveWnd->InputChar(unicode);
         break;
       default:
         if ((unicode >= 32 && unicode <= 126) || (unicode >= 160))
         {
-          if (CheckMorePending() == false)
+          if (CheckMorePending(true) == false)
             pActiveWnd->InputChar(unicode);
         }
         break;
@@ -608,7 +608,7 @@ LRESULT CWinGlkMainWnd::OnInputLangChange(WPARAM wParam, LPARAM lParam)
 
 void CWinGlkMainWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
 {
-  if (CWinGlkWnd::GetExiting())
+  if (CWinGlkWnd::GetExiting() && (CheckMorePending(false) == false))
   {
     ::PostQuitMessage(0);
     return;
@@ -660,7 +660,7 @@ void CWinGlkMainWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
       }
       break;
     case VK_PAUSE:   // Pause
-      CheckMorePending();
+      CheckMorePending(true);
       break;
     case VK_CANCEL:  // Break (Ctrl+Pause)
       TextToSpeech::GetSpeechEngine().Destroy();
@@ -687,7 +687,7 @@ void CWinGlkMainWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     case VK_F10:
     case VK_F11:
     case VK_F12:
-      if (CheckMorePending() == false)
+      if (CheckMorePending(true) == false)
         pActiveWnd->InputChar(nChar + 0x10000);
       break;
     }
@@ -698,7 +698,7 @@ void CWinGlkMainWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 // the legacy window menu key (like Alt).
 void CWinGlkMainWnd::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
 {
-  if (CWinGlkWnd::GetExiting())
+  if (CWinGlkWnd::GetExiting() && (CheckMorePending(false) == false))
   {
     ::PostQuitMessage(0);
     return;
@@ -709,7 +709,7 @@ void CWinGlkMainWnd::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     CWinGlkWnd* pActiveWnd = CWinGlkWnd::GetActiveWindow();
     if (pActiveWnd)
     {
-      if (CheckMorePending() == false)
+      if (CheckMorePending(true) == false)
         pActiveWnd->InputChar(nChar + 0x10000);
     }
   }
@@ -950,7 +950,7 @@ void CWinGlkMainWnd::OnEditPaste()
         LPTSTR text = (LPTSTR)::GlobalLock(handle); 
         if (text) 
         {
-          CheckMorePending();
+          CheckMorePending(true);
 
           int len = strlen(text);
           for (int i = 0; i < len; i++)
@@ -1202,7 +1202,7 @@ void CWinGlkMainWnd::SetWindowMask(CWinGlkGraphic* pGraphic)
   }
 }
 
-bool CWinGlkMainWnd::CheckMorePending(void)
+bool CWinGlkMainWnd::CheckMorePending(bool update)
 {
   bool more = false;
   CMap<CWinGlkWnd*,CWinGlkWnd*,int,int>& WindowMap = CWinGlkWnd::GetWindowMap();
@@ -1214,7 +1214,7 @@ bool CWinGlkMainWnd::CheckMorePending(void)
   while (MapPos)
   {
     WindowMap.GetNextAssoc(MapPos,pWnd,i);
-    if (pWnd->CheckMorePending())
+    if (pWnd->CheckMorePending(update))
       more = true;
   }
   return more;

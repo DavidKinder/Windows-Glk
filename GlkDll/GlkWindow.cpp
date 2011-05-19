@@ -439,7 +439,7 @@ void CWinGlkWnd::EndCharEvent(void)
 
 void CWinGlkWnd::InputChar(unsigned long InputChar)
 {
-  if (CheckMorePending() == false)
+  if (CheckMorePending(true) == false)
   {
     CGlkApp* pApp = (CGlkApp*)AfxGetApp();
     if (m_bInputActive)

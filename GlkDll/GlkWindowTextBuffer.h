@@ -42,7 +42,7 @@ public:
   virtual bool MouseMakesActive(void) { return true; }
 
   virtual void InitDC(CWinGlkDC& dc, CDC* pdcCompat = NULL);
-  virtual bool CheckMorePending(void);
+  virtual bool CheckMorePending(bool update);
   virtual int GetCaretHeight(void);
 
   virtual void SizeWindow(CRect* pSize);

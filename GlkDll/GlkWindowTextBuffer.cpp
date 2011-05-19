@@ -84,9 +84,9 @@ void CWinGlkWndTextBuffer::InitDC(CWinGlkDC& dc, CDC* pdcCompat)
   dc.SetStyle(style_Normal,0);
 }
 
-bool CWinGlkWndTextBuffer::CheckMorePending(void)
+bool CWinGlkWndTextBuffer::CheckMorePending(bool update)
 {
-  if (m_bMorePending)
+  if (update && m_bMorePending)
   {
     // Get the last paragraph and character that have been shown
     int iLastPara1, iLastChar1;

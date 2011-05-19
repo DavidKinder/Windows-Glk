@@ -70,7 +70,7 @@ public:
   virtual bool MouseMakesActive(void) { return m_bInputActive; }
 
   virtual void InitDC(CWinGlkDC& dc, CDC* pdcCompat = NULL) {}
-  virtual bool CheckMorePending(void) { return false; }
+  virtual bool CheckMorePending(bool update) { return false; }
   virtual int GetCaretHeight(void) { return 0; }
 
   virtual void CloseWindow(stream_result_t *pResult);

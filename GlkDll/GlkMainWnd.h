@@ -135,7 +135,7 @@ protected:
   };
 
   void ChangeFont(bool bFixed);
-  bool CheckMorePending(void);
+  bool CheckMorePending(bool update);
   CRect GetDefaultSize(void);
 
 protected:
