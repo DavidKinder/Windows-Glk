@@ -137,8 +137,12 @@ public:
   bool OpenFile(CWinGlkFileRef* pFileRef, glui32 Mode);
 
 protected:
+  void SetNextOperation(glui32 oper);
+
+protected:
   FILE* m_pHandle;
   bool m_bText;
+  glui32 m_LastOper;
 };
 
 class CWinGlkStreamFileUni : public CWinGlkStreamFile

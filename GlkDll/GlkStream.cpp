@@ -314,6 +314,7 @@ CWinGlkStreamFile::CWinGlkStreamFile(glui32 Rock) : CWinGlkStream(Rock)
 {
   m_pHandle = NULL;
   m_bText = false;
+  m_LastOper = 0;
 }
 
 CWinGlkStreamFile::~CWinGlkStreamFile()
@@ -327,6 +328,7 @@ void CWinGlkStreamFile::PutCharacter(glui32 c)
   CWinGlkStream::PutCharacter(c);
   if (m_pHandle)
   {
+    SetNextOperation(filemode_Write);
     if (c <= 0xFF)
       fputc(c,m_pHandle);
     else
@@ -339,7 +341,10 @@ glsi32 CWinGlkStreamFile::GetCharacter(void)
   glsi32 Character = -1;
 
   if (m_pHandle)
+  {
+    SetNextOperation(filemode_Read);
     Character = fgetc(m_pHandle);
+  }
 
   if (Character != -1)
     m_iReadCount++;
@@ -357,6 +362,7 @@ void CWinGlkStreamFile::SetPosition(glsi32 Pos, glui32 Mode)
       iOrigin = SEEK_END;
 
     fseek(m_pHandle,Pos,iOrigin);
+    m_LastOper = 0;
   }
 }
 
@@ -432,9 +438,20 @@ bool CWinGlkStreamFile::OpenFile(CWinGlkFileRef* pFileRef, glui32 Mode)
 
   // If the file is opened in append mode, go to the end of it
   if (m_pHandle && (Mode == filemode_WriteAppend))
-      fseek(m_pHandle,0,SEEK_END);
+    fseek(m_pHandle,0,SEEK_END);
 
   return m_pHandle ? true : false;
+}
+
+void CWinGlkStreamFile::SetNextOperation(glui32 oper)
+{
+  /* If switching between reading and writing, force an fseek() */
+  if ((m_LastOper != 0) && (m_LastOper != oper))
+  {
+    long pos = ftell(m_pHandle);
+    fseek(m_pHandle,pos,SEEK_SET);
+  }
+  m_LastOper = oper;
 }
 
 IMPLEMENT_DYNAMIC(CWinGlkStreamFileUni,CWinGlkStreamFile);
@@ -448,6 +465,7 @@ void CWinGlkStreamFileUni::PutCharacter(glui32 c)
   CWinGlkStream::PutCharacter(c);
   if (m_pHandle)
   {
+    SetNextOperation(filemode_Write);
     if (m_bText)
     {
       if (c > 0xFFFF)
@@ -473,6 +491,7 @@ glsi32 CWinGlkStreamFileUni::GetCharacter(void)
 
   if (m_pHandle)
   {
+    SetNextOperation(filemode_Read);
     if (m_bText)
     {
       glui32 uc = 0;
@@ -525,6 +544,7 @@ void CWinGlkStreamFileUni::SetPosition(glsi32 Pos, glui32 Mode)
       fseek(m_pHandle,Pos*2,iOrigin);
     else
       fseek(m_pHandle,Pos*4,iOrigin);
+    m_LastOper = 0;
   }
 }
 
