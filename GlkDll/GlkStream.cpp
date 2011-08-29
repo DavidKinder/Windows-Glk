@@ -575,7 +575,7 @@ CWinGlkStreamMem::CWinGlkStreamMem(char* pBuffer, glui32 Length, glui32 Rock) : 
   m_Length = Length;
   m_Position = 0;
 
-  if (RegisterArrFn)
+  if (RegisterArrFn && pBuffer && (Length > 0))
     SetArrayRock((*RegisterArrFn)(pBuffer,Length,"&+#!Cn"));
   else
     m_ArrayRock.num = 0;
@@ -583,7 +583,7 @@ CWinGlkStreamMem::CWinGlkStreamMem(char* pBuffer, glui32 Length, glui32 Rock) : 
 
 CWinGlkStreamMem::~CWinGlkStreamMem()
 {
-  if (UnregisterArrFn)
+  if (UnregisterArrFn && m_pBuffer && (m_Length > 0))
     (*UnregisterArrFn)(m_pBuffer,m_Length,"&+#!Cn",GetArrayRock());
 }
 
@@ -645,7 +645,7 @@ CWinGlkStreamMemUni::CWinGlkStreamMemUni(glui32* pBuffer, glui32 Length, glui32 
   m_Length = Length;
   m_Position = 0;
 
-  if (RegisterArrFn)
+  if (RegisterArrFn && pBuffer && (Length > 0))
     SetArrayRock((*RegisterArrFn)(pBuffer,Length,"&+#!Iu"));
   else
     m_ArrayRock.num = 0;
@@ -653,7 +653,7 @@ CWinGlkStreamMemUni::CWinGlkStreamMemUni(glui32* pBuffer, glui32 Length, glui32 
 
 CWinGlkStreamMemUni::~CWinGlkStreamMemUni()
 {
-  if (UnregisterArrFn)
+  if (UnregisterArrFn && m_pBuffer && (m_Length > 0))
     (*UnregisterArrFn)(m_pBuffer,m_Length,"&+#!Iu",GetArrayRock());
 }
 

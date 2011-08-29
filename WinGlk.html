@@ -29,7 +29,7 @@
 </blockquote>
 
 <h2><a name="Overview"></a>Overview</h2>
-<h3>Glk API version 0.7.2, Windows Glk release 1.43</h3>
+<h3>Glk API version 0.7.3, Windows Glk release 1.43</h3>
 
 Windows Glk was written by David Kinder.<br>
 Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
@@ -595,10 +595,14 @@ ModPlug by Olivier Lapicque.
 <h3>1.43</h3>
 
 <ul>
+<li>Updated to support Glk 0.7.3, which includes more control when playing sounds.
+
 <li>[More] prompts now function even if the Glk program has called glk_exit(), allowing any
 long amount of final text to be read.
 
 <li>Fixed a bug with file streams when reading and writing to the same file.
+
+<li>Fixed a bug which prevented a memory stream being opened without a buffer.
 </ul>
 
 <h3>1.42</h3>

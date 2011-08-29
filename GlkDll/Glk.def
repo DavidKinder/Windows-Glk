@@ -179,7 +179,7 @@ glk_set_terminators_line_event        @138
 glk_buffer_canon_decompose_uni        @139
 glk_buffer_canon_normalize_uni        @140
 
-; Glk 0.7.2 API functions             @141
+; Glk 0.7.2 API functions
 glk_current_time                      @142
 glk_current_simple_time               @143
 glk_time_to_date_utc                  @144
@@ -190,3 +190,10 @@ glk_date_to_time_utc                  @148
 glk_date_to_time_local                @149
 glk_date_to_simple_time_utc           @150
 glk_date_to_simple_time_local         @151
+
+; Glk 0.7.3 API functions
+glk_schannel_create_ext               @152
+glk_schannel_play_multi               @153
+glk_schannel_pause                    @154
+glk_schannel_unpause                  @155
+glk_schannel_set_volume_ext           @156

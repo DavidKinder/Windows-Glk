@@ -15,6 +15,9 @@
 #define _WIN32_WINDOWS 0x0501
 #define _WIN32_IE 0x0501      // Internet Explorer 5.5
 
+#define _CRT_NONSTDC_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <afxext.h>
 #include <afxmt.h>
 #include <afxpriv.h>

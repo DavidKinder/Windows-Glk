@@ -1237,7 +1237,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000702; // Glk 0.7.2
+    return 0x00000703; // Glk 0.7.3
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
@@ -1310,7 +1310,6 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_Graphics:
     return 1;
-
   case gestalt_GraphicsTransparency:
     return 1;
 
@@ -1321,19 +1320,17 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_Sound:
     return 1;
-
+  case gestalt_Sound2:
+    return 1;
   case gestalt_SoundVolume:
     return 1;
-
   case gestalt_SoundNotify:
     return 1;
-
   case gestalt_SoundMusic:
     return 1;
 
   case gestalt_Hyperlinks:
     return 1;
-
   case gestalt_HyperlinkInput:
     if ((val == wintype_TextBuffer) || (val == wintype_TextGrid))
       return 1;
@@ -1341,7 +1338,6 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_Unicode:
     return 1;
-
   case gestalt_UnicodeNorm:
     return 1;
 
@@ -1350,7 +1346,6 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
 
   case gestalt_LineTerminators:
     return 1;
-
   case gestalt_LineTerminatorKey:
     switch (val)
     {
@@ -1707,9 +1702,6 @@ extern "C" strid_t glk_stream_open_memory(char *buf, glui32 buflen, glui32 fmode
   default:
     return 0;
   }
-
-  if (buf == NULL)
-    return 0;
 
   return (strid_t)new CWinGlkStreamMem(buf,buflen,rock);
 }
@@ -2353,6 +2345,11 @@ extern "C" void glk_window_set_background_color(winid_t win, glui32 color)
 
 extern "C" schanid_t glk_schannel_create(glui32 rock)
 {
+  return glk_schannel_create_ext(rock,0x10000);
+}
+
+extern "C" schanid_t glk_schannel_create_ext(glui32 rock, glui32 volume)
+{
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   // If the main window has not yet opened, run a message pump, otherwise DirectSound
@@ -2366,6 +2363,7 @@ extern "C" schanid_t glk_schannel_create(glui32 rock)
   }
 
   CWinGlkSndChannel* pChannel = new CWinGlkSndChannel(rock);
+  pChannel->SetVolume(volume);
   return (schanid_t)pChannel;
 }
 
@@ -2413,7 +2411,6 @@ extern "C" glui32 glk_schannel_play_ext(schanid_t chan, glui32 snd, glui32 repea
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chan;
-
   if (CWinGlkSndChannel::IsValidChannel(pChannel))
   {
     if (repeats == 0)
@@ -2434,6 +2431,30 @@ extern "C" glui32 glk_schannel_play_ext(schanid_t chan, glui32 snd, glui32 repea
   return 0;
 }
 
+extern "C" glui32 glk_schannel_play_multi(schanid_t *chanarray, glui32 chancount, glui32 *sndarray, glui32 soundcount, glui32 notify)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  glui32 playing = 0;
+  if (chancount == soundcount)
+  {
+    for (glui32 i = 0; i < chancount; i++)
+    {
+      CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chanarray[i];
+      if (CWinGlkSndChannel::IsValidChannel(pChannel))
+      {
+        CWinGlkSound* pSound = ((CGlkApp*)AfxGetApp())->LoadSound(sndarray[i]);
+        if (pSound)
+        {
+          if (pChannel->Play(pSound,sndarray[i],1,notify))
+            playing++;
+        }
+      }
+    }
+  }
+  return playing;
+}
+
 extern "C" void glk_schannel_stop(schanid_t chan)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2443,10 +2464,26 @@ extern "C" void glk_schannel_stop(schanid_t chan)
     pChannel->Stop();
 }
 
+extern "C" void glk_schannel_pause(schanid_t chan)
+{
+  // GLK073
+}
+
+extern "C" void glk_schannel_unpause(schanid_t chan)
+{
+  // GLK073
+}
+
 extern "C" void glk_schannel_set_volume(schanid_t chan, glui32 vol)
+{
+  glk_schannel_set_volume_ext(chan,vol,0,0);
+}
+
+extern "C" void glk_schannel_set_volume_ext(schanid_t chan, glui32 vol, glui32 duration, glui32 notify)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
+  // GLK073
   CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chan;
   if (CWinGlkSndChannel::IsValidChannel(pChannel))
     pChannel->SetVolume(vol);
@@ -2619,9 +2656,6 @@ extern "C" strid_t glk_stream_open_memory_uni(glui32 *buf, glui32 buflen, glui32
   default:
     return 0;
   }
-
-  if (buf == NULL)
-    return 0;
 
   return (strid_t)new CWinGlkStreamMemUni(buf,buflen,rock);
 }
