@@ -1,0 +1,129 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TEST MENU DISCARDABLE 
+BEGIN
+    POPUP "&Test"
+    BEGIN
+        MENUITEM "Menu Item &1",                ID_MENUITEM1
+        MENUITEM "Menu Item &2",                ID_MENUITEM2
+        MENUITEM "Menu Item &3",                ID_MENUITEM3
+        MENUITEM "Menu Item &4",                ID_MENUITEM4
+        MENUITEM "Menu Item &5",                ID_MENUITEM5
+        POPUP "Sub-menu"
+        BEGIN
+            MENUITEM "Sub-menu Item 1",             ID_SUBMENUITEM1
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TEST TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_MENUITEM1
+    BUTTON      ID_MENUITEM2
+    BUTTON      ID_MENUITEM3
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TEST                BITMAP  DISCARDABLE     "test.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_MENUITEM1            "This is menu item 1\nItem 1"
+    ID_MENUITEM2            "This is menu item 2\nItem 2"
+    ID_MENUITEM3            "This is menu item 3\nItem 3"
+    ID_MENUITEM4            "This is menu item 4\nItem 4"
+    ID_MENUITEM5            "This is menu item 5\nItem 5"
+    ID_SUBMENUITEM1         "This is sub-menu item 1\nSub Item 1"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST             "Test.manifest"
+
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

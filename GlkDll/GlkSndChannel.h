@@ -35,7 +35,8 @@ public:
   void SetArrayRock(const gidispatch_rock_t& Rock) { m_ArrayRock = Rock; }
   gidispatch_rock_t& GetArrayRock(void) { return m_ArrayRock; }
 
-  bool Play(CWinGlkSound* pSound, glui32 iSound, int iRepeat, int iNotify);
+  void Prepare(CWinGlkSound* pSound, glui32 iSound, int iNotify);
+  bool Play(int iRepeat);
   void Stop(void);
   void SetVolume(int iVolume);
   void TimerPulse(void);

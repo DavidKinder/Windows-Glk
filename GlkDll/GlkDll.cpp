@@ -2423,8 +2423,14 @@ extern "C" glui32 glk_schannel_play_ext(schanid_t chan, glui32 snd, glui32 repea
       CWinGlkSound* pSound = ((CGlkApp*)AfxGetApp())->LoadSound(snd);
       if (pSound)
       {
-        if (pChannel->Play(pSound,snd,repeats,notify))
+        pChannel->Prepare(pSound,snd,notify);
+        if (pChannel->Play(repeats))
           return 1;
+      }
+      else
+      {
+        pChannel->Stop();
+        return 0;
       }
     }
   }
@@ -2435,21 +2441,30 @@ extern "C" glui32 glk_schannel_play_multi(schanid_t *chanarray, glui32 chancount
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  glui32 playing = 0;
-  if (chancount == soundcount)
+  if (chancount != soundcount)
+    return 0;
+
+  for (glui32 i = 0; i < chancount; i++)
   {
-    for (glui32 i = 0; i < chancount; i++)
+    CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chanarray[i];
+    if (CWinGlkSndChannel::IsValidChannel(pChannel))
     {
-      CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chanarray[i];
-      if (CWinGlkSndChannel::IsValidChannel(pChannel))
-      {
-        CWinGlkSound* pSound = ((CGlkApp*)AfxGetApp())->LoadSound(sndarray[i]);
-        if (pSound)
-        {
-          if (pChannel->Play(pSound,sndarray[i],1,notify))
-            playing++;
-        }
-      }
+      CWinGlkSound* pSound = ((CGlkApp*)AfxGetApp())->LoadSound(sndarray[i]);
+      if (pSound)
+        pChannel->Prepare(pSound,sndarray[i],notify);
+      else
+        pChannel->Stop();
+    }
+  }
+
+  glui32 playing = 0;
+  for (glui32 i = 0; i < chancount; i++)
+  {
+    CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chanarray[i];
+    if (CWinGlkSndChannel::IsValidChannel(pChannel))
+    {
+      if (pChannel->Play(1))
+        playing++;
     }
   }
   return playing;

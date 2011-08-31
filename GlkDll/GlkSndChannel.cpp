@@ -61,7 +61,7 @@ glui32 CWinGlkSndChannel::GetRock(void)
   return m_Rock;
 }
 
-bool CWinGlkSndChannel::Play(CWinGlkSound* pSound, glui32 iSound, int iRepeat, int iNotify)
+void CWinGlkSndChannel::Prepare(CWinGlkSound* pSound, glui32 iSound, int iNotify)
 {
   Stop();
 
@@ -69,13 +69,19 @@ bool CWinGlkSndChannel::Play(CWinGlkSound* pSound, glui32 iSound, int iRepeat, i
   m_pSound = pSound;
   m_iSound = iSound;
   m_iNotify = iNotify;
+}
 
-  if (m_pSound->Play(iRepeat,m_iVolume) == false)
-  {
-    Stop();
+bool CWinGlkSndChannel::Play(int iRepeat)
+{
+  if (m_pSound == NULL)
     return false;
-  }
-  return true;
+  if (m_pSound->IsPlaying())
+    return false;
+
+  if (m_pSound->Play(iRepeat,m_iVolume))
+    return true;
+  Stop();
+  return false;
 }
 
 void CWinGlkSndChannel::Stop(void)
