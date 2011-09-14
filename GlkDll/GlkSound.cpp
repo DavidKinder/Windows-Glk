@@ -59,7 +59,7 @@ CWinGlkSound::~CWinGlkSound()
     delete[] m_pData;
 }
 
-double CWinGlkSound::DecibelVolume(int iVolume)
+double CWinGlkSound::DecibelVolume(int iVolume) const
 {
   // The volume argument is from 0 to 0x10000, with 0x8000
   // representing half volume. This is converted to a decibel

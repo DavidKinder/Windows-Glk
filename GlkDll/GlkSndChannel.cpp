@@ -52,6 +52,12 @@ CWinGlkSndChannel::~CWinGlkSndChannel()
   if (UnregisterObjFn)
     (*UnregisterObjFn)(this,gidisp_Class_Schannel,GetDispRock());
 
+  // Remove from the volume fade map
+  {
+    CSingleLock lock(&VolumeLock,TRUE);
+    VolumeFadeMap.erase(this);
+  }
+
   // Remove from the global map
   ChannelMap.RemoveKey(this);
 }
@@ -94,11 +100,38 @@ void CWinGlkSndChannel::Stop(void)
   m_iNotify = 0;
 }
 
-void CWinGlkSndChannel::SetVolume(int iVolume)
+void CWinGlkSndChannel::SetVolume(int iVolume, int iMillis, int iNotify)
 {
-  m_iVolume = iVolume;
-  if (m_pSound != NULL)
-    m_pSound->SetVolume(iVolume);
+  if (iMillis == 0)
+  {
+    // Remove any previous volume fade map entry
+    {
+      CSingleLock lock(&VolumeLock,TRUE);
+      VolumeFadeMap.erase(this);
+    }
+
+    m_iVolume = iVolume;
+    if (m_pSound != NULL)
+      m_pSound->SetVolume(iVolume);
+
+    if (iNotify != 0)
+      ((CGlkApp*)AfxGetApp())->AddEvent(evtype_VolumeNotify,0,0,iNotify);
+  }
+  else if (iMillis > 0)
+  {
+    VolumeFade fade;
+    fade.start = m_iVolume;
+    fade.target = iVolume;
+    fade.rate = (double)(iVolume - m_iVolume) / (double)iMillis;
+    fade.startTime = ::GetTickCount();
+    fade.notify = iNotify;
+
+    // Add to the volume fade map
+    {
+      CSingleLock lock(&VolumeLock,TRUE);
+      VolumeFadeMap[this] = fade;
+    }
+  }
 }
 
 void CWinGlkSndChannel::TimerPulse(void)
@@ -113,6 +146,23 @@ void CWinGlkSndChannel::TimerPulse(void)
         ((CGlkApp*)AfxGetApp())->AddEvent(evtype_SoundNotify,0,m_iSound,m_iNotify);
       Stop();
     }
+  }
+
+  VolumeFade fade;
+  {
+    CSingleLock lock(&VolumeLock,TRUE);
+    std::map<CWinGlkSndChannel*,CWinGlkSndChannel::VolumeFade>::const_iterator it = VolumeFadeMap.find(this);
+    if (it != VolumeFadeMap.end())
+    {
+      fade = it->second;
+      if (fade.finished)
+        VolumeFadeMap.erase(it);
+    }
+  }
+  if (fade.finished && (fade.notify != 0))
+  {
+    // Post a volume notification event
+    ((CGlkApp*)AfxGetApp())->AddEvent(evtype_VolumeNotify,0,0,fade.notify);
   }
 }
 
@@ -165,4 +215,48 @@ CWinGlkSndChannel* CWinGlkSndChannel::IterateChannels(CWinGlkSndChannel* pChanne
     pPrevChannel = pMapChannel;
   }
   return NULL;
+}
+
+CCriticalSection CWinGlkSndChannel::VolumeLock;
+std::map<CWinGlkSndChannel*,CWinGlkSndChannel::VolumeFade> CWinGlkSndChannel::VolumeFadeMap;
+
+// Called from the sound engine thread
+void CWinGlkSndChannel::VolumeFader(void)
+{
+  DWORD now = ::GetTickCount();
+  CSingleLock lock(&VolumeLock,TRUE);
+
+  std::map<CWinGlkSndChannel*,CWinGlkSndChannel::VolumeFade>::iterator it;
+  for (it = VolumeFadeMap.begin(); it != VolumeFadeMap.end(); ++it)
+  {
+    VolumeFade& fade = it->second;
+    if (!fade.finished)
+    {
+      // Work out the new volume
+      double volume = fade.start+((now-fade.startTime)*fade.rate);
+
+      // Don't let the new volume go beyond the target volume
+      if (fade.rate >= 0.0)
+      {
+        if (volume >= fade.target)
+        {
+          volume = fade.target;
+          fade.finished = true;
+        }
+      }
+      else
+      {
+        if (volume <= fade.target)
+        {
+          volume = fade.target;
+          fade.finished = true;
+        }
+      }
+
+      // Use the new volume
+      it->first->m_iVolume = (int)volume;
+      if (it->first->m_pSound != NULL)
+        it->first->m_pSound->SetVolume((int)volume);
+    }
+  }
 }

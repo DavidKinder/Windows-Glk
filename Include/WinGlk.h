@@ -23,7 +23,6 @@ void winglk_set_resource_directory(const char* dir);
 const char* winglk_get_initial_filename(const char* cmdline, const char* title, const char* filter);
 void winglk_set_gui(unsigned int id);
 void winglk_load_config_file(const char* gamename);
-void winglk_load_config_file(const char* gamename);
 void* winglk_get_resource_handle(void);
 void winglk_set_about_text(const char* text);
 void winglk_set_menu_name(const char* name);

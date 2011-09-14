@@ -13,6 +13,8 @@
 #include "glk.h"
 #include "gi_dispa.h"
 
+#include <map>
+
 class CWinGlkSound;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,7 +40,7 @@ public:
   void Prepare(CWinGlkSound* pSound, glui32 iSound, int iNotify);
   bool Play(int iRepeat);
   void Stop(void);
-  void SetVolume(int iVolume);
+  void SetVolume(int iVolume, int iMillis, int iNotify);
   void TimerPulse(void);
 
 protected:
@@ -48,7 +50,7 @@ protected:
 
   CWinGlkSound* m_pSound;
   glui32 m_iSound;
-  int m_iVolume;
+  volatile int m_iVolume;
   int m_iNotify;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,8 +62,41 @@ public:
   static bool IsValidChannel(CWinGlkSndChannel* pChannel);
   static CWinGlkSndChannel* IterateChannels(CWinGlkSndChannel* pChannel, glui32* pRockPtr);
 
+  // Called from the sound engine thread
+  static void VolumeFader(void);
+
 protected:
   static CMap<CWinGlkSndChannel*,CWinGlkSndChannel*,int,int> ChannelMap;
+
+  struct VolumeFade
+  {
+    // The initial volume
+    double start;
+    // The final volume
+    double target;
+    // The change in the volume per millisecond
+    double rate;
+    // The start time of the volume change
+    DWORD startTime;
+    // If true, the volume fade has finished
+    bool finished;
+    // The notification value, or zero
+    int notify;
+
+    VolumeFade()
+    {
+      start = 0.0;
+      target = 0.0;
+      rate = 0.0;
+      startTime = 0;
+      finished = false;
+      notify = 0;
+    }
+  };
+
+  // Map of channels for which the volume is being faded, protected by a lock
+  static CCriticalSection VolumeLock;
+  static std::map<CWinGlkSndChannel*,VolumeFade> VolumeFadeMap;
 };
 
 #endif // WINGLK_SNDCHANNEL_H_

@@ -33,7 +33,7 @@ public:
   virtual void SetVolume(int iVolume) = 0;
 
 protected:
-  double DecibelVolume(int iVolume);
+  double DecibelVolume(int iVolume) const;
 
 protected:
   BYTE* m_pData;

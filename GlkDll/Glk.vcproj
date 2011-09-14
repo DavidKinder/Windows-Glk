@@ -2447,9 +2447,6 @@
 				Name="MFC Extensions"
 				Filter="">
 				<File
-					RelativePath="..\..\..\Libraries\mfc\2PassScale.h">
-				</File>
-				<File
 					RelativePath="..\..\..\Libraries\mfc\ColourButton.cpp">
 				</File>
 				<File

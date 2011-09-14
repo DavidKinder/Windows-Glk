@@ -415,7 +415,16 @@ void test_sound_volume(void)
     return;
   }
 
-  glk_schannel_set_volume(snd[channel],volume);
+  int millis = get_number("Enter duration (in milliseconds): ");
+  if (millis < 0)
+  {
+    glk_put_string("Invalid duration\n");
+    return;
+  }
+
+  int notify = get_number("Enter notification id (or 0 for none): ");
+
+  glk_schannel_set_volume_ext(snd[channel],volume,millis,notify);
 }
 
 void test_user_1(void)
@@ -676,6 +685,12 @@ void glk_main(void)
     case evtype_SoundNotify:
       glk_cancel_line_event(main,NULL);
       sprintf(buffer,"Sound %d finished playing, notification id %d",ev.val1,ev.val2);
+      glk_put_string(buffer);
+      show = true;
+      break;
+    case evtype_VolumeNotify:
+      glk_cancel_line_event(main,NULL);
+      sprintf(buffer,"Volume change finished, notification id %d",ev.val2);
       glk_put_string(buffer);
       show = true;
       break;

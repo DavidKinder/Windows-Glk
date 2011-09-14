@@ -556,6 +556,7 @@ void CGlkApp::AddEvent(glui32 Type, winid_t Win, glui32 Value1, glui32 Value2)
     }
     break;
   case evtype_SoundNotify:
+  case evtype_VolumeNotify:
     {
       int iSize = SoundEvents.GetSize();
       SoundEvents.SetSize(iSize+1);
@@ -1093,7 +1094,7 @@ void CGlkApp::InitSoundEngine(void)
 {
   CreateMainWindow();
 
-  if (CDSoundEngine::GetSoundEngine().Initialize() == false)
+  if (CDSoundEngine::GetSoundEngine().Initialize(CWinGlkSndChannel::VolumeFader) == false)
   {
     CString noDSound;
     noDSound.LoadString(IDS_NO_DSOUND);
@@ -2363,7 +2364,7 @@ extern "C" schanid_t glk_schannel_create_ext(glui32 rock, glui32 volume)
   }
 
   CWinGlkSndChannel* pChannel = new CWinGlkSndChannel(rock);
-  pChannel->SetVolume(volume);
+  pChannel->SetVolume(volume,0,0);
   return (schanid_t)pChannel;
 }
 
@@ -2498,10 +2499,9 @@ extern "C" void glk_schannel_set_volume_ext(schanid_t chan, glui32 vol, glui32 d
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  // GLK073
   CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chan;
   if (CWinGlkSndChannel::IsValidChannel(pChannel))
-    pChannel->SetVolume(vol);
+    pChannel->SetVolume(vol,duration,notify);
 }
 
 extern "C" void glk_sound_load_hint(glui32 snd, glui32 flag)
