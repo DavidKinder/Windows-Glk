@@ -10,6 +10,7 @@
 #include "StdAfx.h"
 #include "GlkDll.h"
 #include "GlkSndChannel.h"
+#include "GlkTime.h"
 
 #include <math.h>
 
@@ -233,7 +234,7 @@ void CWinGlkSndChannel::VolumeFader(void)
     if (!fade.finished)
     {
       // Work out the new volume
-      double volume = fade.start+((now-fade.startTime)*fade.rate);
+      double volume = fade.start+(TickCountDiff(now,fade.startTime)*fade.rate);
 
       // Don't let the new volume go beyond the target volume
       if (fade.rate >= 0.0)

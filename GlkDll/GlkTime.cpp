@@ -325,3 +325,13 @@ FILETIME FromGlkDate(const glkdate_t* date)
   }
   return BadTime;
 }
+
+DWORD TickCountDiff(DWORD later, DWORD earlier)
+{
+  if (later < earlier)
+  {
+    // The timer must have wrapped round
+    return ((MAXDWORD - earlier) + later);
+  }
+  return (later - earlier);
+}

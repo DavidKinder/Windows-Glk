@@ -32,4 +32,7 @@ void ToGlkDate(const FILETIME& ft, glkdate_t* date);
 // Convert a date from the Glk format
 FILETIME FromGlkDate(const glkdate_t* date);
 
+// Get the different between two tick counts
+DWORD TickCountDiff(DWORD later, DWORD earlier);
+
 #endif // WINGLK_TIME_H_

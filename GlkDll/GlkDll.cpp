@@ -1219,7 +1219,7 @@ extern "C" void glk_set_interrupt_handler(void (*func)(void))
 extern "C" void glk_tick(void)
 {
   // Run the message pump if the last tick was over a second ago
-  if (::GetTickCount() - LastTick > 1000)
+  if (TickCountDiff(::GetTickCount(),LastTick) > 1000)
   {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -2141,7 +2141,7 @@ extern "C" void glk_request_line_event(winid_t win, char *buf, glui32 maxlen, gl
       else
       {
         CString TestMsg;
-        TestMsg.Format("Time since first input is %.1lfs",0.001*(::GetTickCount()-StartTime));
+        TestMsg.Format("Time since first input is %.1lfs",0.001*TickCountDiff(::GetTickCount(),StartTime));
         AfxMessageBox(TestMsg);
         glk_exit();
       }

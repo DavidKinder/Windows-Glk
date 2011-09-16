@@ -41,7 +41,7 @@ public:
 // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CGlkApp)
-  public:
+public:
   virtual BOOL InitInstance();
   virtual int ExitInstance();
   //}}AFX_VIRTUAL
