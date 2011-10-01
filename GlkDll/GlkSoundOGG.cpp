@@ -9,6 +9,7 @@
 
 #include "StdAfx.h"
 #include "GlkSoundOGG.h"
+#include "GlkTime.h"
 #include <math.h>
 
 extern "C"
@@ -87,7 +88,7 @@ CWinGlkOGGSound::~CWinGlkOGGSound()
     ov_clear(&m_Stream);
 }
 
-bool CWinGlkOGGSound::Play(int iRepeat, int iVolume)
+bool CWinGlkOGGSound::Play(int iRepeat, int iVolume, bool PauseState)
 {
   m_pReadPtr = m_pData;
   if (m_pReadPtr == NULL)
@@ -123,12 +124,34 @@ bool CWinGlkOGGSound::Play(int iRepeat, int iVolume)
   SetVolume(iVolume);
 
   // Start the buffer playing
-  return PlayBuffer();
+  return PlayBuffer(PauseState);
 }
 
 bool CWinGlkOGGSound::IsPlaying(void)
 {
-  return IsBufferPlaying();
+  return m_Active;
+}
+
+void CWinGlkOGGSound::Pause(bool PauseState)
+{
+  CDSound::Pause(PauseState);
+
+  DWORD now = ::GetTickCount();
+  CSingleLock Lock(CDSoundEngine::GetSoundLock(),TRUE);
+
+  // If pausing, reduce the sound duration by the amount already played
+  if (PauseState)
+  {
+    if (m_Duration > 0)
+    {
+      m_Duration -= TickCountDiff(now,m_StartTime);
+      if (m_Duration < 0)
+        m_Duration = 0;
+    }
+  }
+
+  // Update the start time to now when pausing or unpausing
+  m_StartTime = now;
 }
 
 void CWinGlkOGGSound::SetVolume(int iVolume)
@@ -169,12 +192,17 @@ void CWinGlkOGGSound::WriteSampleData(unsigned char* pSample, int iSampleLen)
 // Check if the sound has finished playing
 bool CWinGlkOGGSound::IsSoundOver(DWORD Tick)
 {
-  if (m_Playing == false)
+  if (m_Active == false)
     return true;
+
+  // Check if sound is paused
+  if ((GetStatus() & DSBSTATUS_PLAYING) == 0)
+    return false;
 
   // Check if sound is playing forever
   if (m_Duration < 0)
     return false;
+
   return (Tick > m_StartTime + m_Duration);
 }
 

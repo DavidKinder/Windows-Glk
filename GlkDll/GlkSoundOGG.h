@@ -57,8 +57,9 @@ public:
   CWinGlkOGGSound(LPCTSTR pszFileName);
   virtual ~CWinGlkOGGSound();
 
-  virtual bool Play(int iRepeat, int iVolume);
+  virtual bool Play(int iRepeat, int iVolume, bool PauseState);
   virtual bool IsPlaying(void);
+  virtual void Pause(bool PauseState);
   virtual void SetVolume(int iVolume);
 
   virtual void WriteSampleData(unsigned char* pSample, int iSampleLen);

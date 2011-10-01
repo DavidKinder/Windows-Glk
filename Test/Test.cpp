@@ -51,6 +51,8 @@ void print_list(void)
   glk_put_string("13. Print a Long Paragraph\n");
   glk_put_string("14. Line input with margin images\n");
   glk_put_string("15. Play Multiple Sounds\n");
+  glk_put_string("16. Pause a Sound\n");
+  glk_put_string("17. Unpause a Sound\n");
 }
 
 void line_input_margins()
@@ -427,6 +429,36 @@ void test_sound_volume(void)
   glk_schannel_set_volume_ext(snd[channel],volume,millis,notify);
 }
 
+void test_sound_pause(void)
+{
+  glk_set_style(style_Emphasized);
+  glk_put_string("\nPause a Sound\n");
+  glk_set_style(style_Normal);
+
+  int channel = get_number("Enter channel to pause (0 or 1): ");
+  if ((channel < 0) || (channel > 1))
+  {
+    glk_put_string("Invalid channel\n");
+    return;
+  }
+  glk_schannel_pause(snd[channel]);
+}
+
+void test_sound_unpause(void)
+{
+  glk_set_style(style_Emphasized);
+  glk_put_string("\nUnpause a Sound\n");
+  glk_set_style(style_Normal);
+
+  int channel = get_number("Enter channel to unpause (0 or 1): ");
+  if ((channel < 0) || (channel > 1))
+  {
+    glk_put_string("Invalid channel\n");
+    return;
+  }
+  glk_schannel_unpause(snd[channel]);
+}
+
 void test_user_1(void)
 {
   glk_set_style(style_Emphasized);
@@ -592,6 +624,12 @@ void test(int number)
     break;
   case 15:
     test_sound_multi();
+    break;
+  case 16:
+    test_sound_pause();
+    break;
+  case 17:
+    test_sound_unpause();
     break;
   }
 }

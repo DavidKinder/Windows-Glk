@@ -28,8 +28,9 @@ public:
   CWinGlkSound(LPCTSTR pszFileName);
   virtual ~CWinGlkSound();
 
-  virtual bool Play(int iRepeat, int iVolume) = 0;
+  virtual bool Play(int iRepeat, int iVolume, bool PauseState) = 0;
   virtual bool IsPlaying(void) = 0;
+  virtual void Pause(bool PauseState) = 0;
   virtual void SetVolume(int iVolume) = 0;
 
 protected:

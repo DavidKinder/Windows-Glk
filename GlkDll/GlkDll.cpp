@@ -2482,12 +2482,20 @@ extern "C" void glk_schannel_stop(schanid_t chan)
 
 extern "C" void glk_schannel_pause(schanid_t chan)
 {
-  // GLK073
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chan;
+  if (CWinGlkSndChannel::IsValidChannel(pChannel))
+    pChannel->Pause(true);
 }
 
 extern "C" void glk_schannel_unpause(schanid_t chan)
 {
-  // GLK073
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  CWinGlkSndChannel* pChannel = (CWinGlkSndChannel*)chan;
+  if (CWinGlkSndChannel::IsValidChannel(pChannel))
+    pChannel->Pause(false);
 }
 
 extern "C" void glk_schannel_set_volume(schanid_t chan, glui32 vol)

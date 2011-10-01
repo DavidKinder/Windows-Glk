@@ -9,6 +9,7 @@
 
 #include "StdAfx.h"
 #include "GlkSoundAIFF.h"
+#include "GlkTime.h"
 #include <math.h>
 
 extern "C"
@@ -94,7 +95,7 @@ CWinGlkAIFFSound::~CWinGlkAIFFSound()
   RemoveFromList();
 }
 
-bool CWinGlkAIFFSound::Play(int iRepeat, int iVolume)
+bool CWinGlkAIFFSound::Play(int iRepeat, int iVolume, bool PauseState)
 {
   SampleData data;
   if (GetSampleData(data) == false)
@@ -124,12 +125,34 @@ bool CWinGlkAIFFSound::Play(int iRepeat, int iVolume)
   SetVolume(iVolume);
 
   // Start the buffer playing
-  return PlayBuffer();
+  return PlayBuffer(PauseState);
 }
 
 bool CWinGlkAIFFSound::IsPlaying(void)
 {
-  return IsBufferPlaying();
+  return m_Active;
+}
+
+void CWinGlkAIFFSound::Pause(bool PauseState)
+{
+  CDSound::Pause(PauseState);
+
+  DWORD now = ::GetTickCount();
+  CSingleLock Lock(CDSoundEngine::GetSoundLock(),TRUE);
+
+  // If pausing, reduce the sound duration by the amount already played
+  if (PauseState)
+  {
+    if (m_Duration > 0)
+    {
+      m_Duration -= TickCountDiff(now,m_StartTime);
+      if (m_Duration < 0)
+        m_Duration = 0;
+    }
+  }
+
+  // Update the start time to now when pausing or unpausing
+  m_StartTime = now;
 }
 
 void CWinGlkAIFFSound::SetVolume(int iVolume)
@@ -196,12 +219,17 @@ bool CWinGlkAIFFSound::CheckRenderPtr(void)
 // Check if the sound has finished playing
 bool CWinGlkAIFFSound::IsSoundOver(DWORD Tick)
 {
-  if (m_Playing == false)
+  if (m_Active == false)
     return true;
+
+  // Check if sound is paused
+  if ((GetStatus() & DSBSTATUS_PLAYING) == 0)
+    return false;
 
   // Check if sound is playing forever
   if (m_Duration < 0)
     return false;
+
   return (Tick > m_StartTime + m_Duration);
 }
 

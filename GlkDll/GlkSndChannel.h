@@ -40,6 +40,7 @@ public:
   void Prepare(CWinGlkSound* pSound, glui32 iSound, int iNotify);
   bool Play(int iRepeat);
   void Stop(void);
+  void Pause(bool PauseState);
   void SetVolume(int iVolume, int iMillis, int iNotify);
   void TimerPulse(void);
 
@@ -50,6 +51,7 @@ protected:
 
   CWinGlkSound* m_pSound;
   glui32 m_iSound;
+  bool m_Paused;
   volatile int m_iVolume;
   int m_iNotify;
 

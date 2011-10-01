@@ -31,6 +31,7 @@ CWinGlkSndChannel::CWinGlkSndChannel(glui32 Rock) : CObject()
   m_Rock = Rock;
   m_pSound = NULL;
   m_iSound = 0;
+  m_Paused = false;
   m_iVolume = 0x10000;
   m_iNotify = 0;
 
@@ -85,7 +86,7 @@ bool CWinGlkSndChannel::Play(int iRepeat)
   if (m_pSound->IsPlaying())
     return false;
 
-  if (m_pSound->Play(iRepeat,m_iVolume))
+  if (m_pSound->Play(iRepeat,m_iVolume,m_Paused))
     return true;
   Stop();
   return false;
@@ -99,6 +100,16 @@ void CWinGlkSndChannel::Stop(void)
 
   m_iSound = 0;
   m_iNotify = 0;
+}
+
+void CWinGlkSndChannel::Pause(bool PauseState)
+{
+  if (m_Paused != PauseState)
+  {
+    m_Paused = PauseState;
+    if (m_pSound != NULL)
+      m_pSound->Pause(m_Paused);
+  }
 }
 
 void CWinGlkSndChannel::SetVolume(int iVolume, int iMillis, int iNotify)
