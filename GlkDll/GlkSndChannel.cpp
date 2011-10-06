@@ -163,7 +163,7 @@ void CWinGlkSndChannel::TimerPulse(void)
   VolumeFade fade;
   {
     CSingleLock lock(&VolumeLock,TRUE);
-    std::map<CWinGlkSndChannel*,CWinGlkSndChannel::VolumeFade>::const_iterator it = VolumeFadeMap.find(this);
+    std::map<CWinGlkSndChannel*,CWinGlkSndChannel::VolumeFade>::iterator it = VolumeFadeMap.find(this);
     if (it != VolumeFadeMap.end())
     {
       fade = it->second;
