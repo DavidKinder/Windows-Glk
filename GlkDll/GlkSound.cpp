@@ -63,24 +63,22 @@ double CWinGlkSound::DecibelVolume(int iVolume) const
 {
   // The volume argument is from 0 to 0x10000, with 0x8000
   // representing half volume. This is converted to a decibel
-  // level, with -10dB representing half volume, -20dB one
+  // level, with ~-6dB representing half volume, ~-12dB one
   // quarter volume, and so on.
   // Zero volume is taken to be -100dB.
 
   if (iVolume < 0)
     iVolume = 0;
-  if (iVolume > 0x10000)
+  else if (iVolume > 0x10000)
     iVolume = 0x10000;
 
-  double dDecibels;
-  if (iVolume == 0)
-    dDecibels = -100.0;
-  else
-    dDecibels = -10.0 * (log((double)0x10000 / (double)iVolume) / log(2.0));
+  double dDecibels = -100.0;
+  if (iVolume > 0)
+    dDecibels = 20.0 * log10((double)iVolume / (double)0x10000);
 
   if (dDecibels > 0.0)
     dDecibels = 0.0;
-  if (dDecibels < -100.0)
+  else if (dDecibels < -100.0)
     dDecibels = -100.0;
   return dDecibels;
 }
