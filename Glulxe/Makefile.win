@@ -8,7 +8,7 @@ OBJS = accel.o exec.o files.o float.o funcs.o gestalt.o glkop.o heap.o \
 	main.o operand.o osdepend.o profile.o search.o serial.o string.o \
 	vm.o winstart.o res.o
 
-CFLAGS = -I../Include -DFLOAT_USE_OWN_POWF
+CFLAGS = -I../Include -DFLOAT_COMPILE_SAFER_POWF
 
 all: glulxe chm
 
