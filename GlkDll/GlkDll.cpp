@@ -1238,7 +1238,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000703; // Glk 0.7.3
+    return 0x00000704; // Glk 0.7.4
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
@@ -1372,6 +1372,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
     break;
 
   case gestalt_DateTime:
+    return 1;
+
+  case gestalt_ResourceStream:
     return 1;
   }
   return 0;
@@ -2858,6 +2861,16 @@ extern "C" glsi32 glk_date_to_simple_time_local(glkdate_t* date, glui32 factor)
   if (factor == 0)
     return 0;
   return ToSimpleTime(ToLocal(FromGlkDate(date)),factor);
+}
+
+extern "C" strid_t glk_stream_open_resource(glui32 filenum, glui32 rock)
+{
+  return 0;
+}
+
+extern "C" strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock)
+{
+  return 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////

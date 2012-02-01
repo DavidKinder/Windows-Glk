@@ -82,12 +82,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "David Kinder"
             VALUE "FileDescription", "Glk Library"
-            VALUE "FileVersion", "0, 7, 2, 42"
+            VALUE "FileVersion", "0, 7, 4, 44"
             VALUE "InternalName", "Glk"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2011 David Kinder"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2012 David Kinder"
             VALUE "OriginalFilename", "Glk.dll"
             VALUE "ProductName", "Glk Library"
-            VALUE "ProductVersion", "0, 7, 2, 42"
+            VALUE "ProductVersion", "0, 7, 4, 44"
         END
     END
     BLOCK "VarFileInfo"

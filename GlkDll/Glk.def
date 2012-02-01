@@ -197,3 +197,7 @@ glk_schannel_play_multi               @153
 glk_schannel_pause                    @154
 glk_schannel_unpause                  @155
 glk_schannel_set_volume_ext           @156
+
+; Glk 0.7.4 API functions
+glk_stream_open_resource              @157
+glk_stream_open_resource_uni          @158
