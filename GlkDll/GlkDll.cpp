@@ -58,7 +58,6 @@ CGlkApp::CGlkApp()
   m_iMaskID = -1;
   m_bNotifyFull = true;
   m_bStartFull = false;
-  m_bEchoLineInput = true;
 
   m_bSpeak = false;
   m_iSpeakRate = 0;
@@ -2712,7 +2711,13 @@ extern "C" void glk_set_echo_line_event(winid_t win, glui32 val)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  theApp.SetEchoLineInput(val != 0);
+  CWinGlkWnd* pWnd = (CWinGlkWnd*)win;
+
+  if (CWinGlkWnd::IsValidWindow(pWnd))
+  {
+    if (pWnd->IsKindOf(RUNTIME_CLASS(CWinGlkWndTextBuffer)))
+      ((CWinGlkWndTextBuffer*)pWnd)->SetNextEchoInput(val != 0);
+  }
 }
 
 extern "C" void glk_set_terminators_line_event(winid_t win, glui32 *keycodes, glui32 count)

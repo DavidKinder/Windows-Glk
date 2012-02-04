@@ -138,7 +138,7 @@ protected:
   CArray<CStringW,CStringW&> m_History;
   int m_iHistory;
   int m_iPrevStyle;
-  bool m_bEchoLineInput;
+  bool m_bEchoInput;
   std::set<unsigned long> m_InputTerminators;
 
 /////////////////////////////////////////////////////////////////////////////

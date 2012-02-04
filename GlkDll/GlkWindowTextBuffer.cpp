@@ -47,6 +47,7 @@ CWinGlkWndTextBuffer::CWinGlkWndTextBuffer(glui32 Rock) : CWinGlkWnd(Rock)
   m_Styles = m_DefaultTextBufferStyles;
   m_bCheckDeleteText = false;
   m_bMorePending = false;
+  m_bNextEchoInput = true;
   m_ScrollBuffer.SetSize(0,10000);
 }
 
@@ -251,8 +252,7 @@ void CWinGlkWndTextBuffer::StartLineEvent(void* pBuffer, bool bUnicode, int iMax
       // Mark the current paragraph as having been associated with input
       m_TextBuffer[m_TextBuffer.GetUpperBound()]->HasHadInput();
     }
-
-    m_bEchoLineInput = ((CGlkApp*)AfxGetApp())->GetEchoLineInput();
+    m_bEchoInput = m_bNextEchoInput;
   }
   CWinGlkWnd::StartLineEvent(pBuffer,bUnicode,iMaxLength,iStartLength);
 }

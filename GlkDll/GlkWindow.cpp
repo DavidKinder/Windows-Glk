@@ -54,7 +54,7 @@ CWinGlkWnd::CWinGlkWnd(glui32 Rock) : CWnd()
   m_iLinePos = 0;
   m_iHistory = -1;
   m_iPrevStyle = style_Normal;
-  m_bEchoLineInput = true;
+  m_bEchoInput = true;
 
   // Add to the global map of all windows
   WindowMap[this] = 0;
@@ -341,7 +341,7 @@ void CWinGlkWnd::EndLineEvent(event_t* pEvent)
       pEvent->val2 = 0;
     }
 
-    if (m_bEchoLineInput)
+    if (m_bEchoInput)
     {
       for (int i = 0; i < m_iLineEnd; i++)
       {

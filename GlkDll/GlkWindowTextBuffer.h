@@ -72,9 +72,11 @@ public:
 
   virtual bool DrawGraphic(CWinGlkGraphic* pGraphic,
     int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete);
-  void InsertFlowBreak(void);
 
   virtual void Scrollback(void);
+
+  void InsertFlowBreak(void);
+  void SetNextEchoInput(bool bNext) { m_bNextEchoInput = bNext; }
 
 protected:
   //{{AFX_MSG(CWinGlkWndTextBuffer)
@@ -255,6 +257,7 @@ protected:
   unsigned int m_iCurrentLink;
   bool m_bCheckDeleteText;
   bool m_bMorePending;
+  bool m_bNextEchoInput;
 
 public:
   static void SetStyleHint(int iStyle, int iHint, glsi32 Value);

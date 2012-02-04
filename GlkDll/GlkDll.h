@@ -84,8 +84,6 @@ public:
 
   int GetMaskID(void) { return m_iMaskID; }
 
-  bool GetEchoLineInput(void) { return m_bEchoLineInput; }
-  void SetEchoLineInput(bool bEcho) { m_bEchoLineInput = bEcho; }
   const std::set<unsigned long>& GetInputTerminators(void) { return m_InputTerminators; }
   void SetInputTerminators(const std::set<unsigned long>& term) { m_InputTerminators = term; }
 
@@ -193,7 +191,6 @@ protected:
   bool m_bNotifyFull;
   bool m_bStartFull;
 
-  bool m_bEchoLineInput;
   std::set<unsigned long> m_InputTerminators;
 
   bool m_bSpeak;
