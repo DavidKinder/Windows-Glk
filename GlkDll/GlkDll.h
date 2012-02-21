@@ -25,6 +25,7 @@ extern void (*UnregisterArrFn)(void *array, glui32 len, char *typecode, gidispat
 
 #include "GlkGraphic.h"
 #include "GlkSound.h"
+#include "GlkStream.h"
 #include "Resource.h"
 
 #include <set>
@@ -126,6 +127,7 @@ public:
 
   CWinGlkGraphic* LoadGraphic(int iNumber, BOOL bLoad, BOOL bApplyAlpha);
   CWinGlkSound* LoadSound(int iNumber);
+  CWinGlkResource* LoadResource(int iNumber);
 
   bool CanSpeakChar(wchar_t c);
   void Speak(LPCSTR pszText);

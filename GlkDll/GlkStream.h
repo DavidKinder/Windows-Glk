@@ -204,16 +204,72 @@ protected:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// WinGlk resource streams
+// Glk resource streams
 /////////////////////////////////////////////////////////////////////////////
 
-class CWinGlkStreamRes : public CWinGlkStreamMem
+struct CWinGlkResource
 {
-  DECLARE_DYNAMIC(CWinGlkStreamRes)
+  CWinGlkResource(char* pData, glui32 Length, bool bText, bool bFreeData);
+  ~CWinGlkResource();
+
+  char* m_pData;
+  glui32 m_Length;
+  bool m_bText;
+  bool m_bFreeData;
+};
+
+class CWinGlkStreamResource : public CWinGlkStream
+{
+  DECLARE_DYNAMIC(CWinGlkStreamResource)
 
 public:
-  CWinGlkStreamRes(LPCTSTR pszName, LPCTSTR pszType, glui32 Rock);
-  virtual ~CWinGlkStreamRes();
+  CWinGlkStreamResource(CWinGlkResource* pRes, glui32 Rock);
+  virtual ~CWinGlkStreamResource();
+
+  virtual void PutCharacter(glui32 c);
+  virtual glsi32 GetCharacter(void);
+
+  virtual void SetPosition(glsi32 Pos, glui32 Mode);
+  virtual glui32 GetPosition(void);
+
+protected:
+  CWinGlkResource* m_pResource;
+  glui32 m_Position;
+};
+
+class CWinGlkStreamResourceUni : public CWinGlkStream
+{
+  DECLARE_DYNAMIC(CWinGlkStreamResourceUni)
+
+public:
+  CWinGlkStreamResourceUni(CWinGlkResource* pRes, glui32 Rock);
+  virtual ~CWinGlkStreamResourceUni();
+
+  virtual void PutCharacter(glui32 c);
+  virtual glsi32 GetCharacter(void);
+
+  virtual void SetPosition(glsi32 Pos, glui32 Mode);
+  virtual glui32 GetPosition(void);
+
+protected:
+  int GetNextChar(void);
+
+  CWinGlkResource* m_pResource;
+  glui32 m_Position;
+};
+
+/////////////////////////////////////////////////////////////////////////////
+// WinGlk Windows resource streams (that is, resources embedded in
+// Windows executables)
+/////////////////////////////////////////////////////////////////////////////
+
+class CWinGlkStreamWindowsResource : public CWinGlkStreamMem
+{
+  DECLARE_DYNAMIC(CWinGlkStreamWindowsResource)
+
+public:
+  CWinGlkStreamWindowsResource(LPCTSTR pszName, LPCTSTR pszType, glui32 Rock);
+  virtual ~CWinGlkStreamWindowsResource();
 
 protected:
   HGLOBAL m_hStream;

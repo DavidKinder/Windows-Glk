@@ -18,6 +18,41 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+namespace {
+
+int GetFilePart(const CString& path)
+{
+  int start1 = path.ReverseFind('\\');
+  int start2 = path.ReverseFind('/');
+  if (start1 < 0)
+    start1 = 0;
+  if (start2 < 0)
+    start2 = 0;
+  return (start1 > start2) ? start1 : start2;
+}
+
+void AddExt(CString& path, glui32 usage)
+{
+  if (path.Find('.',GetFilePart(path)) < 0)
+  {
+    switch (usage & fileusage_TypeMask)
+    {
+    case fileusage_Data:
+      path.Append(".glkdata");
+      break;
+    case fileusage_SavedGame:
+      path.Append(".glksave");
+      break;
+    case fileusage_Transcript:
+    case fileusage_InputRecord:
+      path.Append(".txt");
+      break;
+    }
+  }
+}
+
+} // unnamed namespace
+
 /////////////////////////////////////////////////////////////////////////////
 // Class for Glk file references
 /////////////////////////////////////////////////////////////////////////////
@@ -73,18 +108,46 @@ CString& CWinGlkFileRef::GetFileName(void)
   return m_strFileName;
 }
 
-void CWinGlkFileRef::SetFileName(LPCTSTR pszFileName, bool bValidate)
+void CWinGlkFileRef::SetFileName(LPCTSTR pszFileName, glui32 Usage, bool bFullPath, bool bSetExt)
 {
   if (pszFileName)
-  {
     m_strFileName = pszFileName;
-    if (bValidate)
+  else
+    m_strFileName.Empty();
+
+  // Remove any illegal characters
+  {
+    const char* illegal = bFullPath ? "<>\"|?*" : "/\\<>:\"|?*";
+    char find[2] = { '\0','\0' };
+
+    for (const char* p = illegal; *p != '\0'; p++)
     {
-      m_strFileName.Replace('\\','-');
-      m_strFileName.Replace('/','-');
-      m_strFileName.Replace(':','-');
+      find[0] = *p;
+      m_strFileName.Replace(find,"");
     }
   }
+
+  // Save the file name as it would have been under the old algorithm
+  CString oldAlgoName = m_strFileName;
+
+  // If required, remove any existing filename extension
+  if (bSetExt)
+  {
+    int i = m_strFileName.Find('.',GetFilePart(m_strFileName));
+    if (i >= 0)
+      m_strFileName.Truncate(i);
+  }
+
+  // If the filename is now empty, set it to 'null'
+  if (m_strFileName.IsEmpty())
+    m_strFileName = "null";
+
+  // If there is no file extension, add an appropriate one
+  AddExt(m_strFileName,Usage);
+
+  // If the file name exists under the old algorithm, but not the new one, use the old name
+  if (!FileExists() && (::GetFileAttributes(oldAlgoName) != 0xFFFFFFFF))
+    m_strFileName = oldAlgoName;
 }
 
 bool CWinGlkFileRef::GetIsText(void)
@@ -214,21 +277,21 @@ CWinGlkFileRef* CWinGlkFileRef::PromptForName(glui32 Usage, glui32 FileMode, glu
   if (FileDlg.DoModal() == IDOK)
   {
     pFileRef = new CWinGlkFileRef(Usage,Rock);
-    pFileRef->SetFileName(FileDlg.GetPathName());
+    pFileRef->SetFileName(FileDlg.GetPathName(),Usage,true,false);
 
     switch (Usage & fileusage_TypeMask)
     {
     case fileusage_Data:
-      m_strData = FileDlg.GetPathName();
+      m_strData = pFileRef->GetFileName();
       break;
     case fileusage_SavedGame:
-      m_strSaved = FileDlg.GetPathName();
+      m_strSaved = pFileRef->GetFileName();
       break;
     case fileusage_Transcript:
-      m_strTranscript = FileDlg.GetPathName();
+      m_strTranscript = pFileRef->GetFileName();
       break;
     case fileusage_InputRecord:
-      m_strRecord = FileDlg.GetPathName();
+      m_strRecord = pFileRef->GetFileName();
       break;
     }
   }
@@ -243,12 +306,8 @@ void CWinGlkFileRef::SetDefaultNames(LPCTSTR pszGameName)
   m_strTranscript = pszGameName;
   m_strRecord = pszGameName;
 
-  if (m_strData.Find('.') < 0)
-    m_strData += ".dat";
-  if (m_strSaved.Find('.') < 0)
-    m_strSaved += ".sav";
-  if (m_strTranscript.Find('.') < 0)
-    m_strTranscript += ".txt";
-  if (m_strRecord.Find('.') < 0)
-    m_strRecord += ".rec";
+  AddExt(m_strData,fileusage_Data);
+  AddExt(m_strSaved,fileusage_SavedGame);
+  AddExt(m_strTranscript,fileusage_Transcript);
+  AddExt(m_strRecord,fileusage_InputRecord);
 }

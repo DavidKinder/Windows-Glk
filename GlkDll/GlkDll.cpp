@@ -14,7 +14,6 @@
 #include "GlkFileRef.h"
 #include "GlkMainWnd.h"
 #include "GlkSndChannel.h"
-#include "GlkStream.h"
 #include "GlkTalk.h"
 #include "GlkTime.h"
 #include "GlkUnicode.h"
@@ -991,6 +990,59 @@ CWinGlkSound* CGlkApp::LoadSound(int iNumber)
     }
   }
   return pSound;
+}
+
+CWinGlkResource* CGlkApp::LoadResource(int iNumber)
+{
+  glui32 id = 0;
+
+  char* pData = NULL;
+  glui32 iLength = 0;
+  bool bFreeData = false;
+
+  // First try to load from the Blorb resource map
+  if (m_pBlorbMap)
+  {
+    giblorb_result_t Result;
+    if (giblorb_load_resource(m_pBlorbMap,giblorb_method_Memory,&Result,giblorb_ID_Data,iNumber) == giblorb_err_None)
+    {
+      pData = (char*)Result.data.ptr;
+      iLength = Result.length;
+      id = Result.chunktype;
+    }
+  }
+
+  // Now try to load from a file
+  if (id == 0)
+  {
+    CFile ResFile;
+    if (ResFile.Open(FileName("data",iNumber,"txt"),CFile::modeRead))
+    {
+      iLength = (UINT)ResFile.GetLength();
+      pData = new char[iLength];
+      ResFile.Read(pData,iLength);
+      id = giblorb_ID_TEXT;
+      bFreeData = true;
+    }
+    else if (ResFile.Open(FileName("data",iNumber,"bin"),CFile::modeRead))
+    {
+      iLength = (UINT)ResFile.GetLength();
+      pData = new char[iLength];
+      ResFile.Read(pData,iLength);
+      id = giblorb_ID_BINA;
+      bFreeData = true;
+    }
+  }
+
+  // Has a resource been found?
+  if (id != 0)
+  {
+    if (id == giblorb_ID_TEXT)
+      return new CWinGlkResource(pData,iLength,true,bFreeData);
+    else if (id == giblorb_ID_BINA)
+      return new CWinGlkResource(pData,iLength,false,bFreeData);
+  }
+  return 0;
 }
 
 CString CGlkApp::FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix)
@@ -1991,7 +2043,7 @@ extern "C" frefid_t glk_fileref_create_by_name(glui32 usage, char *name, glui32 
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   CWinGlkFileRef* pFileRef = new CWinGlkFileRef(usage,rock);
-  pFileRef->SetFileName(name,true);
+  pFileRef->SetFileName(name,usage,false,true);
 
   return (frefid_t)pFileRef;
 }
@@ -2870,12 +2922,18 @@ extern "C" glsi32 glk_date_to_simple_time_local(glkdate_t* date, glui32 factor)
 
 extern "C" strid_t glk_stream_open_resource(glui32 filenum, glui32 rock)
 {
-  return 0;
+  CWinGlkResource* pData = ((CGlkApp*)AfxGetApp())->LoadResource(filenum);
+  if (pData == NULL)
+    return 0;
+  return (strid_t)new CWinGlkStreamResource(pData,rock);
 }
 
 extern "C" strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock)
 {
-  return 0;
+  CWinGlkResource* pData = ((CGlkApp*)AfxGetApp())->LoadResource(filenum);
+  if (pData == NULL)
+    return 0;
+  return (strid_t)new CWinGlkStreamResourceUni(pData,rock);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -3002,7 +3060,7 @@ extern "C" strid_t winglk_stream_open_resource(const char* name, const char* typ
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   if ((name != NULL) && (type != NULL))
-    return (strid_t)new CWinGlkStreamRes(name,type,rock);
+    return (strid_t)new CWinGlkStreamWindowsResource(name,type,rock);
   return 0;
 }
 
@@ -3171,7 +3229,7 @@ extern "C" frefid_t winglk_fileref_create_by_name(glui32 usage, char *name, glui
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   CWinGlkFileRef* pFileRef = new CWinGlkFileRef(usage,rock);
-  pFileRef->SetFileName(name,validate != 0);
+  pFileRef->SetFileName(name,usage,validate == 0,false);
 
   return (frefid_t)pFileRef;
 }

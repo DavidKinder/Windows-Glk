@@ -418,7 +418,7 @@ bool CWinGlkStreamFile::OpenFile(CWinGlkFileRef* pFileRef, glui32 Mode)
     // Create the temporary file name here
     ::GetTempPath(MAX_PATH,pszTempDir);
     ::GetTempFileName(pszTempDir,"glk",0,pszTempFile);
-    pFileRef->SetFileName(pszTempFile);
+    pFileRef->SetFileName(pszTempFile,fileusage_Data,true,false);
   }
 
   if (create)
@@ -440,7 +440,7 @@ bool CWinGlkStreamFile::OpenFile(CWinGlkFileRef* pFileRef, glui32 Mode)
   if (m_pHandle && (Mode == filemode_WriteAppend))
     fseek(m_pHandle,0,SEEK_END);
 
-  return m_pHandle ? true : false;
+  return (m_pHandle != NULL);
 }
 
 void CWinGlkStreamFile::SetNextOperation(glui32 oper)
@@ -703,13 +703,205 @@ glui32 CWinGlkStreamMemUni::GetPosition(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// WinGlk resource streams
+// Glk resource streams
 /////////////////////////////////////////////////////////////////////////////
 
-IMPLEMENT_DYNAMIC(CWinGlkStreamRes,CWinGlkStreamMem);
+CWinGlkResource::CWinGlkResource(char* pData, glui32 Length, bool bText, bool bFreeData)
+{
+  m_pData = pData;
+  m_Length = Length;
+  m_bText = bText;
+  m_bFreeData = bFreeData;
+}
 
-CWinGlkStreamRes::CWinGlkStreamRes(LPCTSTR pszName, LPCTSTR pszType, glui32 Rock) :
-  CWinGlkStreamMem(NULL,0,Rock)
+CWinGlkResource::~CWinGlkResource()
+{
+  if (m_bFreeData)
+    delete[] m_pData;
+}
+
+IMPLEMENT_DYNAMIC(CWinGlkStreamResource,CWinGlkStream);
+
+CWinGlkStreamResource::CWinGlkStreamResource(CWinGlkResource* pRes, glui32 Rock) : CWinGlkStream(Rock)
+{
+  m_pResource = pRes;
+  m_Position = 0;
+}
+
+CWinGlkStreamResource::~CWinGlkStreamResource()
+{
+  delete m_pResource;
+}
+
+void CWinGlkStreamResource::PutCharacter(glui32 c)
+{
+}
+
+glsi32 CWinGlkStreamResource::GetCharacter(void)
+{
+  glsi32 Character = -1;
+
+  if (m_Position < m_pResource->m_Length)
+    Character = (unsigned char)m_pResource->m_pData[m_Position++];
+
+  if (Character != -1)
+    m_iReadCount++;
+  return Character;
+}
+
+void CWinGlkStreamResource::SetPosition(glsi32 Pos, glui32 Mode)
+{
+  if (Mode == seekmode_Current)
+    m_Position += Pos;
+  else if (Mode == seekmode_End)
+    m_Position = m_pResource->m_Length + Pos;
+  else
+    m_Position = Pos;
+
+  if (m_Position < 0)
+    m_Position = 0;
+  if (m_Position > m_pResource->m_Length)
+    m_Position = m_pResource->m_Length;
+}
+
+glui32 CWinGlkStreamResource::GetPosition(void)
+{
+  return m_Position;
+}
+
+IMPLEMENT_DYNAMIC(CWinGlkStreamResourceUni,CWinGlkStream);
+
+CWinGlkStreamResourceUni::CWinGlkStreamResourceUni(CWinGlkResource* pRes, glui32 Rock) : CWinGlkStream(Rock)
+{
+  m_pResource = pRes;
+  m_Position = 0;
+}
+
+CWinGlkStreamResourceUni::~CWinGlkStreamResourceUni()
+{
+  delete m_pResource;
+}
+
+void CWinGlkStreamResourceUni::PutCharacter(glui32 c)
+{
+}
+
+glsi32 CWinGlkStreamResourceUni::GetCharacter(void)
+{
+  glsi32 Character = -1;
+
+  if (m_pResource->m_bText)
+  {
+    // Read a UTF-8 encoded character
+    glui32 uc = 0;
+    int c0, c1, c2, c3;
+
+    c0 = GetNextChar();
+    if (c0 == -1)
+      return -1;
+    if (c0 < 0x80)
+      uc = c0;
+    else
+    {
+      c1 = GetNextChar();
+      if (c1 == -1)
+        return -1;
+      if ((c1 & 0xC0) != 0x80)
+        return -1;
+      if ((c0 & 0xE0) == 0xC0)
+      {
+        uc = (c0 & 0x1F) << 6;
+        uc |= (c1 & 0x3F);
+      }
+      else
+      {
+        c2 = GetNextChar();
+        if (c2 == -1)
+          return -1;
+        if ((c2 & 0xC0) != 0x80)
+          return -1;
+        if ((c0 & 0xF0) == 0xE0)
+        {
+          uc = (((c0 & 0xF)<<12)  & 0x0000F000);
+          uc |= (((c1 & 0x3F)<<6) & 0x00000FC0);
+          uc |= (((c2 & 0x3F))    & 0x0000003F);
+        }
+        else if ((c0 & 0xF0) == 0xF0)
+        {
+          c3 = GetNextChar();
+          if (c3 == -1)
+            return -1;
+          if ((c3 & 0xC0) != 0x80)
+            return -1;
+          uc = (((c0 & 0x7)<<18)   & 0x1C0000);
+          uc |= (((c1 & 0x3F)<<12) & 0x03F000);
+          uc |= (((c2 & 0x3F)<<6)  & 0x000FC0);
+          uc |= (((c3 & 0x3F))     & 0x00003F);
+        }
+        else
+          return -1;
+      }
+    }
+    Character = uc;
+  }
+  else
+  {
+    // Read a 32-bit binary value
+    glui32 uc = 0;
+    for (int i = 0; i < 4; i++)
+    {
+      uc <<= 8;
+
+      int c = GetNextChar();
+      if (c == -1)
+        return -1;
+      uc |= (c & 0xFF);
+    }
+    Character = uc;
+  }
+
+  if (Character != -1)
+    m_iReadCount++;
+  return Character;
+}
+
+void CWinGlkStreamResourceUni::SetPosition(glsi32 Pos, glui32 Mode)
+{
+  if (Mode == seekmode_Current)
+    m_Position += Pos;
+  else if (Mode == seekmode_End)
+    m_Position = m_pResource->m_Length + Pos;
+  else
+    m_Position = Pos;
+
+  if (m_Position < 0)
+    m_Position = 0;
+  if (m_Position > m_pResource->m_Length)
+    m_Position = m_pResource->m_Length;
+}
+
+glui32 CWinGlkStreamResourceUni::GetPosition(void)
+{
+  return m_Position;
+}
+
+int CWinGlkStreamResourceUni::GetNextChar(void)
+{
+  int c = -1;
+  if (m_Position < m_pResource->m_Length)
+    c = (unsigned char)m_pResource->m_pData[m_Position++];
+  return c;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// WinGlk Windows resource streams (that is, resources embedded in
+// Windows executables)
+/////////////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_DYNAMIC(CWinGlkStreamWindowsResource,CWinGlkStreamMem);
+
+CWinGlkStreamWindowsResource::CWinGlkStreamWindowsResource(LPCTSTR pszName,
+  LPCTSTR pszType, glui32 Rock) : CWinGlkStreamMem(NULL,0,Rock)
 {
   HRSRC rStream = ::FindResource(NULL,pszName,pszType);
   if (rStream)
@@ -723,7 +915,7 @@ CWinGlkStreamRes::CWinGlkStreamRes(LPCTSTR pszName, LPCTSTR pszType, glui32 Rock
   }
 }
 
-CWinGlkStreamRes::~CWinGlkStreamRes()
+CWinGlkStreamWindowsResource::~CWinGlkStreamWindowsResource()
 {
   if (m_hStream)
     GlobalUnlock(m_hStream);

@@ -35,7 +35,7 @@ public:
   gidispatch_rock_t& GetDispRock(void) { return m_DispRock; }
 
   CString& GetFileName(void);
-  void SetFileName(LPCTSTR pszFileName, bool bValidate = false);
+  void SetFileName(LPCTSTR pszFileName, glui32 Usage, bool bFullPath, bool bSetExt);
 
   bool GetIsText(void);
   bool GetIsTemporary(void);

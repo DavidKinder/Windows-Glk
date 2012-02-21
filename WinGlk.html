@@ -440,10 +440,11 @@ equals sign, then a value, e.g. "WindowBorders=no". Possible keys are:<br>
 
 <h3>strid_t winglk_stream_open_resource(const char* name, const char* type, glui32 rock)</h3>
 
-<p>This function opens a Glk memory stream using a resource. The first two arguments specify
-the name and type of the resource. For example, if data has been stored in the resources of
-the executable as "EXAMPLE" in the resource type "DATA", then the stream could be opened with
-rock value 1 by the following call:
+<p>This function opens a Glk memory stream from a Windows resource (that is, a Win32 resource
+embedded in the executable). The first two arguments specify the name and type of the Win32
+resource. For example, if data has been stored in the resources of the executable as "EXAMPLE"
+in the resource type "DATA", then the stream could be opened with rock value 1 by the
+following call:
 
 <pre>
   strid_t str = winglk_stream_open_resource("EXAMPLE","DATA",1);
@@ -534,7 +535,7 @@ Windows Glk will look if the resource is not in the Blorb file (as an example, t
 for resource number 1):
 
 <blockquote>
-<table border="0" cellpadding="4" cellspacing="0">
+<table border="1" cellpadding="4" cellspacing="0" bordercolor="black">
   <tr>
     <td nowrap><strong>Format</strong></td>
     <td nowrap><strong>Type</strong></td>
@@ -561,9 +562,19 @@ for resource number 1):
     <td>mus1.mod</td>
   </tr>
   <tr>
-    <td nowrap>OGGV</td>
+    <td nowrap>Ogg Vorbis</td>
     <td nowrap>music</td>
     <td>mus1.ogg</td>
+  </tr>
+  <tr>
+    <td nowrap>text</td>
+    <td nowrap>data</td>
+    <td>data1.txt</td>
+  </tr>
+  <tr>
+    <td nowrap>binary</td>
+    <td nowrap>data</td>
+    <td>data1.bin</td>
   </tr>
 </table>
 </blockquote>
