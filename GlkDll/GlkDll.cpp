@@ -1041,6 +1041,8 @@ CWinGlkResource* CGlkApp::LoadResource(int iNumber)
       return new CWinGlkResource(pData,iLength,true,bFreeData);
     else if (id == giblorb_ID_BINA)
       return new CWinGlkResource(pData,iLength,false,bFreeData);
+    else if (id == giblorb_make_id('F','O','R','M'))
+      return new CWinGlkResource(pData,iLength,false,bFreeData);
   }
   return 0;
 }
