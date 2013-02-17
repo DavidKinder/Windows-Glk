@@ -19,6 +19,10 @@ glulxe_profile: CFLAGS = -I../Include -DVM_PROFILING
 glulxe_profile: $(OBJS) libglk.a
 	$(CC) -s -o $(OUTPUT)_profile $(OBJS) $(LIBS)
 
+glulxe_nomemcheck: CFLAGS = -I../Include -DVERIFY_MEMORY_ACCESS=0
+glulxe_nomemcheck: $(OBJS) libglk.a
+	$(CC) -s -o $(OUTPUT)\ \(no\ memory\ checks\) $(OBJS) $(LIBS)
+
 res.o: glulxe.rc
 	windres $^ $@
 

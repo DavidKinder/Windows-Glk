@@ -70,7 +70,18 @@ int winglk_startup_code(const char* cmdline)
   if (pszSeparator != 0)
   {
     strcpy(pszSeparator,".chm");
-    winglk_set_help_file(sExeName);
+    if (GetFileAttributes(sExeName) != INVALID_FILE_ATTRIBUTES)
+      winglk_set_help_file(sExeName);
+    else
+    {
+      pszSeparator = strrchr(sExeName,'(');
+      if (pszSeparator > sExeName)
+      {
+        strcpy(pszSeparator-1,".chm");
+        if (GetFileAttributes(sExeName) != INVALID_FILE_ATTRIBUTES)
+          winglk_set_help_file(sExeName);
+      }
+    }
   }
 
   /* First look for a Blorb file with the same name as the executable. */

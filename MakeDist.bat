@@ -17,6 +17,7 @@ pushd \Programs
 popd
 
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip Executables\Release\Glulxe.*
+"%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip "Executables\Release\Glulxe (no memory checks).exe"
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip Executables\Release\Glk*.dll
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip Executables\Release\ScaleGfx.dll
 

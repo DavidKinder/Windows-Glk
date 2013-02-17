@@ -130,7 +130,7 @@ Section "MainInstall" ;No components page, name is not important
   File ..\Executables\Release\Glk.dll
   File ..\Executables\Release\GlkEspañol.dll
   File ..\Executables\Release\GlkItaliano.dll
-  File ..\Executables\Release\Glulxe.exe
+  File ..\Executables\Release\Glulxe*.exe
   File ..\Executables\Release\Glulxe.chm
   File ..\Executables\Release\ScaleGfx.dll
 
@@ -309,7 +309,7 @@ noProblemUninstall:
   Delete $INSTDIR\Glk.dll
   Delete $INSTDIR\GlkEspañol.dll
   Delete $INSTDIR\GlkItaliano.dll
-  Delete $INSTDIR\Glulxe.exe
+  Delete $INSTDIR\Glulxe*.exe
   Delete $INSTDIR\Glulxe.chm
   Delete $INSTDIR\ScaleGfx.dll
   Delete $INSTDIR\Uninstall.exe
