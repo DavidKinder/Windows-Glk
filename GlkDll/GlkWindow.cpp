@@ -1121,9 +1121,12 @@ void CWinGlkWndPair::SetArrangement(glui32 Method, glui32 Size, CWinGlkWnd* pKey
 
 void CWinGlkWndPair::GetArrangement(glui32* MethodPtr, glui32* SizePtr, CWinGlkWnd** pKeyPtr)
 {
-  *MethodPtr = m_Method;
-  *SizePtr = m_Size;
-  *pKeyPtr = m_pKey;
+  if (MethodPtr)
+    *MethodPtr = m_Method;
+  if (SizePtr)
+    *SizePtr = m_Size;
+  if (pKeyPtr)
+    *pKeyPtr = m_pKey;
 }
 
 
