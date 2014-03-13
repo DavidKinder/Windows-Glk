@@ -85,8 +85,6 @@ void CWinGlkStyles::ReadSettings(LPCTSTR pszFormat, int iVersion)
     pStyle->m_Weight = pApp->GetProfileInt(strSection,"Weight",pStyle->m_Weight);
     pStyle->m_Oblique = pApp->GetProfileInt(strSection,"Oblique",pStyle->m_Oblique);
     pStyle->m_Proportional = pApp->GetProfileInt(strSection,"Proportional",pStyle->m_Proportional);
-    pStyle->m_TextColour = pApp->GetProfileInt(strSection,"Text Colour",pStyle->m_TextColour);
-    pStyle->m_BackColour = pApp->GetProfileInt(strSection,"Back Colour",pStyle->m_BackColour);
     pStyle->m_ReverseColour = pApp->GetProfileInt(strSection,"Reverse Colour",pStyle->m_ReverseColour);
   }
 
@@ -113,8 +111,6 @@ void CWinGlkStyles::WriteSettings(LPCTSTR pszFormat)
       pApp->WriteProfileInt(strSection,"Weight",pStyle->m_Weight);
       pApp->WriteProfileInt(strSection,"Oblique",pStyle->m_Oblique);
       pApp->WriteProfileInt(strSection,"Proportional",pStyle->m_Proportional);
-      pApp->WriteProfileInt(strSection,"Text Colour",pStyle->m_TextColour);
-      pApp->WriteProfileInt(strSection,"Back Colour",pStyle->m_BackColour);
       pApp->WriteProfileInt(strSection,"Reverse Colour",pStyle->m_ReverseColour);
     }
   }

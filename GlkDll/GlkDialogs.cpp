@@ -159,8 +159,6 @@ CWinGlkGeneralPage::CWinGlkGeneralPage()
 {
   //{{AFX_DATA_INIT(CWinGlkGeneralPage)
   m_bBorders = FALSE;
-  m_bLinkColour = FALSE;
-  m_bUnderlineColour = FALSE;
   m_bGUI = FALSE;
   m_bStyleHints = FALSE;
   m_iFiction = 0;
@@ -171,50 +169,57 @@ void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
 {
   CPropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CWinGlkGeneralPage)
-  DDX_Control(pDX, IDC_USE_LINK_COLOUR, m_UseLinkColour);
   DDX_Check(pDX, IDC_BORDERS, m_bBorders);
-  DDX_Check(pDX, IDC_USE_LINK_COLOUR, m_bLinkColour);
-  DDX_Check(pDX, IDC_USE_LINK_UNDER, m_bUnderlineColour);
   DDX_Check(pDX, IDC_GUI, m_bGUI);
   DDX_Check(pDX, IDC_STYLEHINT, m_bStyleHints);
   DDX_CBIndex(pDX, IDC_SHOW_IFICTION, m_iFiction);
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CWinGlkGeneralPage, CPropertyPage)
-  //{{AFX_MSG_MAP(CWinGlkGeneralPage)
-  ON_BN_CLICKED(IDC_USE_LINK_COLOUR, OnUseLinkColour)
-  //}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 BOOL CWinGlkGeneralPage::OnInitDialog() 
 {
   CPropertyPage::OnInitDialog();
 
+  m_Text.SubclassDlgItem(IDC_TEXT_COLOUR,this);
+  m_Back.SubclassDlgItem(IDC_BACK_COLOUR,this);
   m_Link.SubclassDlgItem(IDC_LINK_COLOUR,this);
-  SetControlState();
 
+  SetControlState();
   return TRUE;
 }
 
-void CWinGlkGeneralPage::OnUseLinkColour() 
+COLORREF CWinGlkGeneralPage::GetTextColour(void)
 {
-  SetControlState();
+  return m_Text.GetCurrentColour();
 }
 
-COLORREF CWinGlkGeneralPage::GetCustomLinkColour(void)
+void CWinGlkGeneralPage::SetTextColour(COLORREF Colour)
+{
+  m_Text.SetCurrentColour(Colour);
+}
+
+COLORREF CWinGlkGeneralPage::GetBackColour(void)
+{
+  return m_Back.GetCurrentColour();
+}
+
+void CWinGlkGeneralPage::SetBackColour(COLORREF Colour)
+{
+  m_Back.SetCurrentColour(Colour);
+}
+
+COLORREF CWinGlkGeneralPage::GetLinkColour(void)
 {
   return m_Link.GetCurrentColour();
 }
 
-void CWinGlkGeneralPage::SetCustomLinkColour(COLORREF Colour)
+void CWinGlkGeneralPage::SetLinkColour(COLORREF Colour)
 {
   m_Link.SetCurrentColour(Colour);
 }
 
 void CWinGlkGeneralPage::SetControlState(void)
 {
-  m_Link.EnableWindow(m_UseLinkColour.GetCheck() != 0);
   int ShowStartup = ((CGlkApp*)AfxGetApp())->GetGameInfo().showOptions ? SW_SHOW : SW_HIDE;
   GetDlgItem(IDC_STARTUP)->ShowWindow(ShowStartup);
   GetDlgItem(IDC_LABEL_IFICTION)->ShowWindow(ShowStartup);
@@ -337,9 +342,6 @@ BOOL CWinGlkStylePage::OnInitDialog()
 {
   CPropertyPage::OnInitDialog();
 
-  m_Text.SubclassDlgItem(IDC_TEXT_COLOUR,this);
-  m_Back.SubclassDlgItem(IDC_BACK_COLOUR,this);
-
   m_Indent.SetLimitText(32);
   m_ParaIndent.SetLimitText(32);
   m_Size.SetLimitText(32);
@@ -423,13 +425,6 @@ void CWinGlkStylePage::NewStyleValuesToDialog(const CWinGlkStyle& Style)
     m_iWeight = 2;
     break;
   }
-
-  m_Text.SetCurrentColour(CWinGlkWnd::GetColour(Style.m_TextColour));
-  if (m_Text.GetSafeHwnd())
-    m_Text.Invalidate();
-  m_Back.SetCurrentColour(CWinGlkWnd::GetColour(Style.m_BackColour));
-  if (m_Back.GetSafeHwnd())
-    m_Back.Invalidate();
 }
 
 void CWinGlkStylePage::SetCurrentStyle(int iWinType, int iStyle)
@@ -473,10 +468,7 @@ void CWinGlkStylePage::SetControlAndMsgState(void)
   GetDlgItem(IDC_JUSTIFICATION)->EnableWindow(bAllStyles);
   GetDlgItem(IDC_PROPORTIONAL)->EnableWindow(bAllStyles);
   GetDlgItem(IDC_WEIGHT)->EnableWindow(bAllStyles);
-
   GetDlgItem(IDC_REVERSE)->EnableWindow(bUserEdit);
-  m_Text.EnableWindow(bUserEdit);
-  m_Back.EnableWindow(bUserEdit);
 
   CString strMessage;
   LPCTSTR Icon;
@@ -539,33 +531,10 @@ void CWinGlkStylePage::StoreStyleSettings(void)
         break;
       }
 
-      pStyle->m_TextColour = ColourToGlk(m_Text.GetCurrentColour());
-      pStyle->m_BackColour = ColourToGlk(m_Back.GetCurrentColour());
-
       CWinGlkStyle* pNoHintStyle = m_pStyles->GetNoHintStyle(m_iStyle);
       *pNoHintStyle = *pStyle;
     }
   }
-}
-
-int CWinGlkStylePage::ColourToGlk(COLORREF Colour)
-{
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-  int iColour = 0;
-
-  if (Colour == ::GetSysColor(COLOR_WINDOWTEXT))
-    iColour = 0xFFFFFFFF;
-  else if (Colour == ::GetSysColor(COLOR_WINDOW))
-    iColour = 0xFFFFFFFE;
-  else
-  {
-    int r = GetRValue(Colour);
-    int g = GetGValue(Colour);
-    int b = GetBValue(Colour);
-
-    iColour = (r<<16) | (g<<8) | b;
-  }
-  return iColour;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -747,7 +716,7 @@ BOOL CAboutDialog::OnInitDialog()
   CString about;
   ctrl->GetWindowText(about);
   about.Replace("%glk%","0.7.4");
-  about.Replace("%winglk%","1.44");
+  about.Replace("%winglk%","1.45");
   ctrl->SetWindowText(about);
 
   const CString& appAbout = pApp->GetAppAboutText();

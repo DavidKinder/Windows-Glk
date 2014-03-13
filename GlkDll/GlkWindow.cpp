@@ -945,6 +945,15 @@ COLORREF CWinGlkWnd::GetColour(glsi32 iColour)
   switch (iColour)
   {
   case 0xFFFFFFFF:
+    iColour = ((CGlkApp*)AfxGetApp())->GetTextColour();
+    break;
+  case 0xFFFFFFFE:
+    iColour = ((CGlkApp*)AfxGetApp())->GetBackColour();
+    break;
+  }
+  switch (iColour)
+  {
+  case 0xFFFFFFFF:
     Colour = ::GetSysColor(COLOR_WINDOWTEXT);
     break;
   case 0xFFFFFFFE:
@@ -1219,10 +1228,7 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
       SetFontStyles(TextLogFont);
 
       if (m_Display.m_iLink != 0)
-      {
-        if (pApp->GetUnderlineLinks())
-          TextLogFont.lfUnderline = TRUE;
-      }
+        TextLogFont.lfUnderline = TRUE;
 
       TextLogFont.lfCharSet = ANSI_CHARSET;
       TextLogFont.lfOutPrecision = OUT_TT_PRECIS;

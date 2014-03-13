@@ -137,12 +137,6 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,162,94,53,9
     CONTROL         "In&vertido",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,162,106,43,9
-    RTEXT           "Color &texto",IDC_STATIC,14,121,37,9
-    CONTROL         "",IDC_TEXT_COLOUR,"Button",WS_TABSTOP,57,
-                    119,52,13
-    RTEXT           "&Fondo",IDC_STATIC,131,121,25,9
-    CONTROL         "",IDC_BACK_COLOUR,"Button",WS_TABSTOP,
-                    162,119,52,13
     GROUPBOX        "Propiedades de estilo",IDC_STYLE_STATIC,4,5,218,136
 END
 
@@ -161,14 +155,13 @@ BEGIN
     CONTROL         "E&stilos sugeridos prevalecen sobre los del usuario",
                     IDC_STYLEHINT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,
                     41,175,8
-    GROUPBOX        "Hiperenlaces",IDC_LINKS_STATIC,4,59,218,42
-    CONTROL         "Usar color personalizado para &hiperenlaces",
-                    IDC_USE_LINK_COLOUR,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,19,73,158,9
-    CONTROL         "",IDC_LINK_COLOUR,"Button",WS_TABSTOP,
-                    185,70,27,13
-    CONTROL         "S&ubrayar hiperenlaces",IDC_USE_LINK_UNDER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,19,86,93,9
+    GROUPBOX        "Colores",IDC_LINKS_STATIC,4,59,218,42
+    LTEXT           "&Texto",IDC_STATIC,24,71,16,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,81,44,13
+    LTEXT           "&Fondo",IDC_STATIC,89,71,39,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,89,81,44,13
+    LTEXT           "&Hiperenlaces",IDC_STATIC,154,71,37,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,154,81,44,13
     GROUPBOX        "Inicio",IDC_STARTUP,4,105,218,36
     LTEXT           "Si el juego tiene registro de información iFiction, entonces, ¿mostrar diálogo?",
                     IDC_LABEL_IFICTION,13,116,136,18

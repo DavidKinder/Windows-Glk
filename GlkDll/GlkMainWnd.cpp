@@ -187,6 +187,49 @@ void CWinGlkViewWnd::SizeWindows(void)
 // CWinGlkMainWnd frame window, derived from the menu bar frame class
 /////////////////////////////////////////////////////////////////////////////
 
+static glsi32 ColourToGlk(COLORREF Colour)
+{
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  int iColour = 0;
+
+  if (Colour == ::GetSysColor(COLOR_WINDOWTEXT))
+    iColour = 0xFFFFFFFF;
+  else if (Colour == ::GetSysColor(COLOR_WINDOW))
+    iColour = 0xFFFFFFFE;
+  else
+  {
+    int r = GetRValue(Colour);
+    int g = GetGValue(Colour);
+    int b = GetBValue(Colour);
+
+    iColour = (r<<16) | (g<<8) | b;
+  }
+  return iColour;
+}
+
+static COLORREF GlkToColour(glsi32 iColour)
+{
+  COLORREF Colour;
+  switch (iColour)
+  {
+  case 0xFFFFFFFF:
+    Colour = ::GetSysColor(COLOR_WINDOWTEXT);
+    break;
+  case 0xFFFFFFFE:
+    Colour = ::GetSysColor(COLOR_WINDOW);
+    break;
+  default:
+    {
+      BYTE r = (BYTE)((iColour & 0x00FF0000) >> 16);
+      BYTE g = (BYTE)((iColour & 0x0000FF00) >> 8);
+      BYTE b = (BYTE)((iColour & 0x000000FF));
+      Colour = RGB(r,g,b);
+    }
+    break;
+  }
+  return Colour;
+}
+
 static UINT Indicators[] =
 {
   ID_SEPARATOR,
@@ -880,9 +923,9 @@ void CWinGlkMainWnd::OnOptions()
   GeneralPage.m_bGUI = pApp->GetEnableGUI();
   GeneralPage.m_bStyleHints = pApp->GetStyleHints();
 
-  GeneralPage.m_bLinkColour = pApp->GetColourLinks();
-  GeneralPage.m_bUnderlineColour = pApp->GetUnderlineLinks();
-  GeneralPage.SetCustomLinkColour(pApp->GetCustomLinkColour());
+  GeneralPage.SetTextColour(GlkToColour(pApp->GetTextColour()));
+  GeneralPage.SetBackColour(GlkToColour(pApp->GetBackColour()));
+  GeneralPage.SetLinkColour(pApp->GetLinkColour());
 
   GeneralPage.m_iFiction = pApp->Get_iFiction();
 
@@ -901,9 +944,9 @@ void CWinGlkMainWnd::OnOptions()
     bool bGUIChanged = pApp->SetEnableGUI(GeneralPage.m_bGUI ? true : false);
     pApp->SetStyleHints(GeneralPage.m_bStyleHints ? true : false);
 
-    pApp->SetColourLinks(GeneralPage.m_bLinkColour ? true : false);
-    pApp->SetUnderlineLinks(GeneralPage.m_bUnderlineColour ? true : false);
-    pApp->SetCustomLinkColour(GeneralPage.GetCustomLinkColour());
+    pApp->SetTextColour(ColourToGlk(GeneralPage.GetTextColour()));
+    pApp->SetBackColour(ColourToGlk(GeneralPage.GetBackColour()));
+    pApp->SetLinkColour(GeneralPage.GetLinkColour());
 
     pApp->Set_iFiction((CGlkApp::Show_iFiction)GeneralPage.m_iFiction);
 

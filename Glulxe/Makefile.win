@@ -1,6 +1,6 @@
-# Makefile for Windows Glulxe, compiled with Cygwin/MinGW GCC 3.4.4
+# Makefile for Windows Glulxe, compiled with MinGW GCC 2.95
 
-CC = gcc -O3 -mno-cygwin -mwindows
+CC = gcc-2 -O3 -mwindows
 LIBS = -L. -lglk
 OUTPUT = ../Executables/Release/Glulxe
 
@@ -24,14 +24,15 @@ glulxe_nomemcheck: $(OBJS) libglk.a
 	$(CC) -s -o $(OUTPUT)\ \(no\ memory\ checks\) $(OBJS) $(LIBS)
 
 res.o: glulxe.rc
-	windres $^ $@
+	windres --preprocessor "gcc-2 -E -xc-header -DRC_INVOKED" $^ $@
 
 libglk.a:
 	dlltool --dllname=Glk.dll --def=../GlkDll/Glk.def --output-lib=libglk.a
 
 chm:
-	-/cygdrive/c/Program\ Files\ \(x86\)/HTML\ Help\ Workshop/hhc help\\Glulxe.hhp
-	mv help/Glulxe.chm ../Executables/Release
+	-C:\\Program\ Files\ \(x86\)\\HTML\ Help\ Workshop\\hhc help\\Glulxe.hhp
+	copy help\\Glulxe.chm ..\\Executables\\Release
 
 clean:
-	rm -f *.o *.a
+	del *.o *.a
+

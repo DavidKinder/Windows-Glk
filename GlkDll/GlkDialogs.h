@@ -74,10 +74,7 @@ public:
 // Dialog Data
   //{{AFX_DATA(CWinGlkGeneralPage)
   enum { IDD = IDD_OPTIONS_GENERAL };
-  CButton  m_UseLinkColour;
   BOOL  m_bBorders;
-  BOOL  m_bLinkColour;
-  BOOL  m_bUnderlineColour;
   BOOL  m_bGUI;
   BOOL  m_bStyleHints;
   int   m_iFiction;
@@ -96,17 +93,21 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CWinGlkGeneralPage)
   virtual BOOL OnInitDialog();
-  afx_msg void OnUseLinkColour();
   //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
 
 public:
-  COLORREF GetCustomLinkColour(void);
-  void SetCustomLinkColour(COLORREF Colour);
+  COLORREF GetTextColour(void);
+  void SetTextColour(COLORREF Colour);
+  COLORREF GetBackColour(void);
+  void SetBackColour(COLORREF Colour);
+  COLORREF GetLinkColour(void);
+  void SetLinkColour(COLORREF Colour);
 
 protected:
   void SetControlState(void);
 
+  ColourButton m_Text;
+  ColourButton m_Back;
   ColourButton m_Link;
 };
 
@@ -166,12 +167,8 @@ protected:
   void NewStyleValuesToDialog(const CWinGlkStyle& Style);
   void SetControlAndMsgState(void);
   void StoreStyleSettings(void);
-  int ColourToGlk(COLORREF Colour);
 
 protected:
-  ColourButton m_Text;
-  ColourButton m_Back;
-
   CWinGlkStyles m_TextBufferStyles;
   CWinGlkStyles m_TextGridStyles;
   CWinGlkStyles* m_pStyles;

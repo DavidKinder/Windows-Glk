@@ -88,12 +88,6 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,162,100,58,9
     CONTROL         "Ro&vesciato",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,162,112,54,9
-    RTEXT           "C&olore testo",IDC_STATIC,14,127,37,9
-    CONTROL         "",IDC_TEXT_COLOUR,"Button",WS_TABSTOP,57,
-                    125,52,13
-    RTEXT           "S&fondo",IDC_STATIC,131,127,25,9
-    CONTROL         "",IDC_BACK_COLOUR,"Button",WS_TABSTOP,
-                    162,125,52,13
     GROUPBOX        "Proprietà",IDC_STYLE_STATIC,4,5,218,139
 END
 
@@ -111,13 +105,13 @@ BEGIN
                     8
     CONTROL         "Abilita &stili personalizzati",IDC_STYLEHINT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,19,41,175,8
-    GROUPBOX        "Collegamenti ipertestuali",IDC_LINKS_STATIC,4,59,218,42
-    CONTROL         "&Imposta colori personalizzati",IDC_USE_LINK_COLOUR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,73,137,9
-    CONTROL         "",IDC_LINK_COLOUR,"Button",WS_TABSTOP,
-                    177,70,27,13
-    CONTROL         "Sottolinea &collegamenti",IDC_USE_LINK_UNDER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,19,86,129,9
+    GROUPBOX        "Colori",IDC_LINKS_STATIC,4,59,218,42
+    LTEXT           "&Testo",IDC_STATIC,24,71,16,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,81,44,13
+    LTEXT           "S&fondo",IDC_STATIC,89,71,39,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,89,81,44,13
+    CTEXT           "&Collegamenti ipertestuali",IDC_STATIC,136,71,80,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,154,81,44,13
     GROUPBOX        "Avvio",IDC_STARTUP,4,105,218,39
     LTEXT           "Se il gioco contiene un i&Fiction record, mostra le informazioni",
                     IDC_LABEL_IFICTION,19,116,111,18

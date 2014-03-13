@@ -82,12 +82,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "David Kinder"
             VALUE "FileDescription", "Glk Library"
-            VALUE "FileVersion", "0, 7, 4, 44"
+            VALUE "FileVersion", "0, 7, 4, 45"
             VALUE "InternalName", "Glk"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2012 David Kinder"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2014 David Kinder"
             VALUE "OriginalFilename", "Glk.dll"
             VALUE "ProductName", "Glk Library"
-            VALUE "ProductVersion", "0, 7, 4, 44"
+            VALUE "ProductVersion", "0, 7, 4, 45"
         END
     END
     BLOCK "VarFileInfo"
@@ -163,10 +163,6 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,162,94,53,9
     CONTROL         "Re&verse",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,162,106,43,9
-    RTEXT           "&Text Colour",IDC_STATIC,14,121,37,9
-    PUSHBUTTON      "",IDC_TEXT_COLOUR,57,119,52,13
-    RTEXT           "Bac&kground",IDC_STATIC,117,121,39,9
-    PUSHBUTTON      "",IDC_BACK_COLOUR,162,119,52,13
     GROUPBOX        "Style Properties",IDC_STYLE_STATIC,4,5,219,136
 END
 
@@ -183,12 +179,13 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,31,28,139,8
     CONTROL         "&Style hints override user settings",IDC_STYLEHINT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,41,121,8
-    GROUPBOX        "Hyperlinks",IDC_LINKS_STATIC,4,59,218,42
-    CONTROL         "Use a custom &hyperlink colour",IDC_USE_LINK_COLOUR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,73,110,9
-    PUSHBUTTON      "",IDC_LINK_COLOUR,157,70,27,13
-    CONTROL         "&Underline hyperlinks",IDC_USE_LINK_UNDER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,31,86,82,9
+    GROUPBOX        "Colours",IDC_LINKS_STATIC,4,59,218,42
+    LTEXT           "&Text Colour",IDC_STATIC,24,71,16,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,81,44,13
+    LTEXT           "Bac&kground",IDC_STATIC,89,71,39,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,89,81,44,13
+    LTEXT           "&Hyperlinks",IDC_STATIC,154,71,37,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,154,81,44,13
     GROUPBOX        "Startup",IDC_STARTUP,4,105,218,36
     LTEXT           "If the game has an iFi&ction record, show the dialog",
                     IDC_LABEL_IFICTION,21,117,90,18

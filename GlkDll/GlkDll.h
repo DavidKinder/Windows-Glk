@@ -88,13 +88,13 @@ public:
   const std::set<unsigned long>& GetInputTerminators(void) { return m_InputTerminators; }
   void SetInputTerminators(const std::set<unsigned long>& term) { m_InputTerminators = term; }
 
-  bool GetColourLinks(void) { return m_bColourLinks; }
-  void SetColourLinks(bool bColour) { m_bColourLinks = bColour; }
-  bool GetUnderlineLinks(void) { return m_bUnderlineLinks; }
-  void SetUnderlineLinks(bool bUnderline) { m_bUnderlineLinks = bUnderline; }
-  COLORREF GetCustomLinkColour(void) { return m_CustomLinkColour; }
-  void SetCustomLinkColour(COLORREF Colour) { m_CustomLinkColour = Colour; }
-  COLORREF GetLinkColour(void);
+  COLORREF GetLinkColour(void) { return m_LinkColour; }
+  void SetLinkColour(COLORREF Colour) { m_LinkColour = Colour; }
+
+  glsi32 GetTextColour(void) { return m_TextColour; }
+  void SetTextColour(glsi32 Colour) { m_TextColour = Colour; }
+  glsi32 GetBackColour(void) { return m_BackColour; }
+  void SetBackColour(glsi32 Colour) { m_BackColour = Colour; }
 
   CString& GetAppName(void) { return m_strAppName; }
   CString& GetAppTitle(void) { return m_strAppTitle; }
@@ -199,9 +199,9 @@ protected:
   CString m_strVoice;
   int m_iSpeakRate;
 
-  bool m_bColourLinks;
-  bool m_bUnderlineLinks;
-  COLORREF m_CustomLinkColour;
+  COLORREF m_LinkColour;
+  glsi32 m_TextColour;
+  glsi32 m_BackColour;
 
   CString m_strAppName;
   CString m_strAppTitle;

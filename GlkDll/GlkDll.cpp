@@ -200,9 +200,7 @@ void CGlkApp::ReadSettings(void)
     m_strVoice = GetProfileString("Glk Settings","Voice","");
     m_iSpeakRate = GetProfileInt("Glk Settings","Speech Rate",0);
 
-    m_bColourLinks = GetProfileInt("Glk Settings","Colour Hyperlinks",0) ? true : false;
-    m_bUnderlineLinks = GetProfileInt("Glk Settings","Underline Hyperlinks",1) ? true : false;
-    m_CustomLinkColour = GetProfileInt("Glk Settings","Hyperlink Colour",RGB(0x00,0x00,0xFF));
+    m_LinkColour = GetProfileInt("Glk Settings","Hyperlink Colour",RGB(0x00,0x00,0xFF));
 
     m_strInitialDir = GetProfileString("Glk Settings","Directory","");
     m_iFiction = (Show_iFiction)GetProfileInt("Glk Settings","Show iFiction Dialog",
@@ -212,6 +210,8 @@ void CGlkApp::ReadSettings(void)
 
     CWinGlkWndTextBuffer::GetDefaultStyles()->ReadSettings("Glk Buffer Style %d",iVersion);
     CWinGlkWndTextGrid::GetDefaultStyles()->ReadSettings("Glk Grid Style %d",iVersion);
+    m_TextColour = GetProfileInt("Glk Buffer Style 0","Text Colour",0xFFFFFFFF);
+    m_BackColour = GetProfileInt("Glk Buffer Style 0","Back Colour",0xFFFFFFFE);
 
     m_bSettingsRead = true;
   }
@@ -248,9 +248,7 @@ void CGlkApp::WriteSettings(void)
     WriteProfileString("Glk Settings","Voice",m_strVoice);
     WriteProfileInt("Glk Settings","Speech Rate",m_iSpeakRate);
 
-    WriteProfileInt("Glk Settings","Colour Hyperlinks",m_bColourLinks ? 1 : 0);
-    WriteProfileInt("Glk Settings","Underline Hyperlinks",m_bUnderlineLinks ? 1 : 0);
-    WriteProfileInt("Glk Settings","Hyperlink Colour",m_CustomLinkColour);
+    WriteProfileInt("Glk Settings","Hyperlink Colour",m_LinkColour);
 
     WriteProfileString("Glk Settings","Directory",m_strInitialDir);
     WriteProfileInt("Glk Settings","Show iFiction Dialog",m_iFiction);
@@ -259,6 +257,8 @@ void CGlkApp::WriteSettings(void)
 
     CWinGlkWndTextBuffer::GetDefaultStyles()->WriteSettings("Glk Buffer Style %d");
     CWinGlkWndTextGrid::GetDefaultStyles()->WriteSettings("Glk Grid Style %d");
+    WriteProfileInt("Glk Buffer Style 0","Text Colour",m_TextColour);
+    WriteProfileInt("Glk Buffer Style 0","Back Colour",m_BackColour);
   }
 }
 
@@ -415,14 +415,6 @@ bool CGlkApp::SetEnableGUI(bool bEnableGUI)
     }
   }
   return bGUIChanged;
-}
-
-COLORREF CGlkApp::GetLinkColour(void)
-{
-  COLORREF LinkColour = RGB(0x00,0x00,0xFF);
-  if (GetColourLinks())
-    LinkColour = GetCustomLinkColour();
-  return LinkColour;
 }
 
 void CGlkApp::AddMenuName(CString& text)
