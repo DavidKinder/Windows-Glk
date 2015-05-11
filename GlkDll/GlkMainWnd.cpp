@@ -1139,7 +1139,7 @@ void CWinGlkMainWnd::ChangeFont(bool bFixed)
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   CFontDialog FontDlg(
     bFixed ? pApp->GetFixedFont() : pApp->GetPropFont(),
-    CF_SCREENFONTS|CF_NOSCRIPTSEL|(bFixed ? CF_FIXEDPITCHONLY : 0));
+    CF_SCREENFONTS|CF_NOSCRIPTSEL|CF_NOVERTFONTS|CF_SCALABLEONLY|(bFixed ? CF_FIXEDPITCHONLY : 0));
   if (FontDlg.DoModal() == IDOK)
   {
     GetTextOut().Reset();
