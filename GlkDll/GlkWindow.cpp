@@ -611,7 +611,7 @@ void CWinGlkWnd::InputChar(unsigned long InputChar)
               {
                 if (AllowMoreLineInput())
                 {
-                  for (int i = m_iLineEnd; i >= m_iLinePos; i--)
+                  for (int i = m_iLineEnd-1; i >= m_iLinePos; i--)
                     ((glui32*)m_pLineBuffer)[i+1] = ((glui32*)m_pLineBuffer)[i];
                   ((glui32*)m_pLineBuffer)[m_iLinePos++] = InputChar;
                   m_iLineEnd++;
@@ -627,7 +627,7 @@ void CWinGlkWnd::InputChar(unsigned long InputChar)
               {
                 if (AllowMoreLineInput())
                 {
-                  for (int i = m_iLineEnd; i >= m_iLinePos; i--)
+                  for (int i = m_iLineEnd-1; i >= m_iLinePos; i--)
                     ((char*)m_pLineBuffer)[i+1] = ((char*)m_pLineBuffer)[i];
                   ((char*)m_pLineBuffer)[m_iLinePos++] = (unsigned char)InputChar;
                   m_iLineEnd++;
