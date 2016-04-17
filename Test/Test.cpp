@@ -463,8 +463,9 @@ void test_user_1(void)
 {
   glk_set_style(style_Emphasized);
   glk_put_string("\nText in Style User 1\n");
-  glk_set_style(style_Normal);
 
+  glk_set_style(style_Normal);
+  glk_set_style(style_User1);
   glk_put_string("\nStarting test... ");
   for (int i = 0; i < 5; i++)
   {
