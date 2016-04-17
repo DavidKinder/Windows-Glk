@@ -19,6 +19,8 @@ extern "C"
 #include "glk.h"
 }
 
+#include <vector>
+
 /////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 /////////////////////////////////////////////////////////////////////////////
@@ -76,7 +78,7 @@ public:
   virtual void Scrollback(void);
 
   void InsertFlowBreak(void);
-  void SetNextEchoInput(bool bNext) { m_bNextEchoInput = bNext; }
+  void SetNextEchoInput(bool bNext) { m_NextEchoInput = bNext; }
 
 protected:
   //{{AFX_MSG(CWinGlkWndTextBuffer)
@@ -84,187 +86,153 @@ protected:
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
-protected:
+private:
+  // State used when measuring layout
+  struct MeasureState;
 
-  class CHyperlink : public CRect
+  // Base interface class for a display element (e.g. a word)
+  class ElementBase
   {
   public:
-    CHyperlink(const CRect& Rect, unsigned int iLink);
-    CHyperlink();
-
-    unsigned int m_iLink;
+    virtual ~ElementBase() {}
+    virtual void Measure(MeasureState& ms) = 0;
+    virtual void PrePaint(CWinGlkDC& dc) const = 0;
+    virtual void PaintFore(CWinGlkDC& dc, int x, int y) const = 0;
+    virtual void PaintBack(CWinGlkDC& dc, int x, int y, COLORREF defaultBack) const = 0;
+    virtual int Width() const = 0;
+    virtual int HeightAboveBase() const = 0;
+    virtual int HeightBelowBase() const = 0;
+    virtual bool IsWordSeparator() const = 0;
   };
 
-  class CPaintInfo
+  // An element representing a space between words
+  class ElementSpace : public ElementBase
   {
   public:
-    CPaintInfo(int iLeft, int iTop, int iWidth, int iHeight,
-      CWinGlkDC& DeviceContext, CArray<CHyperlink,CHyperlink&>& Hyperlinks);
-    ~CPaintInfo();
+    ElementSpace();
+    void SetJustifyWidth(int jw);
+    virtual void Measure(MeasureState& ms);
+    virtual void PrePaint(CWinGlkDC& dc) const;
+    virtual void PaintFore(CWinGlkDC& dc, int x, int y) const;
+    virtual void PaintBack(CWinGlkDC& dc, int x, int y, COLORREF defaultBack) const;
+    virtual int Width() const;
+    virtual int HeightAboveBase() const;
+    virtual int HeightBelowBase() const;
+    virtual bool IsWordSeparator() const;
 
-    void MarginAdd(CWinGlkGraphic* pGraphic);
-    void MarginPaint(CWinGlkGraphic* pGraphic, int iIndent);
-    void MarginPaintPrev(CWinGlkGraphic* pGraphic, int iOffset, int iIndent);
-    void NextLine(int iStep, bool bDown);
-    bool HasMarginGraphic(void);
-    int GetMaxMarginHeight(void);
-    void CheckHyperlink(const CRect& Rect);
-    void DrawGraphic(CWinGlkGraphic* pGraphic, int iLeft, int iTop);
-
-  public:
-    int m_iLeft;
-    int m_iTop;
-    int m_iWidth;
-    int m_iHeight;
-    CWinGlkDC& m_DeviceContext;
-
-  protected:
-    class CMarginInsert
-    {
-    public:
-      CMarginInsert();
-
-    public:
-      int m_iHeightLeft;
-      int m_iGraphicWidth;
-      bool m_bOnLeft;
-    };
-
-    CArray<CMarginInsert,CMarginInsert&> m_Margins;
-
-  protected:
-    CArray<CHyperlink,CHyperlink&>& m_Hyperlinks;
+  private:
+    int m_Width, m_JustifyWidth;
+    int m_HeightAboveBase, m_HeightBelowBase;
   };
 
-  class CLineFormat
+  // An element that shows a word
+  class ElementWord : public ElementBase
   {
   public:
-    CLineFormat();
-    ~CLineFormat();
+    ElementWord();
+    void PutCharacter(WCHAR c) { m_Text.AppendChar(c); }
+    virtual void Measure(MeasureState& ms);
+    virtual void PrePaint(CWinGlkDC& dc) const;
+    virtual void PaintFore(CWinGlkDC& dc, int x, int y) const;
+    virtual void PaintBack(CWinGlkDC& dc, int x, int y, COLORREF defaultBack) const;
+    virtual int Width() const;
+    virtual int HeightAboveBase() const;
+    virtual int HeightBelowBase() const;
+    virtual bool IsWordSeparator() const;
 
-  public:
-    int m_iFirstCharacter;
-    int m_iLastCharacter;
-    int m_iMaxAboveBaseline;
-    int m_iMaxBelowBaseline;
-    int m_iLineLength;
-    CArray<int,int> m_MarginIndexes;
+  private:
+    CStringW m_Text;
+    int m_Width, m_HeightAboveBase, m_HeightBelowBase;
   };
 
-  class CParagraph
+  // An element that changes the style
+  class ElementStyle : public ElementBase
   {
   public:
-    CParagraph(int iStyle, unsigned int iLink);
-    ~CParagraph();
+    ElementStyle(int style);
+    int GetStyle();
+    virtual void Measure(MeasureState& ms);
+    virtual void PrePaint(CWinGlkDC& dc) const;
+    virtual void PaintFore(CWinGlkDC& dc, int x, int y) const;
+    virtual void PaintBack(CWinGlkDC& dc, int x, int y, COLORREF defaultBack) const;
+    virtual int Width() const;
+    virtual int HeightAboveBase() const;
+    virtual int HeightBelowBase() const;
+    virtual bool IsWordSeparator() const;
 
-    void AddCharacter(wchar_t c);
-    bool AddGraphic(CWinGlkGraphic* pGraphic);
-    int GetLength();
-    void SetInitialStyle(int iStyle);
-    void SetInitialLink(unsigned int iLink);
-    void AddStyleChange(int iStyle);
-    void AddLinkChange(unsigned int iLink);
-
-    bool ClearFormatting(void);
-    void Format(CPaintInfo& Info);
-    void Update(CPaintInfo& Info, int& iOffset, CWinGlkWnd* pWnd);
-    bool Paint(CPaintInfo& Info, int& iFinalLeft, int& iFinalTop, bool bMark);
-    void SetAsShown(void);
-    void SetLastShown(int iIndex);
-    void HasHadInput(void);
-    void SetClearAll(void);
-    bool GetClearAll(void) const;
-
-    int GetCharCount(void) const;
-    int GetHeight(void) const;
-    int GetLastShown(void) const;
-    int GetFinalLastShown(void) const;
-    int LastShownHeight(void) const;
-    bool ShowIfLast(void) const;
-    int GetMargin(CWinGlkWnd* pWnd) const;
-
-    void AddInteger(unsigned int iValue);
-    unsigned int GetInteger(int iPos) const;
-
-    void Speak(void);
-
-    enum TextCodes
-    {
-      StyleChange = 1,
-      LinkChange,
-      InlineGraphic,
-      MarginGraphic,
-      FlowBreak,
-    };
-
-  protected:
-    struct CTextOut
-    {
-      CWinGlkDC::CDisplay m_Display;
-      CPoint m_Position;
-      CStringW m_Text;
-    };
-
-  protected:
-    bool TestLineLength(CPaintInfo& Info, CStringW& strLine,
-      CSize& Size, int& iLeftEdge, int iIndent, bool bFinal,
-      int& iIndex, int& iLastBreak, int& iLastPossible,
-      int& iLastLength, int& iMaxUp, int& iMaxDown, bool& bExit,
-      CArray<int,int>& MarginIndexes);
-    void TextOut(CLineFormat* pFormat, CPaintInfo& Info,
-      int& iLeft, wchar_t* pBuffer, int& iBufferPos);
-    void SetLastShown(CPaintInfo& Info, int iIndex);
-    int JustifyLength(CLineFormat* pFormat, CPaintInfo& Info,
-      wchar_t* pBuffer, int& iSpaces);
-
-  protected:
-    CArray<wchar_t,wchar_t> m_Text;
-    CArray<CLineFormat*,CLineFormat*> m_Formatting;
-    CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_InlineGraphics;
-    CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_MarginGraphics;
-    CArray<CTextOut,CTextOut&> m_TextOut;
-    int m_iInitialStyle;
-    unsigned int m_iInitialLink;
-    int m_iLastShown;
-    bool m_bSpoken;
-    bool m_bHadInput;
-    bool m_bClearAll;
-    static const int m_iIndentStep;
+  private:
+    int m_Style, m_HeightAboveBase, m_HeightBelowBase;
   };
 
-protected:
-  void Paint(bool bMark);
-  void CheckDeleteOldText(int iTop, int iClientHeight);
-  void PreparePaintInfo(CPaintInfo& Info, CRect& ClientArea,
-    int& iParagraph, int& iOffset, bool bMark);
-  bool ShowParagraph(int iPara);
-  void AddNewParagraph(void);
-  void GetLastShown(int &iLastPara, int& iLastChar);
-  void ClearFormatting(int iPara);
+  // An element that shows a graphic
+  class ElementGraphic : public ElementBase
+  {
+  public:
+    ElementGraphic(CWinGlkGraphic* graphic);
+    virtual ~ElementGraphic();
+    virtual void Measure(MeasureState& ms);
+    virtual void PrePaint(CWinGlkDC& dc) const;
+    virtual void PaintFore(CWinGlkDC& dc, int x, int y) const;
+    virtual void PaintBack(CWinGlkDC& dc, int x, int y, COLORREF defaultBack) const;
+    virtual int Width() const;
+    virtual int HeightAboveBase() const;
+    virtual int HeightBelowBase() const;
+    virtual bool IsWordSeparator() const;
 
-  template<class XCHAR> void PaintInputBuffer(
-    CWinGlkDC& dc, const XCHAR* input, int inputLen, CPaintInfo& Info);
-  template<class XCHAR> void GetTextFitIndexes(
-    CArray<int,int>& indexes, CWinGlkDC& dc, int width, int x1, const XCHAR* str, int strLen);
-  template<class XCHAR> int MeasureTextFit(
-    CWinGlkDC& dc, int width, const XCHAR* str, int strLen);
+  private:
+    CWinGlkGraphic* m_Graphic;
+    int m_HeightAboveBase;
+  };
 
-  CArray<CParagraph*,CParagraph*> m_TextBuffer;
-  CArray<CHyperlink,CHyperlink&> m_Hyperlinks;
-  CArray<wchar_t,wchar_t> m_ScrollBuffer;
+  // The layout of elements on a line
+  struct LayoutLine
+  {
+    LayoutLine(int leftX, int maxX);
+    LayoutLine TakeLastWord(int& x, int maxX);
+
+    std::vector<ElementBase*> Elements;
+    int LeftX, MaxX;
+    int HeightAboveBase, HeightBelowBase;
+  };
+
+  // The layout of elements in lines
+  struct LayoutResult
+  {
+    std::vector<LayoutLine> Lines;
+  };
+
+  // Representation of a paragraph as a collection of elements
+  class Paragraph
+  {
+  public:
+    Paragraph(int style);
+    ~Paragraph();
+
+    void PutCharacter(WCHAR c);
+    void SetStyle(int style);
+    bool DrawGraphic(CWinGlkGraphic* graphic);
+    void Layout(CWinGlkDC& dc, LayoutResult& result, int width);
+    void ClearMeasure();
+
+  private:
+    ElementBase* GetLastElement();
+
+    std::vector<ElementBase*> m_Elements;
+    bool m_NeedMeasure;
+    static const int m_IndentStep;
+  };
+
+  std::vector<Paragraph*> m_TextBuffer;
   CWinGlkStyles m_Styles;
-  int m_iCurrentStyle;
-  unsigned int m_iCurrentLink;
-  bool m_bCheckDeleteText;
-  bool m_bMorePending;
-  bool m_bNextEchoInput;
+  int m_CurrentStyle;
+  bool m_NextEchoInput;
 
 public:
   static void SetStyleHint(int iStyle, int iHint, glsi32 Value);
   static void ClearStyleHint(int iStyle, int iHint);
   static CWinGlkStyles* GetDefaultStyles(void) { return &m_DefaultTextBufferStyles; }
 
-protected:
+private:
   static CWinGlkStyles m_DefaultTextBufferStyles;
   static CStringW m_strMore;
 };
