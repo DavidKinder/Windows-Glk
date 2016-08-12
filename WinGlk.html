@@ -2,12 +2,12 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Windows Glk 1.45</title>
+<title>Windows Glk 1.46</title>
 </head>
 
 <body>
 
-<h1>Windows Glk 1.45</h1>
+<h1>Windows Glk 1.46</h1>
 
 <h2>Contents</h2>
 
@@ -29,7 +29,7 @@
 </blockquote>
 
 <h2><a name="Overview"></a>Overview</h2>
-<h3>Glk API version 0.7.4, Windows Glk release 1.45</h3>
+<h3>Glk API version 0.7.4, Windows Glk release 1.46</h3>
 
 Windows Glk was written by David Kinder.<br>
 Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
@@ -55,7 +55,7 @@ can be found at the Interactive Fiction Archive, in the directory
 
 <h2><a name="License"></a>License</h2>
 
-<p>The source code and compiled Glk DLL in this package are copyright 1998-2014 by David
+<p>The source code and compiled Glk DLL in this package are copyright 1998-2016 by David
 Kinder. You may copy and distribute both the source code and the compiled DLL freely, by any
 means and under any conditions, as long as the code and documentation is not changed. You
 may also incorporate this code into your own program and distribute that, or modify this code
@@ -436,6 +436,10 @@ equals sign, then a value, e.g. "WindowBorders=no". Possible keys are:<br>
     <td nowrap><strong>FixedFontSize=[size]</strong></td>
     <td>Sets the size of the font used for fixed width text to the given value.</td>
   </tr>
+  <tr>
+    <td nowrap><strong>FontFile=[filename]</strong></td>
+    <td>The name of a font file (usually ending in ".ttf") to load fonts from.</td>
+  </tr>
 </table>
 
 <h3>strid_t winglk_stream_open_resource(const char* name, const char* type, glui32 rock)</h3>
@@ -602,6 +606,13 @@ ModPlug by Olivier Lapicque.
 </blockquote>
 
 <h2><a name="History"></a>Release History</h2>
+
+<h3>1.46</h3>
+
+<ul>
+<li>A new configuration file option, "FontFile", allows the game's font to be loaded from
+a font file in the same directory as the game.
+</ul>
 
 <h3>1.45</h3>
 

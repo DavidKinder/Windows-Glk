@@ -350,6 +350,15 @@ void CGlkApp::LoadConfigFile(const char* pszConfigName)
               pDC->GetDeviceCaps(LOGPIXELSY),72);
           }
         }
+        if (key.CompareNoCase("FontFile") == 0)
+        {
+          CString fontPath(pszConfigName);
+          int iDir = fontPath.ReverseFind('\\');
+          if (iDir >= 0)
+            fontPath.Truncate(iDir+1);
+          fontPath.Append(value);
+          ::AddFontResource(fontPath);
+        }
       }
     }
   }
