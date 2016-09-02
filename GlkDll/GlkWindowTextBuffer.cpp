@@ -177,6 +177,21 @@ void CWinGlkWndTextBuffer::PutCharacter(glui32 c)
       // Invalidate the formatting for this paragraph
       ClearFormatting(last);
     }
+    else if (c >= 0x10000 && c <= 0x10FFFF)
+    {
+      // Unicode high-plane character
+      const UINT32 LEAD_OFFSET = 0xD800 - (0x10000 >> 10);
+      UINT16 hi = (UINT16)(LEAD_OFFSET + (c >> 10));
+      UINT16 lo = 0xDC00 + (c & 0x3FF);
+      if (m_TextBuffer.GetSize() == 0)
+        AddNewParagraph();
+      int last = m_TextBuffer.GetUpperBound();
+      m_TextBuffer[last]->AddCharacter((wchar_t)hi);
+      m_TextBuffer[last]->AddCharacter((wchar_t)lo);
+      m_ScrollBuffer.Add((wchar_t)hi);
+      m_ScrollBuffer.Add((wchar_t)lo);
+      ClearFormatting(last);
+    }
     else
     {
       // Invalid character

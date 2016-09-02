@@ -987,10 +987,35 @@ void CWinGlkMainWnd::OnEditPaste()
   {
     if (OpenClipboard())
     {
-      HGLOBAL handle = ::GetClipboardData(CF_TEXT);
-      if (handle)
+      HGLOBAL handle = 0;
+      if (handle = ::GetClipboardData(CF_UNICODETEXT))
       {
-        LPTSTR text = (LPTSTR)::GlobalLock(handle); 
+        LPCWSTR text = (LPCWSTR)::GlobalLock(handle); 
+        if (text) 
+        {
+          CheckMorePending(true);
+
+          int len = wcslen(text);
+          for (int i = 0; i < len; i++)
+          {
+            switch (text[i])
+            {
+            case L'\b':
+            case L'\r':
+              pActiveWnd->InputChar(text[i]);
+              break;
+            default:
+              if ((text[i] >= 32 && text[i] <= 126) || (text[i] >= 160 && text[i] < 0x10000))
+                pActiveWnd->InputChar(text[i]);
+              break;
+            }
+          }
+          ::GlobalUnlock(handle); 
+        }
+      }
+      else if (handle = ::GetClipboardData(CF_TEXT))
+      {
+        LPCSTR text = (LPCSTR)::GlobalLock(handle); 
         if (text) 
         {
           CheckMorePending(true);
@@ -1008,7 +1033,7 @@ void CWinGlkMainWnd::OnEditPaste()
                 pActiveWnd->InputChar(unicode);
                 break;
               default:
-                if ((unicode >= 32 && unicode <= 126) || (unicode >= 160))
+                if ((unicode >= 32 && unicode <= 126) || (unicode >= 160 && unicode < 0x10000))
                   pActiveWnd->InputChar(unicode);
                 break;
               }
