@@ -182,7 +182,7 @@ void CWinGlkWndTextBuffer::PutCharacter(glui32 c)
       // Unicode high-plane character
       const UINT32 LEAD_OFFSET = 0xD800 - (0x10000 >> 10);
       UINT16 hi = (UINT16)(LEAD_OFFSET + (c >> 10));
-      UINT16 lo = 0xDC00 + (c & 0x3FF);
+      UINT16 lo = (UINT16)(0xDC00 + (c & 0x3FF));
       if (m_TextBuffer.GetSize() == 0)
         AddNewParagraph();
       int last = m_TextBuffer.GetUpperBound();

@@ -6,6 +6,21 @@
  <body>
 <h1>Revision History</h1>
 
+<b>Glulxe 0.5.3 (Windows Glk 1.46)</b>
+<ul>
+<li>Updated to Glulxe 0.5.3, which includes some performance improvements.
+<li>Glulxe 0.5.3 also includes a new compile-time option, which has been turned on for
+Windows Glulxe, to tolerate a bug in old versions of the Superglus system that produced
+game files that  would try to write to memory address zero. As a result, the
+"Glulxe (no memory checks).exe" executable is no longer needed and has been removed.
+<li>A new configuration file option, "FontFile", allows the game's font to be loaded from
+a font file in the same directory as the game.
+<li>Some of the Unicode characters above $1000 (that is, those in the Supplementary Multilingual
+Plane) can now be output, provided that an appropriate font is available.
+<li>Unicode text files are now encoded as UTF-8, as specified in the latest draft of the Glk
+0.7.5 specification.
+</ul>
+
 <b>Glulxe 0.5.2 (Windows Glk 1.45)</b>
 <ul>
 <li>The way in which colours are specified in the options dialog has been simplified: the

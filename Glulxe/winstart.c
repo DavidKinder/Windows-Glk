@@ -17,7 +17,7 @@ int InitGlk(unsigned int iVersion);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
   /* Attempt to initialise Glk */
-  if (InitGlk(0x00000702) == 0)
+  if (InitGlk(0x00000704) == 0)
     exit(0);
 
   /* Call the Windows specific initialization routine */
@@ -62,7 +62,7 @@ int winglk_startup_code(const char* cmdline)
   hResources = winglk_get_resource_handle();
   LoadString(hResources,IDS_GLULXE_TITLE,sWindowTitle,256);
   winglk_window_set_title(sWindowTitle);
-  winglk_set_about_text("Windows Glulxe 0.5.2.145");
+  winglk_set_about_text("Windows Glulxe 0.5.3.146");
 
   /* Set up the help file */
   if (GetModuleFileName(0,sExeName,_MAX_PATH) == 0)
