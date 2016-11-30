@@ -410,7 +410,7 @@ bool CWinGlkStreamFile::OpenFile(CWinGlkFileRef* pFileRef, glui32 Mode)
     strMode += "b";
   }
 
-  if (pFileRef->GetIsTemporary())
+  if (pFileRef->GetIsTemporary() && pFileRef->GetFileName().IsEmpty())
   {
     char pszTempDir[MAX_PATH];
     char pszTempFile[MAX_PATH];
@@ -468,11 +468,28 @@ void CWinGlkStreamFileUni::PutCharacter(glui32 c)
     SetNextOperation(filemode_Write);
     if (m_bText)
     {
-      if (c > 0xFFFF)
-        c = L'?';
-      glui32 uc = (glui32)c;
-      fputc(uc & 0xFF,m_pHandle);
-      fputc((uc>>8) & 0xFF,m_pHandle);
+      if (c < 0x80)
+        fputc(c,m_pHandle);
+      else if (c < 0x800)
+      {
+        fputc((0xC0|((c & 0x7C0)>>6)),m_pHandle);
+        fputc((0x80| (c & 0x03F)   ) ,m_pHandle);
+      }
+      else if (c < 0x10000)
+      {
+        fputc((0xE0|((c & 0xF000)>>12)),m_pHandle);
+        fputc((0x80|((c & 0x0FC0)>> 6)),m_pHandle);
+        fputc((0x80| (c & 0x003F)    ) ,m_pHandle);
+      }
+      else if (c < 0x200000)
+      {
+        fputc((0xF0|((c & 0x1C0000)>>18)),m_pHandle);
+        fputc((0x80|((c & 0x03F000)>>12)),m_pHandle);
+        fputc((0x80|((c & 0x000FC0)>> 6)),m_pHandle);
+        fputc((0x80| (c & 0x00003F)    ), m_pHandle);
+      }
+      else
+        fputc('?',m_pHandle);
     }
     else
     {
@@ -494,17 +511,55 @@ glsi32 CWinGlkStreamFileUni::GetCharacter(void)
     SetNextOperation(filemode_Read);
     if (m_bText)
     {
-      glui32 uc = 0;
-      int c = fgetc(m_pHandle);
-      if (c != -1)
+      int c0 = fgetc(m_pHandle);
+      if (c0 == -1)
+        return -1;
+      if (c0 < 0x80)
+        Character = c0;
+      else if ((c0 & 0xE0) == 0xC0)
       {
-        uc |= (c & 0xFF);
-        c = fgetc(m_pHandle);
-        if (c != -1)
-        {
-          uc |= ((c & 0xFF) << 8);
-          Character = uc;
-        }
+        int c1 = fgetc(m_pHandle);
+        if ((c1 == -1) || ((c1 & 0xC0) != 0x80))
+          return -1;
+
+        glui32 uc = (c0 & 0x1F) << 6;
+        uc |= c1 & 0x3F;
+        Character = uc;
+      }
+      else if ((c0 & 0xF0) == 0xE0)
+      {
+        int c1 = fgetc(m_pHandle);
+        if ((c1 == -1) || ((c1 & 0xC0) != 0x80))
+          return -1;
+        int c2 = fgetc(m_pHandle);
+        if ((c2 == -1) || ((c2 & 0xC0) != 0x80))
+          return -1;
+
+        glui32 uc = ((c0 & 0xF) << 12) & 0xF000;
+        uc |= ((c1 & 0x3F) << 6) & 0xFC0;
+        uc |= c2 & 0x3F;
+        Character = uc;
+      }
+      else if ((c0 & 0xF0) == 0xF0)
+      {
+        if ((c0 & 0xF8) != 0xF0)
+          return -1;
+
+        int c1 = fgetc(m_pHandle);
+        if ((c1 == -1) || ((c1 & 0xC0) != 0x80))
+          return -1;
+        int c2 = fgetc(m_pHandle);
+        if ((c2 == -1) || ((c2 & 0xC0) != 0x80))
+          return -1;
+        int c3 = fgetc(m_pHandle);
+        if ((c3 == -1) || ((c3 & 0xC0) != 0x80))
+          return -1;
+
+        glui32 uc = ((c0 & 7) << 18) & 0x1C0000;
+        uc |= ((c1 & 0x3F) << 12) & 0x3F000;
+        uc |= ((c2 & 0x3F) << 6) & 0xFC0;
+        uc |= c3 & 0x3F;
+        Character = uc;
       }
     }
     else
@@ -541,7 +596,7 @@ void CWinGlkStreamFileUni::SetPosition(glsi32 Pos, glui32 Mode)
       iOrigin = SEEK_END;
 
     if (m_bText)
-      fseek(m_pHandle,Pos*2,iOrigin);
+      fseek(m_pHandle,Pos,iOrigin);
     else
       fseek(m_pHandle,Pos*4,iOrigin);
     m_LastOper = 0;
@@ -555,7 +610,7 @@ glui32 CWinGlkStreamFileUni::GetPosition(void)
   if (m_pHandle)
   {
     if (m_bText)
-      Position = (glui32)ftell(m_pHandle)/2;
+      Position = (glui32)ftell(m_pHandle);
     else
       Position = (glui32)ftell(m_pHandle)/4;
   }
