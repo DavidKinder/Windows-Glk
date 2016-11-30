@@ -12,10 +12,9 @@
 
 #include <setjmp.h>
 
-#include "jpeglib.h"
-
 extern "C"
 {
+#include "jpeglib.h"
 #include "gi_blorb.h"
 }
 
