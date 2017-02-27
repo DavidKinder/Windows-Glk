@@ -201,3 +201,9 @@ glk_schannel_set_volume_ext           @156
 ; Glk 0.7.4 API functions
 glk_stream_open_resource              @157
 glk_stream_open_resource_uni          @158
+
+; Glk Debug functions
+gidebug_output                        @159
+gidebug_pause                         @160
+gidebug_debugging_available           @161
+gidebug_announce_cycle                @162

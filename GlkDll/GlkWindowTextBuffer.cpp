@@ -251,8 +251,11 @@ void CWinGlkWndTextBuffer::GetNeededSize(int iSize, int& iWidth, int& iHeight)
     iBorderHeight = WindowArea.Height() - ClientArea.Height();
   }
   
-  iWidth += iBorderWidth;
-  iHeight += iBorderHeight;
+  if (iSize > 0)
+  {
+    iWidth += iBorderWidth;
+    iHeight += iBorderHeight;
+  }
 }
 
 void CWinGlkWndTextBuffer::StartLineEvent(void* pBuffer, bool bUnicode, int iMaxLength, int iStartLength)

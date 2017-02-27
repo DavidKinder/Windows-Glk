@@ -217,9 +217,12 @@ void CWinGlkWndTextGrid::GetNeededSize(int iSize, int& iWidth, int& iHeight)
     iBorderWidth = WindowArea.Width() - ClientArea.Width();
     iBorderHeight = WindowArea.Height() - ClientArea.Height();
   }
-  
-  iWidth += iBorderWidth;
-  iHeight += iBorderHeight;
+
+  if (iSize > 0)
+  {
+    iWidth += iBorderWidth;
+    iHeight += iBorderHeight;
+  }
 }
 
 void CWinGlkWndTextGrid::StartLinkEvent(void)

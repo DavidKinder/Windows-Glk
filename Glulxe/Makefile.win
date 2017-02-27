@@ -4,20 +4,31 @@ CC = gcc-2 -O3 -mwindows
 LIBS = -L. -lglk
 OUTPUT = ../Executables/Release/Glulxe
 
-OBJS = accel.o exec.o files.o float.o funcs.o gestalt.o glkop.o heap.o \
-	main.o operand.o osdepend.o profile.o search.o serial.o string.o \
-	vm.o winstart.o res.o
+GLULXECFLAGS = -I../Include -DFLOAT_COMPILE_SAFER_POWF
+GLULXESRCS = accel.c debugger.c exec.c files.c float.c funcs.c gestalt.c \
+	glkop.c heap.c main.c operand.c osdepend.c profile.c search.c \
+	serial.c string.c vm.c winstart.c
+LIBXMLSRCS = libxml2/src/buf.c libxml2/src/chvalid.c libxml2/src/dict.c \
+	libxml2/src/encoding.c libxml2/src/entities.c libxml2/src/error.c \
+	libxml2/src/globals.c libxml2/src/hash.c libxml2/src/list.c \
+	libxml2/src/parser.c libxml2/src/parserInternals.c libxml2/src/SAX2.c \
+	libxml2/src/threads.c libxml2/src/tree.c libxml2/src/uri.c \
+	libxml2/src/valid.c libxml2/src/xmlIO.c libxml2/src/xmlmemory.c \
+	libxml2/src/xmlreader.c libxml2/src/xmlstring.c
 
-CFLAGS = -I../Include -DFLOAT_COMPILE_SAFER_POWF -DTOLERATE_SUPERGLUS_BUG
+all: glulxe glulxe_debug chm
 
-all: glulxe chm
+glulxe: CFLAGS = $(GLULXECFLAGS) -DTOLERATE_SUPERGLUS_BUG
+glulxe: $(GLULXESRCS) res.o libglk.a
+	$(CC) $(CFLAGS) -s -o $(OUTPUT) $(GLULXESRCS) res.o $(LIBS)
 
-glulxe: $(OBJS) libglk.a
-	$(CC) -s -o $(OUTPUT) $(OBJS) $(LIBS)
+glulxe_profile: CFLAGS = $(GLULXECFLAGS) -DVM_PROFILING
+glulxe_profile: $(GLULXESRCS) res.o libglk.a
+	$(CC) $(CFLAGS) -s -o $(OUTPUT)_profile $(GLULXESRCS) res.o $(LIBS)
 
-glulxe_profile: CFLAGS = -I../Include -DVM_PROFILING
-glulxe_profile: $(OBJS) libglk.a
-	$(CC) -s -o $(OUTPUT)_profile $(OBJS) $(LIBS)
+glulxe_debug: CFLAGS = $(GLULXECFLAGS) -DVM_DEBUGGER -Ilibxml2/inc
+glulxe_debug: $(GLULXESRCS) res.o $(LIBXMLSRCS) libglk.a
+	$(CC) $(CFLAGS) -s -o $(OUTPUT)_debug $(GLULXESRCS) res.o $(LIBXMLSRCS) $(LIBS)
 
 res.o: glulxe.rc
 	windres --preprocessor "gcc-2 -E -xc-header -DRC_INVOKED" $^ $@

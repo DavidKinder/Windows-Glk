@@ -24,6 +24,11 @@
 
 #include <MultiMon.h>
 
+extern "C"
+{
+#include "gi_debug.h"
+}
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -67,6 +72,8 @@ CGlkApp::CGlkApp()
   m_pBlorbMap = NULL;
 
   m_iFiction = Show_iF_First_Time;
+
+  m_Debug = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -603,7 +610,14 @@ void CGlkApp::MessagePump(BOOL bWait)
       BOOL bIdle = TRUE;
       while (AfxGetMainWnd() && bIdle)
         bIdle = CWinApp::OnIdle(lIdle++);
-      ::WaitMessage();
+
+      if (m_Debug)
+      {
+        HANDLE notify = m_Debug->notify;
+        ::MsgWaitForMultipleObjects(1,&notify,FALSE,INFINITE,QS_ALLINPUT);
+      }
+      else
+        ::WaitMessage();
     }
   }
   else
@@ -853,6 +867,106 @@ bool CGlkApp::CanOutputChar(glui32 c)
   }
 
   return false;
+}
+
+void CGlkApp::DebugOutput(const char* msg)
+{
+  InitDebugConsole();
+
+  HANDLE out = ::GetStdHandle(STD_OUTPUT_HANDLE);
+  DWORD written;
+  ::WriteFile(out,msg,strlen(msg),&written,NULL);
+  ::WriteFile(out,"\n",1,&written,NULL);
+}
+
+char* CGlkApp::DebugInput(bool wait)
+{
+  InitDebugConsole();
+
+  while (true)
+  {
+    {
+      CSingleLock guard(&(m_Debug->lock),TRUE);
+      if (!m_Debug->cmds.IsEmpty())
+      {
+        CString cmd = m_Debug->cmds.GetAt(0);
+        m_Debug->cmds.RemoveAt(0);
+        if (m_Debug->cmds.IsEmpty())
+          m_Debug->notify.ResetEvent();
+
+        size_t max = sizeof m_Debug->line;
+        memset(m_Debug->line,0,max);
+        strncpy(m_Debug->line,cmd,max-1);
+        return m_Debug->line;
+      }
+    }
+
+    if (wait)
+    {
+      if (AfxGetMainWnd() != NULL)
+        MessagePump(TRUE);
+      else
+        ::WaitForSingleObject(m_Debug->notify,INFINITE);
+    }
+    else
+      return NULL;
+  }
+}
+
+void CGlkApp::DebugToFront(void)
+{
+  InitDebugConsole();
+
+  ::SetForegroundWindow(::GetConsoleWindow());
+}
+
+void CGlkApp::InitDebugConsole(void)
+{
+  if (m_Debug == NULL)
+  {
+    // Disconnect from any existing console and create ourselves a new one
+    ::FreeConsole();
+    ::AllocConsole();
+    ::SetConsoleCtrlHandler(NULL,TRUE);
+    ::SendMessage(::GetConsoleWindow(),WM_SETICON,ICON_BIG,(LPARAM)GetIcon());
+
+    CString title;
+    title.Format("%s Debug",m_strAppName);
+    ::SetConsoleTitle(title);
+
+    // Start a thread to read from the console
+    m_Debug = new Debug();
+    AfxBeginThread(DebugInputThread,m_Debug);
+  }
+}
+
+UINT CGlkApp::DebugInputThread(LPVOID data)
+{
+  Debug* debug = (Debug*)data;
+  HANDLE in = ::GetStdHandle(STD_INPUT_HANDLE);
+
+  char line[256];
+  while (true)
+  {
+    DWORD read;
+    if (::ReadConsole(in,line,sizeof line,&read,NULL) == FALSE)
+      break;
+
+    line[read] = 0;
+    for (size_t i = 0; i < read; i++)
+    {
+      if ((line[i] == '\n') || (line[i] == '\r'))
+        line[i] = 0;
+    }
+
+    {
+      CString strLine(line);
+      CSingleLock guard(&(debug->lock),TRUE);
+      debug->cmds.Add(strLine);
+      debug->notify.SetEvent();
+    }
+  }
+  return 0;
 }
 
 CString CGlkApp::StrFromXML(IXMLDOMDocument* doc, LPCWSTR path)
@@ -1194,6 +1308,8 @@ extern "C" void glk_exit(void)
     ::ExitProcess(0);
   exiting = true;
 
+  gidebug_announce_cycle(gidebug_cycle_End);
+
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   if (CWinGlkWnd::GetFinalOutput())
   {
@@ -1292,7 +1408,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000704; // Glk 0.7.4
+    return 0x00000705; // Glk 0.7.5
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
@@ -1429,6 +1545,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
     return 1;
 
   case gestalt_ResourceStream:
+    return 1;
+
+  case gestalt_GraphicsCharInput:
     return 1;
   }
   return 0;
@@ -2128,6 +2247,8 @@ extern "C" void glk_select(event_t *event)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
+  gidebug_announce_cycle(gidebug_cycle_InputWait);
+
   if (invalidate)
   {
     // Force all windows to redraw
@@ -2137,8 +2258,18 @@ extern "C" void glk_select(event_t *event)
 
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   while (pApp->EventQueuesEmpty())
+  {
     pApp->MessagePump(TRUE);
+
+    if (gidebug_debugging_is_available() != 0)
+    {
+      while (char* line = pApp->DebugInput(false))
+        gidebug_perform_command(line);
+    }
+  }
   pApp->GetNextEvent(event,false);
+
+  gidebug_announce_cycle(gidebug_cycle_InputAccept);
 }
 
 extern "C" void glk_select_poll(event_t *event)
@@ -3052,6 +3183,46 @@ extern "C" giblorb_map_t* giblorb_get_resource_map(void)
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   return ((CGlkApp*)AfxGetApp())->GetBlorbMap();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Glk Debug functions
+/////////////////////////////////////////////////////////////////////////////
+
+extern "C" void gidebug_output(char *text)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  if (gidebug_debugging_is_available() != 0)
+    ((CGlkApp*)AfxGetApp())->DebugOutput(text);
+}
+
+extern "C" void gidebug_pause(void)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  if (gidebug_debugging_is_available() != 0)
+  {
+    gidebug_announce_cycle(gidebug_cycle_DebugPause);
+
+    CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+    pApp->DebugToFront();
+
+    while (true)
+    {
+      if (char* line = ((CGlkApp*)AfxGetApp())->DebugInput(true))
+      {
+        if (gidebug_perform_command(line) != 0)
+          break;
+      }
+    }
+
+    CWnd* main = AfxGetMainWnd();
+    if (main)
+      main->SetForegroundWindow();
+
+    gidebug_announce_cycle(gidebug_cycle_DebugUnpause);
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////

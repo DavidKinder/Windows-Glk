@@ -167,6 +167,10 @@ public:
 
   bool CanOutputChar(glui32 c);
 
+  void DebugOutput(const char* msg);
+  char* DebugInput(bool wait);
+  void DebugToFront(void);
+
 protected:
   CString FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix);
   void DeleteOldTempFiles(void);
@@ -174,6 +178,8 @@ protected:
   CString GetDefaultFont(void);
   CString GetDefaultFixedFont(void);
   CString StrFromXML(IXMLDOMDocument* doc, LPCWSTR path);
+  void InitDebugConsole(void);
+  static UINT DebugInputThread(LPVOID data);
 
 protected:
   bool m_bSettingsRead;
@@ -222,6 +228,19 @@ protected:
 
   Show_iFiction m_iFiction;
   GameInfo m_GameInfo;
+
+  struct Debug
+  {
+    CCriticalSection lock;
+    CEvent notify;
+    CArray<CString,CString&> cmds;
+    char line[256];
+
+    Debug() : notify(FALSE, TRUE)
+    {
+    }
+  };
+  Debug* m_Debug;
 };
 
 #endif // WINGLK_DLL_H_

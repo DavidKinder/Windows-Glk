@@ -63,6 +63,10 @@
 			<param name="Name" value="Automatic Running">
 			<param name="Local" value="autorun.htm">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="The Debugger">
+			<param name="Local" value="debug.htm">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="The IF Archive">

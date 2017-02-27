@@ -15,6 +15,7 @@ extern "C" {
 winid_t main = 0;
 winid_t grid = 0;
 winid_t title = 0;
+winid_t gfx = 0;
 schanid_t snd[2] = { 0,0 };
 
 struct TestOutputChar
@@ -49,10 +50,12 @@ void print_list(void)
   glk_put_string("11. Get Window Dimensions\n");
   glk_put_string("12. Unicode Files\n");
   glk_put_string("13. Print a Long Paragraph\n");
-  glk_put_string("14. Line input with margin images\n");
+  glk_put_string("14. Line Input with Margin Images\n");
   glk_put_string("15. Play Multiple Sounds\n");
   glk_put_string("16. Pause a Sound\n");
   glk_put_string("17. Unpause a Sound\n");
+  glk_put_string("18. Change the Window Height\n");
+  glk_put_string("19. Char Input from Graphics Window\n");
 }
 
 void line_input_margins()
@@ -195,6 +198,9 @@ void get_window_dimensions()
   if (grid != 0)
     glk_window_close(grid,0);
   grid = 0;
+  if (gfx != 0)
+    glk_window_close(gfx,0);
+  gfx = 0;
 
   glk_window_close(main,0);
   main = glk_window_open(0,0,0,wintype_Graphics,0);
@@ -573,6 +579,28 @@ void test_change_blorb(void)
   }
 }
 
+void test_window_height(void)
+{
+  if (grid == 0)
+  {
+    glk_put_string("Grid window not open\n");
+    return;
+  }
+
+  int height = get_number("Enter window height: ");
+  winid_t split = glk_window_get_parent(grid);
+  glk_window_set_arrangement(split,winmethod_Above|winmethod_Fixed,height,0);
+}
+
+void test_graphics_input()
+{
+  if (gfx != 0)
+    glk_window_close(gfx,0);
+  gfx = glk_window_open(main,winmethod_Above|winmethod_Fixed,64,
+    wintype_Graphics,0);
+  glk_window_fill_rect(gfx,0x00FF0000,0,0,32,32);
+}
+
 void test(int number)
 {
   switch (number)
@@ -631,6 +659,12 @@ void test(int number)
   case 17:
     test_sound_unpause();
     break;
+  case 18:
+    test_window_height();
+    break;
+  case 19:
+    test_graphics_input();
+    break;
   }
 }
 
@@ -682,6 +716,8 @@ void glk_main(void)
     glk_request_hyperlink_event(main);
     if (grid != 0)
       glk_request_hyperlink_event(grid);
+    if (gfx != 0)
+      glk_request_char_event(gfx);
 
     event_t ev;
     glk_select(&ev);
@@ -716,6 +752,18 @@ void glk_main(void)
 
         glk_cancel_line_event(main,NULL);
         sprintf(buffer,"Grid hyperlink %d selected",ev.val1);
+        glk_put_string(buffer);
+        show = true;
+      }
+      break;
+    case evtype_CharInput:
+      if (ev.win == gfx)
+      {
+        glk_window_close(gfx,0);
+        gfx = 0;
+
+        glk_cancel_line_event(main,NULL);
+        sprintf(buffer,"Graphics input character: %d",ev.val1);
         glk_put_string(buffer);
         show = true;
       }

@@ -2,12 +2,12 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Windows Glk 1.46</title>
+<title>Windows Glk 1.47</title>
 </head>
 
 <body>
 
-<h1>Windows Glk 1.46</h1>
+<h1>Windows Glk 1.47</h1>
 
 <h2>Contents</h2>
 
@@ -29,7 +29,7 @@
 </blockquote>
 
 <h2><a name="Overview"></a>Overview</h2>
-<h3>Glk API version 0.7.4, Windows Glk release 1.46</h3>
+<h3>Glk API version 0.7.5, Windows Glk release 1.47</h3>
 
 Windows Glk was written by David Kinder.<br>
 Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
@@ -55,7 +55,7 @@ can be found at the Interactive Fiction Archive, in the directory
 
 <h2><a name="License"></a>License</h2>
 
-<p>Windows Glk is copyright 1998-2016 by David Kinder.
+<p>Windows Glk is copyright 1998-2017 by David Kinder, and is distributed under the MIT license:
 
 <blockquote>
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -122,18 +122,10 @@ Windows Glk supports localization into languages other than English. If the appr
 translation DLL (such as GlkEspañol.dll for Spanish) is present for the language Windows
 is configured to use, then all Glk dialogs and menus are localized.
 
-<h3>Windows XP</h3>
-
-<p>Windows Glk is aware of Windows XP's themes, and can display dialogs, etc. appropriately.
-However, in order for this to happen the Glk application must either have a manifest file with
-the same name as the executable (For example, for "Foo.exe" the manifest file would be
-"Foo.exe.manifest") or a manifest included in the application's resources. For a suitable
-manifest see the <a href="#Examples">example</a> programs.
-
 <h3>Speech</h3>
 
 <p>Windows Glk can use Microsoft's Speech Engine (SAPI) version 5 to speak text. This is
-included in Windows XP and later, and for earlier versions of Windows is available as a
+included in most recent versions of Windows, and for earlier versions is available as a
 download from Microsoft.
 
 <h2><a name="Using"></a>Using a Windows Glk Program</h2>
@@ -162,7 +154,7 @@ programs.
 
 <p>The application must also be linked with Glk.lib, which is the import library for Glk.dll.
 
-<p>Although not required, the appearance of the application under Windows XP onwards will be
+<p>Although not required, the appearance of the application under will be
 improved if an application manifest is included that specifies a dependency on version 6.0 of
 the common controls library. The details of how to set up a manifest vary significantly
 between Visual C++ versions, so you should consult the Visual C++ help for more information.
@@ -620,6 +612,13 @@ ModPlug by Olivier Lapicque.
 </blockquote>
 
 <h2><a name="History"></a>Release History</h2>
+
+<h3>1.47</h3>
+
+<ul>
+<li>Updated to support Glk 0.7.5, which adds character input to graphics windows, clarifies
+the behaviour of zero-size windows, and specifies the encoding of Unicode text files as UTF-8.
+</ul>
 
 <h3>1.46</h3>
 

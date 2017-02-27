@@ -1,17 +1,12 @@
 #ifndef GLK_H
 #define GLK_H
 
-/* glk.h: Header file for Glk API, version 0.7.4.
+/* glk.h: Header file for Glk API, version 0.7.5.
     Designed by Andrew Plotkin <erkyrath@eblong.com>
     http://eblong.com/zarf/glk/
 
-    This file is copyright 1998-2012 by Andrew Plotkin. You may copy,
-    distribute, and incorporate it into your own programs, by any means
-    and under any conditions, as long as you do not modify it. You may
-    also modify this file, incorporate it into your own programs,
-    and distribute the modified version, as long as you retain a notice
-    in your program or documentation which mentions my name and the URL
-    shown above.
+    This file is copyright 1998-2017 by Andrew Plotkin. It is
+    distributed under the MIT license; see the "LICENSE" file.
 */
 
 /* If your system does not have <stdint.h>, you'll have to remove this
@@ -42,6 +37,17 @@ typedef int32_t glsi32;
 #define GLK_MODULE_HYPERLINKS
 #define GLK_MODULE_DATETIME
 #define GLK_MODULE_RESOURCE_STREAM
+
+/* Define a macro for a function attribute that indicates a function that
+    never returns. (E.g., glk_exit().) We try to do this only in C compilers
+    that support it. If this is causing you problems, comment all this out
+    and simply "#define GLK_ATTRIBUTE_NORETURN". */
+#if defined(__GNUC__) || defined(__clang__)
+#define GLK_ATTRIBUTE_NORETURN __attribute__((__noreturn__))
+#endif /* defined(__GNUC__) || defined(__clang__) */
+#ifndef GLK_ATTRIBUTE_NORETURN
+#define GLK_ATTRIBUTE_NORETURN
+#endif /* GLK_ATTRIBUTE_NORETURN */
 
 /* These types are opaque object identifiers. They're pointers to opaque
     C structures, which are defined differently by each library. */
@@ -76,6 +82,7 @@ typedef struct glk_schannel_struct *schanid_t;
 #define gestalt_DateTime (20)
 #define gestalt_Sound2 (21)
 #define gestalt_ResourceStream (22)
+#define gestalt_GraphicsCharInput (23)
 
 #define evtype_None (0)
 #define evtype_Timer (1)
@@ -200,7 +207,7 @@ typedef struct stream_result_struct {
     calls it. */
 extern void glk_main(void);
 
-extern void glk_exit(void);
+extern void glk_exit(void) GLK_ATTRIBUTE_NORETURN;
 extern void glk_set_interrupt_handler(void (*func)(void));
 extern void glk_tick(void);
 

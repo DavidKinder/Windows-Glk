@@ -988,7 +988,7 @@ void CWinGlkMainWnd::OnEditPaste()
     if (OpenClipboard())
     {
       HGLOBAL handle = 0;
-      if (handle = ::GetClipboardData(CF_UNICODETEXT))
+      if ((handle = ::GetClipboardData(CF_UNICODETEXT)) != 0)
       {
         LPCWSTR text = (LPCWSTR)::GlobalLock(handle); 
         if (text) 
@@ -1013,7 +1013,7 @@ void CWinGlkMainWnd::OnEditPaste()
           ::GlobalUnlock(handle); 
         }
       }
-      else if (handle = ::GetClipboardData(CF_TEXT))
+      else if ((handle = ::GetClipboardData(CF_TEXT)) != 0)
       {
         LPCSTR text = (LPCSTR)::GlobalLock(handle); 
         if (text) 
@@ -1118,6 +1118,8 @@ void CWinGlkMainWnd::SetBorders(bool bBorders)
 {
   ::SetWindowLong(m_View.GetSafeHwnd(),GWL_EXSTYLE,
     bBorders ? 0 : WS_EX_CLIENTEDGE);
+  m_View.SetWindowPos(NULL,0,0,0,0,
+    SWP_FRAMECHANGED|SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_NOOWNERZORDER);
 
   CWinGlkWnd* pWnd = NULL;
   do
@@ -1129,15 +1131,12 @@ void CWinGlkMainWnd::SetBorders(bool bBorders)
       {
         ::SetWindowLong(pWnd->GetSafeHwnd(),GWL_EXSTYLE,
           bBorders ? WS_EX_CLIENTEDGE : 0);
+        pWnd->SetWindowPos(NULL,0,0,0,0,
+          SWP_FRAMECHANGED|SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_NOOWNERZORDER);
       }
     }
   }
   while (pWnd);
-
-  CRect WindowRect;
-  GetWindowRect(WindowRect);
-  MoveWindow(CRect(0,0,0,0),FALSE);
-  MoveWindow(WindowRect,TRUE);
 }
 
 void CWinGlkMainWnd::SetGUI(bool bGUI)

@@ -131,8 +131,11 @@ void CWinGlkWndGraphics::GetNeededSize(int iSize, int& iWidth, int& iHeight)
     iBorderHeight = WindowArea.Height() - ClientArea.Height();
   }
   
-  iWidth += iBorderWidth;
-  iHeight += iBorderHeight;
+  if (iSize > 0)
+  {
+    iWidth += iBorderWidth;
+    iHeight += iBorderHeight;
+  }
 }
 
 void CWinGlkWndGraphics::StartMouseEvent(void)

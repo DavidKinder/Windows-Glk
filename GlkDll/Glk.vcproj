@@ -217,13 +217,13 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;..\..\..\Libraries\mfc;$(NoInherit)"/>
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;..\..\..\Libraries\mfc;$(NoInherit)"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;..\..\..\Libraries\mfc;$(NoInherit)"/>
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;..\..\..\Libraries\mfc;$(NoInherit)"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -232,13 +232,13 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\libpng;\Programs\Libraries\zlib;..\..\..\Libraries\mfc;$(NoInherit)"/>
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\mfc;$(NoInherit)"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\libpng;\Programs\Libraries\zlib;..\..\..\Libraries\mfc;$(NoInherit)"/>
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\mfc;$(NoInherit)"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -613,6 +613,26 @@
 				RelativePath="..\Include\gi_blorb.h">
 			</File>
 			<File
+				RelativePath=".\gi_debug.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						WarningLevel="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						WarningLevel="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Include\gi_debug.h">
+			</File>
+			<File
 				RelativePath=".\gi_dispa.c">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -648,7 +668,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -656,7 +676,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -667,7 +687,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -675,7 +695,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -686,7 +706,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -694,7 +714,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -705,7 +725,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -713,7 +733,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -724,7 +744,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -732,7 +752,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -743,7 +763,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -751,7 +771,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -762,7 +782,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -770,7 +790,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -781,7 +801,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -789,7 +809,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -800,7 +820,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -808,7 +828,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -819,7 +839,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -827,7 +847,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -838,7 +858,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -846,7 +866,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -857,7 +877,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -865,7 +885,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -876,7 +896,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -884,7 +904,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -895,7 +915,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -903,7 +923,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -914,7 +934,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -922,7 +942,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -933,7 +953,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -941,7 +961,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -952,7 +972,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -960,7 +980,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -971,7 +991,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -979,7 +999,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -990,7 +1010,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -998,7 +1018,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1009,7 +1029,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1017,7 +1037,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1028,7 +1048,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1036,7 +1056,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1047,7 +1067,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1055,7 +1075,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1066,7 +1086,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1074,7 +1094,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1085,7 +1105,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1093,7 +1113,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1104,7 +1124,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1112,7 +1132,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1123,7 +1143,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1131,7 +1151,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1142,7 +1162,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1150,7 +1170,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1161,7 +1181,7 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1169,7 +1189,7 @@
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\jpeg;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\jpeg;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="0"/>
 					</FileConfiguration>
@@ -1184,14 +1204,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1202,14 +1222,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1220,14 +1240,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1238,14 +1258,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1256,14 +1276,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1274,14 +1294,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1292,14 +1312,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1310,14 +1330,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1328,14 +1348,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1346,14 +1366,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1364,14 +1384,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\png;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\png;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1386,14 +1406,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1404,14 +1424,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1422,14 +1442,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1440,14 +1460,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1458,14 +1478,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1476,14 +1496,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1494,14 +1514,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
@@ -1512,14 +1532,14 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="..\Include;\Programs\Libraries\zlib;$(NoInherit)"
+							AdditionalIncludeDirectories="..\Include;..\..\..\Libraries\zlib;$(NoInherit)"
 							UsePrecompiledHeader="0"
 							WarningLevel="3"/>
 					</FileConfiguration>
