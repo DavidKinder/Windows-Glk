@@ -235,8 +235,9 @@ protected:
     CEvent notify;
     CArray<CString,CString&> cmds;
     char line[256];
+    HWND console;
 
-    Debug() : notify(FALSE, TRUE)
+    Debug() : notify(FALSE, TRUE), console(0)
     {
     }
   };
