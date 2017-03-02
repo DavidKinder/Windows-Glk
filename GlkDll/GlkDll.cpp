@@ -917,7 +917,8 @@ void CGlkApp::DebugToFront(void)
 {
   InitDebugConsole();
 
-  ::SetForegroundWindow(::GetConsoleWindow());
+  if (m_Debug->console != 0)
+    ::SetForegroundWindow(m_Debug->console);
 }
 
 void CGlkApp::InitDebugConsole(void)
@@ -928,14 +929,29 @@ void CGlkApp::InitDebugConsole(void)
     ::FreeConsole();
     ::AllocConsole();
     ::SetConsoleCtrlHandler(NULL,TRUE);
-    ::SendMessage(::GetConsoleWindow(),WM_SETICON,ICON_BIG,(LPARAM)GetIcon());
+    m_Debug = new Debug();
 
+    // Set the title for the console window
     CString title;
     title.Format("%s Debug",m_strAppName);
     ::SetConsoleTitle(title);
 
+    // Get the console's window handle, if possible
+    HMODULE kernel = ::LoadLibrary("kernel32.dll");
+    if (kernel != 0)
+    {
+      typedef HWND(__stdcall *GETCONSOLEWINDOW)(void);
+      GETCONSOLEWINDOW getConsoleWindow = (GETCONSOLEWINDOW)::GetProcAddress(kernel,"GetConsoleWindow");
+      if (getConsoleWindow != NULL)
+        m_Debug->console = (*getConsoleWindow)();
+      ::FreeLibrary(kernel);
+    }
+
+    // Set the console window's icon, if possible
+    if (m_Debug->console != 0)
+      ::SendMessage(m_Debug->console,WM_SETICON,ICON_BIG,(LPARAM)GetIcon());
+
     // Start a thread to read from the console
-    m_Debug = new Debug();
     AfxBeginThread(DebugInputThread,m_Debug);
   }
 }
