@@ -921,6 +921,11 @@ void CGlkApp::DebugToFront(void)
     ::SetForegroundWindow(m_Debug->console);
 }
 
+static BOOL WINAPI ConsoleCtrlHandler(DWORD ctrlType)
+{
+  return (ctrlType == CTRL_C_EVENT) ? TRUE : FALSE;
+}
+
 void CGlkApp::InitDebugConsole(void)
 {
   if (m_Debug == NULL)
@@ -928,7 +933,7 @@ void CGlkApp::InitDebugConsole(void)
     // Disconnect from any existing console and create ourselves a new one
     ::FreeConsole();
     ::AllocConsole();
-    ::SetConsoleCtrlHandler(NULL,TRUE);
+    ::SetConsoleCtrlHandler(ConsoleCtrlHandler,TRUE);
     m_Debug = new Debug();
 
     // Set the title for the console window
