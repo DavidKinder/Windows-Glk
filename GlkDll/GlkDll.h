@@ -170,6 +170,7 @@ public:
   void DebugOutput(const char* msg);
   char* DebugInput(bool wait);
   void DebugToFront(void);
+  void DebugExit(void);
 
 protected:
   CString FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix);
@@ -236,8 +237,9 @@ protected:
     CArray<CString,CString&> cmds;
     char line[256];
     HWND console;
+    bool exit;
 
-    Debug() : notify(FALSE, TRUE), console(0)
+    Debug() : notify(FALSE, TRUE), console(0), exit(false)
     {
     }
   };

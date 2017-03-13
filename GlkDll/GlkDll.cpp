@@ -887,6 +887,15 @@ char* CGlkApp::DebugInput(bool wait)
   {
     {
       CSingleLock guard(&(m_Debug->lock),TRUE);
+      if (m_Debug->exit)
+      {
+        // Clear out any thread state before exiting. Without this there
+        // is a chance of the DLL crashing on process detach.
+        AFX_MODULE_THREAD_STATE* state = AfxGetModuleThreadState();
+        if (state != NULL)
+          state->m_pToolTip = NULL;
+        ::ExitProcess(0);
+      }
       if (!m_Debug->cmds.IsEmpty())
       {
         CString cmd = m_Debug->cmds.GetAt(0);
@@ -921,9 +930,27 @@ void CGlkApp::DebugToFront(void)
     ::SetForegroundWindow(m_Debug->console);
 }
 
+void CGlkApp::DebugExit(void)
+{
+  CSingleLock guard(&(m_Debug->lock),TRUE);
+  m_Debug->exit = true;
+  m_Debug->notify.SetEvent();
+}
+
 static BOOL WINAPI ConsoleCtrlHandler(DWORD ctrlType)
 {
-  return (ctrlType == CTRL_C_EVENT) ? TRUE : FALSE;
+  switch (ctrlType)
+  {
+  case CTRL_C_EVENT:
+    return TRUE; // Ignore
+  case CTRL_BREAK_EVENT:
+  case CTRL_CLOSE_EVENT:
+    // Signal and give the application a chance to exit
+    ((CGlkApp*)AfxGetApp())->DebugExit();
+    ::Sleep(2000);
+    return FALSE;
+  }
+  return FALSE;
 }
 
 void CGlkApp::InitDebugConsole(void)
