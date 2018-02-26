@@ -852,7 +852,7 @@ bool CGlkApp::CanOutputChar(glui32 c)
   dc.CreateCompatibleDC(pDC);
   pDesktop->ReleaseDC(pDC);
 
-  dc.SetStyle(style_Normal,0);
+  dc.SetStyle(style_Normal,0,NULL);
 
   CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
   if (pMainWnd)
@@ -1596,6 +1596,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
     return 1;
 
   case gestalt_GraphicsCharInput:
+    return 1;
+
+  case gestalt_GarglkText:
     return 1;
   }
   return 0;
@@ -3473,4 +3476,37 @@ extern "C" void sglk_set_basename(char *s)
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   CWinGlkFileRef::SetDefaultNames(s);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Gargoyle Glk extensions
+/////////////////////////////////////////////////////////////////////////////
+
+extern "C" void garglk_set_zcolors(glui32 fg, glui32 bg)
+{
+  garglk_set_zcolors_stream(glk_stream_get_current(),fg,bg);
+}
+
+extern "C" void garglk_set_zcolors_stream(strid_t str, glui32 fg, glui32 bg)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  if ((fg == zcolor_Current) && (bg == zcolor_Current))
+    return;
+
+  if (CWinGlkStream::IsValidStream((CWinGlkStream*)str))
+    ((CWinGlkStream*)str)->SetTextColours(fg,bg);
+}
+
+extern "C" void garglk_set_reversevideo(glui32 reverse)
+{
+  garglk_set_reversevideo_stream(glk_stream_get_current(),reverse);
+}
+
+extern "C" void garglk_set_reversevideo_stream(strid_t str, glui32 reverse)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  if (CWinGlkStream::IsValidStream((CWinGlkStream*)str))
+    ((CWinGlkStream*)str)->SetTextReverse(reverse != 0);
 }

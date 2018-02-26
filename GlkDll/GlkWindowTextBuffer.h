@@ -67,6 +67,8 @@ public:
   virtual int GetStyle(void);
   virtual CWinGlkStyle* GetStyle(int iStyle);
   virtual void SetHyperlink(unsigned int iLink);
+  virtual void SetTextColours(glui32 fg, glui32 bg);
+  virtual void SetTextReverse(bool reverse);
   virtual bool DistinguishStyles(int iStyle1, int iStyle2);
   virtual bool MeasureStyle(int iStyle, int iHint, glui32* pResult);
 
@@ -154,7 +156,7 @@ protected:
   class CParagraph
   {
   public:
-    CParagraph(int iStyle, unsigned int iLink);
+    CParagraph(int iStyle, unsigned int iLink, CTextColours* pColours);
     ~CParagraph();
 
     void AddCharacter(wchar_t c);
@@ -162,8 +164,10 @@ protected:
     int GetLength();
     void SetInitialStyle(int iStyle);
     void SetInitialLink(unsigned int iLink);
+    void SetInitialColours(const CTextColours& colours);
     void AddStyleChange(int iStyle);
     void AddLinkChange(unsigned int iLink);
+    void AddColourChange(const CTextColours& colours);
 
     bool ClearFormatting(void);
     void Format(CPaintInfo& Info);
@@ -192,6 +196,7 @@ protected:
     {
       StyleChange = 1,
       LinkChange,
+      ColourChange,
       InlineGraphic,
       MarginGraphic,
       FlowBreak,
@@ -222,9 +227,11 @@ protected:
     CArray<CLineFormat*,CLineFormat*> m_Formatting;
     CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_InlineGraphics;
     CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_MarginGraphics;
+    CArray<CTextColours*,CTextColours*> m_TextColours;
     CArray<CTextOut,CTextOut&> m_TextOut;
     int m_iInitialStyle;
     unsigned int m_iInitialLink;
+    CTextColours* m_pInitialColours;
     int m_iLastShown;
     bool m_bSpoken;
     bool m_bHadInput;
@@ -255,6 +262,7 @@ protected:
   CWinGlkStyles m_Styles;
   int m_iCurrentStyle;
   unsigned int m_iCurrentLink;
+  CTextColours m_CurrentColours;
   bool m_bCheckDeleteText;
   bool m_bMorePending;
   bool m_bNextEchoInput;

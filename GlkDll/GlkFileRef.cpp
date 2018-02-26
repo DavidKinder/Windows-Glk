@@ -238,8 +238,8 @@ CWinGlkFileRef* CWinGlkFileRef::PromptForName(glui32 Usage, glui32 FileMode, glu
   CWinGlkFileRef* pFileRef = NULL;
 
   CString strTitle;
-  strTitle.LoadString(FileMode == filemode_Read ?
-    IDS_FREF_OPEN : IDS_FREF_SAVE);
+  strTitle.LoadString((FileMode == filemode_Read)
+    ? IDS_FREF_OPEN : IDS_FREF_SAVE);
 
   CString strDescription, strFileName;
   switch (Usage & fileusage_TypeMask)
@@ -271,7 +271,9 @@ CWinGlkFileRef* CWinGlkFileRef::PromptForName(glui32 Usage, glui32 FileMode, glu
   CString strFilter;
   strFilter.LoadString(IDS_FREF_FILTER);
   SimpleFileDialog FileDlg(FileMode == filemode_Read,NULL,strFileName,
-    OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_ENABLESIZING,strFilter,NULL);
+    OFN_HIDEREADONLY|OFN_ENABLESIZING|((FileMode == filemode_Read)
+      ? OFN_FILEMUSTEXIST : OFN_OVERWRITEPROMPT),
+    strFilter,NULL);
   FileDlg.m_ofn.lpstrTitle = strTitle;
 
   if (FileDlg.DoModal() == IDOK)

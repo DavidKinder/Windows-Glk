@@ -6,6 +6,12 @@
  <body>
 <h1>Revision History</h1>
 
+<b>Glulxe 0.5.4 (Windows Glk 1.48)</b>
+<ul>
+<li>Added support for the Gargoyle Glk extension functions that allow text formatting to be
+changed dynamically, beyond what is allowed by the standard Glk style model.
+</ul>
+
 <b>Glulxe 0.5.4 (Windows Glk 1.47)</b>
 <ul>
 <li>Updated to Glulxe 0.5.4, which includes a <a href="debug.htm">debugger</a>,
@@ -24,7 +30,7 @@ game files that  would try to write to memory address zero. As a result, the
 "Glulxe (no memory checks).exe" executable is no longer needed and has been removed.
 <li>A new configuration file option, "FontFile", allows the game's font to be loaded from
 a font file in the same directory as the game.
-<li>Some of the Unicode characters above $FFFF (that is, those in the Supplementary Multilingual
+<li>Some of the Unicode characters above $1000 (that is, those in the Supplementary Multilingual
 Plane) can now be output, provided that an appropriate font is available.
 <li>Unicode text files are now encoded as UTF-8, as specified in the latest draft of the Glk
 0.7.5 specification.

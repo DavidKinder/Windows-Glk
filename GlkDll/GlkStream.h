@@ -61,6 +61,9 @@ public:
   virtual void SetStyle(int iStyle) {}
   virtual void SetHyperlink(int iLink) {}
 
+  virtual void SetTextColours(glui32 fg, glui32 bg) {}
+  virtual void SetTextReverse(bool reverse) {}
+
   int GetReadCount(void) { return m_iReadCount; }
   int GetWriteCount(void) { return m_iWriteCount; }
 
@@ -103,6 +106,9 @@ public:
 
   virtual void SetStyle(int iStyle);
   virtual void SetHyperlink(int iLink);
+
+  virtual void SetTextColours(glui32 fg, glui32 bg);
+  virtual void SetTextReverse(bool reverse);
 
   CWinGlkWnd* GetWindow(void);
 

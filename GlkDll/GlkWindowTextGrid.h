@@ -59,6 +59,8 @@ public:
   virtual int GetStyle(void);
   virtual CWinGlkStyle* GetStyle(int iStyle);
   virtual void SetHyperlink(unsigned int iLink);
+  virtual void SetTextColours(glui32 fg, glui32 bg);
+  virtual void SetTextReverse(bool reverse);
   virtual bool DistinguishStyles(int iStyle1, int iStyle2);
   virtual bool MeasureStyle(int iStyle, int iHint, glui32* pResult);
 
@@ -84,9 +86,13 @@ protected:
     unsigned int GetLink(void) const { return m_iLink; }
     void SetLink(unsigned int iLink) { m_iLink = iLink; }
 
+    const CTextColours* GetColours(void) const { return &m_Colours; }
+    void SetColours(const CTextColours& colours) { m_Colours = colours; }
+
   protected:
     int m_iStyle;
     unsigned int m_iLink;
+    CTextColours m_Colours;
   };
 
   class CGridRow
@@ -105,6 +111,7 @@ protected:
 
     void SetStyle(int i, int iStyle);
     void SetLink(int i, unsigned int iLink);
+    void SetColours(int i, const CTextColours& colours);
     unsigned int GetLink(int i) const;
 
   protected:
@@ -118,6 +125,7 @@ protected:
   CWinGlkStyles m_Styles;
   int m_iCurrentStyle;
   unsigned int m_iCurrentLink;
+  CTextColours m_CurrentColours;
 
 public:
   static void SetStyleHint(int iStyle, int iHint, glsi32 Value);
