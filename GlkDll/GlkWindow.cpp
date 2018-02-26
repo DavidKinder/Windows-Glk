@@ -12,6 +12,7 @@
 #include "GlkMainWnd.h"
 #include "GlkStream.h"
 #include "GlkWindow.h"
+#include "WinGlk.h"
 
 #include <math.h>
 #include <string.h>
@@ -1143,7 +1144,32 @@ void CWinGlkWndPair::GetArrangement(glui32* MethodPtr, glui32* SizePtr, CWinGlkW
 // Base device context class
 /////////////////////////////////////////////////////////////////////////////
 
-CWinGlkDC::CWinGlkDC(CWinGlkWnd* pWnd) : m_Display(style_Normal,0)
+CTextColours::CTextColours()
+{
+  fore = zcolor_Default;
+  back = zcolor_Default;
+  reverse = false;
+}
+
+bool CTextColours::operator!=(const CTextColours& Compare)
+{
+  if (fore != Compare.fore)
+    return true;
+  if (back != Compare.back)
+    return true;
+  if (reverse != Compare.reverse)
+    return true;
+  return false;
+}
+
+CTextColours* CTextColours::CopyOrNull(void) const
+{
+  if ((fore == zcolor_Default) && (back == zcolor_Default) && !reverse)
+    return NULL;
+  return new CTextColours(*this);
+}
+
+CWinGlkDC::CWinGlkDC(CWinGlkWnd* pWnd) : m_Display(style_Normal,0,NULL)
 {
   m_pWnd = pWnd;
   m_pFont = NULL;
@@ -1173,10 +1199,11 @@ CWinGlkDC::CDisplay::CDisplay()
   m_iIndex = 0;
 }
 
-CWinGlkDC::CDisplay::CDisplay(int iStyle, unsigned int iLink)
+CWinGlkDC::CDisplay::CDisplay(int iStyle, unsigned int iLink, const CTextColours* pColours)
 {
   m_iStyle = iStyle;
   m_iLink = iLink;
+  m_pColours = pColours;
   m_iIndex = (iStyle * 2) + ((iLink != 0) ? 1 : 0);
 }
 
@@ -1186,6 +1213,8 @@ bool CWinGlkDC::CDisplay::operator==(const CDisplay& Compare)
     return false;
   if (m_iLink != Compare.m_iLink)
     return false;
+  if (m_pColours != Compare.m_pColours)
+    return false;
   return true;
 }
 
@@ -1194,9 +1223,9 @@ bool CWinGlkDC::CDisplay::operator!=(const CDisplay& Compare)
   return (operator==)(Compare) ? false : true;
 }
 
-void CWinGlkDC::SetStyle(int iStyle, unsigned int iLink)
+void CWinGlkDC::SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours)
 {
-  CDisplay Display(iStyle,iLink);
+  CDisplay Display(iStyle,iLink,pColours);
   SetDisplay(Display);
 }
 
@@ -1266,9 +1295,14 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
   GetTextMetrics(&m_FontMetrics);
 
   // Set the text and background colours
-  COLORREF BackColour = CWinGlkWnd::GetColour(m_Style.m_BackColour);
-  COLORREF TextColour = CWinGlkWnd::GetColour(m_Style.m_TextColour);
-  if (m_Style.m_ReverseColour)
+  CTextColours overColours;
+  if (m_Display.m_pColours != NULL)
+    overColours = *(m_Display.m_pColours);
+  COLORREF BackColour = CWinGlkWnd::GetColour(
+    overColours.back == zcolor_Default ? m_Style.m_BackColour : overColours.back);
+  COLORREF TextColour = CWinGlkWnd::GetColour(
+    overColours.fore == zcolor_Default ? m_Style.m_TextColour : overColours.fore);
+  if (m_Style.m_ReverseColour || overColours.reverse)
   {
     SetTextColor(BackColour);
     SetBkColor(TextColour);

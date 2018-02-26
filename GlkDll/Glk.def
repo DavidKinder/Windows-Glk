@@ -207,3 +207,9 @@ gidebug_output                        @159
 gidebug_pause                         @160
 gidebug_debugging_available           @161
 gidebug_announce_cycle                @162
+
+; Gargoyle Glk functions
+garglk_set_zcolors                    @163
+garglk_set_zcolors_stream             @164
+garglk_set_reversevideo               @165
+garglk_set_reversevideo_stream        @166

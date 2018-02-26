@@ -278,6 +278,18 @@ void CWinGlkStreamWnd::SetHyperlink(int iLink)
     m_pWindow->SetHyperlink(iLink);
 }
 
+void CWinGlkStreamWnd::SetTextColours(glui32 fg, glui32 bg)
+{
+  if (m_pWindow)
+    m_pWindow->SetTextColours(fg,bg);
+}
+
+void CWinGlkStreamWnd::SetTextReverse(bool reverse)
+{
+  if (m_pWindow)
+    m_pWindow->SetTextReverse(reverse);
+}
+
 CWinGlkWnd* CWinGlkStreamWnd::GetWindow(void)
 {
   return m_pWindow;

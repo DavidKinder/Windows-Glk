@@ -13,6 +13,7 @@
 #include "GlkMainWnd.h"
 #include "GlkStream.h"
 #include "GlkWindowTextGrid.h"
+#include "WinGlk.h"
 
 #include <math.h>
 #include <string.h>
@@ -57,7 +58,7 @@ void CWinGlkWndTextGrid::InitDC(CWinGlkDC& dc, CDC* pdcCompat)
   dc.SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
   dc.SetBkColor(GetColour(GetStyle(style_Normal)->m_BackColour));
 
-  dc.SetStyle(style_Normal,false);
+  dc.SetStyle(style_Normal,false,NULL);
 }
 
 int CWinGlkWndTextGrid::GetCaretHeight(void)
@@ -112,6 +113,7 @@ void CWinGlkWndTextGrid::ClearWindow(void)
   m_iCursorX = 0;
   m_iCursorY = 0;
 
+  CTextColours defaultColours;
   for (int i = 0; i < m_TextGrid.GetSize(); i++)
   {
     CGridRow& Row = m_TextGrid[i];
@@ -120,6 +122,7 @@ void CWinGlkWndTextGrid::ClearWindow(void)
       Row.SetChar(j,L' ');
       Row.SetStyle(j,style_Normal);
       Row.SetLink(j,0);
+      Row.SetColours(j,defaultColours);
     }
   }
 }
@@ -145,6 +148,7 @@ void CWinGlkWndTextGrid::PutCharacter(glui32 c)
           Row.SetChar(m_iCursorX,(wchar_t)c);
           Row.SetStyle(m_iCursorX,m_iCurrentStyle);
           Row.SetLink(m_iCursorX,m_iCurrentLink);
+          Row.SetColours(m_iCursorX,m_CurrentColours);
           m_iCursorX++;
           if (m_iCursorX >= Row.GetLength())
           {
@@ -322,6 +326,19 @@ CWinGlkStyle* CWinGlkWndTextGrid::GetStyle(int iStyle)
 void CWinGlkWndTextGrid::SetHyperlink(unsigned int iLink)
 {
   m_iCurrentLink = iLink;
+}
+
+void CWinGlkWndTextGrid::SetTextColours(glui32 fg, glui32 bg)
+{
+  if (fg != zcolor_Current)
+    m_CurrentColours.fore = fg;
+  if (bg != zcolor_Current)
+    m_CurrentColours.back = bg;
+}
+
+void CWinGlkWndTextGrid::SetTextReverse(bool reverse)
+{
+  m_CurrentColours.reverse = reverse;
 }
 
 bool CWinGlkWndTextGrid::DistinguishStyles(int iStyle1, int iStyle2)
@@ -558,6 +575,8 @@ bool CWinGlkWndTextGrid::CGridCellInfo::operator==(const CGridCellInfo& Info)
     return false;
   if (m_iLink != Info.m_iLink)
     return false;
+  if (m_Colours != Info.m_Colours)
+    return false;
   return true;
 }
 
@@ -571,7 +590,7 @@ void CWinGlkWndTextGrid::CGridRow::DrawRow(CWinGlkDC& dc, int x, int y)
   CGridCellInfo Info;
   if (m_RowInfo.GetSize() > 0)
     Info = m_RowInfo[0];
-  dc.SetStyle(Info.GetStyle(),Info.GetLink());
+  dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours());
 
   int i1 = 0, i2 = 1;
   while (i1+i2 < GetLength())
@@ -582,7 +601,7 @@ void CWinGlkWndTextGrid::CGridRow::DrawRow(CWinGlkDC& dc, int x, int y)
       x += dc.m_FontMetrics.tmAveCharWidth * i2;
 
       Info = m_RowInfo[i1+i2];
-      dc.SetStyle(Info.GetStyle(),Info.GetLink());
+      dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours());
 
       i1 += i2;
       i2 = 0;
@@ -630,6 +649,12 @@ void CWinGlkWndTextGrid::CGridRow::SetLink(int i, unsigned int iLink)
 {
   if (i < m_RowInfo.GetSize())
     m_RowInfo[i].SetLink(iLink);
+}
+
+void CWinGlkWndTextGrid::CGridRow::SetColours(int i, const CTextColours& colours)
+{
+  if (i < m_RowInfo.GetSize())
+    m_RowInfo[i].SetColours(colours);
 }
 
 unsigned int CWinGlkWndTextGrid::CGridRow::GetLink(int i) const

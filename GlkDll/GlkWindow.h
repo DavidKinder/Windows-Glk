@@ -108,6 +108,8 @@ public:
   virtual int GetStyle(void) { return style_Normal; }
   virtual CWinGlkStyle* GetStyle(int iStyle) { return NULL; }
   virtual void SetHyperlink(unsigned int iLink) {}
+  virtual void SetTextColours(glui32 fg, glui32 bg) {}
+  virtual void SetTextReverse(bool reverse) {}
   virtual bool DistinguishStyles(int iStyle1, int iStyle2) { return false; }
   virtual bool MeasureStyle(int iStyle, int iHint, glui32* pResult) { return false; }
 
@@ -235,6 +237,18 @@ protected:
 // Base device context class
 /////////////////////////////////////////////////////////////////////////////
 
+struct CTextColours
+{
+  glui32 fore;
+  glui32 back;
+  bool reverse;
+
+  CTextColours();
+  bool operator!=(const CTextColours& Compare);
+
+  CTextColours* CopyOrNull(void) const;
+};
+
 class CWinGlkDC : public CDC
 {
 public:
@@ -245,21 +259,23 @@ public:
   {
   public:
     CDisplay();
-    CDisplay(int iStyle, unsigned int iLink);
+    CDisplay(int iStyle, unsigned int iLink, const CTextColours* pColours);
     bool operator==(const CDisplay& Compare);
     bool operator!=(const CDisplay& Compare);
 
     int m_iStyle;
     unsigned int m_iLink;
+    const CTextColours* m_pColours;
     int m_iIndex;
   };
 
-  void SetStyle(int iStyle, unsigned int iLink);
+  void SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours);
   void SetDisplay(const CDisplay& Display);
 
   CDisplay GetDisplay(void) { return m_Display; }
   int GetStyle(void) { return m_Display.m_iStyle; }
   unsigned int GetLink(void) { return m_Display.m_iLink; }
+  const CTextColours* GetColours(void) { return m_Display.m_pColours; }
 
   CWinGlkStyle* GetStyleFromWindow(int iStyle);
 

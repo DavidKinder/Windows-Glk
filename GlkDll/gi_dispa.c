@@ -10,6 +10,7 @@
     Get the latest version from the URL above. */
 
 #include "glk.h"
+#include "WinGlk.h"
 #include "gi_dispa.h"
 
 #ifndef NULL
@@ -661,6 +662,17 @@ char *gidispatch_prototype(glui32 funcnum)
         case 0x013A: /* stream_open_resource_uni */
             return "3IuIu:Qb";
 #endif /* GLK_MODULE_RESOURCE_STREAM */
+
+#ifdef GLK_MODULE_GARGLKTEXT
+        case 0x1100: /* garglk_set_zcolors */
+            return "2IuIu:";
+        case 0x1101: /* garglk_set_zcolors_stream */
+            return "3QbIuIu:";
+        case 0x1102: /* garglk_set_reversevideo */
+            return "1Iu:";
+        case 0x1103: /* garglk_set_reversevideo_stream */
+            return "2QbIu:";
+#endif /* GLK_MODULE_GARGLKTEXT */
 
 #ifdef GLK_EXTEND_PROTOTYPE
         GLK_EXTEND_PROTOTYPE
@@ -1492,6 +1504,21 @@ void gidispatch_call(glui32 funcnum, glui32 numargs, gluniversal_t *arglist)
             arglist[3].opaqueref = glk_stream_open_resource_uni(arglist[0].uint, arglist[1].uint);
             break;
 #endif /* GLK_MODULE_RESOURCE_STREAM */
+
+#ifdef GLK_MODULE_GARGLKTEXT
+        case 0x1100: /* garglk_set_zcolors */
+            garglk_set_zcolors(arglist[0].uint, arglist[1].uint);
+            break;
+        case 0x1101: /* garglk_set_zcolors_stream */
+            garglk_set_zcolors_stream(arglist[0].opaqueref, arglist[1].uint, arglist[2].uint);
+            break;
+        case 0x1102: /* garglk_set_reversevideo */
+            garglk_set_reversevideo(arglist[0].uint);
+            break;
+        case 0x1103: /* garglk_set_reversevideo_stream */
+            garglk_set_reversevideo_stream(arglist[0].opaqueref, arglist[1].uint);
+            break;
+#endif /* GLK_MODULE_GARGLKTEXT */
 
 #ifdef GLK_EXTEND_CALL
         GLK_EXTEND_CALL

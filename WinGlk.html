@@ -2,12 +2,12 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Windows Glk 1.47</title>
+<title>Windows Glk 1.48</title>
 </head>
 
 <body>
 
-<h1>Windows Glk 1.47</h1>
+<h1>Windows Glk 1.48</h1>
 
 <h2>Contents</h2>
 
@@ -29,7 +29,7 @@
 </blockquote>
 
 <h2><a name="Overview"></a>Overview</h2>
-<h3>Glk API version 0.7.5, Windows Glk release 1.47</h3>
+<h3>Glk API version 0.7.5, Windows Glk release 1.48</h3>
 
 Windows Glk was written by David Kinder.<br>
 Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
@@ -55,7 +55,7 @@ can be found at the Interactive Fiction Archive, in the directory
 
 <h2><a name="License"></a>License</h2>
 
-<p>Windows Glk is copyright 1998-2017 by David Kinder, and is distributed under the MIT license:
+<p>Windows Glk is copyright 1998-2018 by David Kinder, and is distributed under the MIT license:
 
 <blockquote>
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -481,6 +481,25 @@ an "About This Game" menu item is also added to the application's menu, the game
 included in the title of the Windows Glulxe window, and an option to control whether the dialog
 is shown initially appears in the options dialog.
 
+<h3>void void garglk_set_zcolors_stream(glui32 fg, glui32 bg)</h3>
+
+<p>If the given stream is a window stream, this function sets the foreground and background
+colours, independent of what the selected window style is. If either argument is -1 the appropriate
+colour is the default for the current style, if either is -2 the colour is not changed.
+
+<h3>void garglk_set_zcolors(glui32 fg, glui32 bg)</h3>
+
+<p>As above, but acting on the default stream.
+
+<h3>void garglk_set_reversevideo_stream(strid_t str, glui32 reverse)</h3>
+
+<p>If the given stream is a window stream, this function sets whether the foreground and
+background colours are reversed, independent of what the selected window style is.
+
+<h3>void garglk_set_reversevideo(glui32 reverse)</h3>
+
+<p>As above, but acting on the default stream.
+
 <h3>void sglk_set_basename(char *s)</h3>
 
 <p>This function sets the default filenames for calls to glk_fileref_create_by_prompt(),
@@ -612,6 +631,13 @@ ModPlug by Olivier Lapicque.
 </blockquote>
 
 <h2><a name="History"></a>Release History</h2>
+
+<h3>1.48</h3>
+
+<ul>
+<li>Added support for the Gargoyle Glk extension functions that allow text formatting to be
+changed dynamically, beyond what is allowed by the standard Glk style model.
+</ul>
 
 <h3>1.47</h3>
 
