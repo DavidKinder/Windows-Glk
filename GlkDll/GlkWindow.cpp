@@ -1146,8 +1146,8 @@ void CWinGlkWndPair::GetArrangement(glui32* MethodPtr, glui32* SizePtr, CWinGlkW
 
 CTextColours::CTextColours()
 {
-  fore = zcolor_Default;
-  back = zcolor_Default;
+  fore = (glui32)zcolor_Default;
+  back = (glui32)zcolor_Default;
   reverse = false;
 }
 
