@@ -98,10 +98,10 @@ bool CWinGlkMODSound::Play(int iRepeat, int iVolume, bool PauseState)
   if (pData == NULL)
     return false;
 
-  // Only one MOD can be playing at any given time, so stop
-  // any currently playing MODs
+  // Only one MOD can be playing at any given time
   CDSoundEngine& Engine = CDSoundEngine::GetSoundEngine();
-  Engine.StopSounds(GetType());
+  if (Engine.CountSounds(GetType()) > 0)
+    return false;
 
   WAVEFORMATEX& Format = Engine.GetPrimaryFormat();
   CSoundFile::SetWaveConfig(Format.nSamplesPerSec,Format.wBitsPerSample,Format.nChannels);
