@@ -2,12 +2,12 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Windows Glk 1.48</title>
+<title>Windows Glk 1.49</title>
 </head>
 
 <body>
 
-<h1>Windows Glk 1.48</h1>
+<h1>Windows Glk 1.49</h1>
 
 <h2>Contents</h2>
 
@@ -29,7 +29,7 @@
 </blockquote>
 
 <h2><a name="Overview"></a>Overview</h2>
-<h3>Glk API version 0.7.5, Windows Glk release 1.48</h3>
+<h3>Glk API version 0.7.5, Windows Glk release 1.49</h3>
 
 Windows Glk was written by David Kinder.<br>
 Web: <a href="http://www.davidkinder.co.uk/">http://www.davidkinder.co.uk/</a><br>
@@ -631,6 +631,14 @@ ModPlug by Olivier Lapicque.
 </blockquote>
 
 <h2><a name="History"></a>Release History</h2>
+
+<h3>1.49</h3>
+
+<ul>
+<li>Fixed a bug where attempting to play a MOD sound when one was already playing stopped the
+already playing one, contrary to the Glk specification: now the attempt to play a second MOD
+sound fails.
+</ul>
 
 <h3>1.48</h3>
 
