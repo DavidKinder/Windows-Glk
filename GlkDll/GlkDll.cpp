@@ -21,8 +21,7 @@
 #include "GlkWindowTextBuffer.h"
 #include "GlkWindowTextGrid.h"
 #include "WinGlk.h"
-
-#include <MultiMon.h>
+#include "DpiFunctions.h"
 
 extern "C"
 {
@@ -832,15 +831,8 @@ bool CGlkApp::CheckGameId(void)
 
 CRect CGlkApp::GetScreenSize(bool full)
 {
-  MONITORINFO monInfo;
-  ::ZeroMemory(&monInfo,sizeof monInfo);
-  monInfo.cbSize = sizeof monInfo;
-
-  HMONITOR mon = ::MonitorFromWindow(AfxGetMainWnd()->GetSafeHwnd(),MONITOR_DEFAULTTOPRIMARY);
-  if (::GetMonitorInfo(mon,&monInfo))
-    return full ? monInfo.rcMonitor : monInfo.rcWork;
-
-  return CRect(0,0,::GetSystemMetrics(SM_CXSCREEN),::GetSystemMetrics(SM_CYSCREEN));
+  CWnd* wnd = AfxGetMainWnd();
+  return full ? DPI::getMonitorRect(wnd) : DPI::getMonitorWorkRect(wnd);
 }
 
 bool CGlkApp::CanOutputChar(glui32 c)
