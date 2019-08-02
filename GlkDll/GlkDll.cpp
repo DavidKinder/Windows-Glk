@@ -53,6 +53,8 @@ CGlkApp::CGlkApp()
 {
   m_bSettingsRead = false;
   m_bSaveSettings = true;
+  m_iFontPointSize = 10;
+  m_iWindowState = SW_SHOW;
   m_bWindowBorders = false;
   m_bWindowFrame = true;
   m_bEnableGUI = true;
@@ -164,8 +166,6 @@ void CGlkApp::ReadSettings(void)
     CDC* pDC = pDesktop->GetDC();
 
     ::ZeroMemory(&m_PropFont,sizeof(LOGFONT));
-    m_PropFont.lfHeight = -MulDiv(GetProfileInt("Glk Settings","Proportional Font Size",10),
-      pDC->GetDeviceCaps(LOGPIXELSY),72);
     m_PropFont.lfCharSet = ANSI_CHARSET;
     m_PropFont.lfOutPrecision = OUT_TT_PRECIS;
     m_PropFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
@@ -177,8 +177,6 @@ void CGlkApp::ReadSettings(void)
       strncpy(m_PropFont.lfFaceName,GetDefaultFont(),LF_FACESIZE);
 
     ::ZeroMemory(&m_FixedFont,sizeof(LOGFONT));
-    m_FixedFont.lfHeight = -MulDiv(GetProfileInt("Glk Settings","Fixed Font Size",10),
-      pDC->GetDeviceCaps(LOGPIXELSY),72);
     m_FixedFont.lfCharSet = ANSI_CHARSET;
     m_FixedFont.lfOutPrecision = OUT_TT_PRECIS;
     m_FixedFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
@@ -188,6 +186,11 @@ void CGlkApp::ReadSettings(void)
       GetProfileString("Glk Settings","Fixed Font Name",GetDefaultFixedFont()),LF_FACESIZE);
     if ((iVersion < 131) && (strcmp(m_FixedFont.lfFaceName,"Courier New") == 0))
       strncpy(m_FixedFont.lfFaceName,GetDefaultFixedFont(),LF_FACESIZE);
+
+    if (iVersion < 150)
+      m_iFontPointSize = GetProfileInt("Glk Settings","Proportional Font Size",10);
+    else
+      m_iFontPointSize = GetProfileInt("Glk Settings","Font Size",10);
 
     m_WindowRect.left = GetProfileInt("Glk Settings","Window Left",0);
     m_WindowRect.top = GetProfileInt("Glk Settings","Window Top",0);
@@ -227,18 +230,14 @@ void CGlkApp::WriteSettings(void)
 {
   if (m_bSettingsRead && m_bSaveSettings)
   {
-    WriteProfileInt("Glk Settings","Version",131);
+    WriteProfileInt("Glk Settings","Version",150);
 
     CWnd* pDesktop = CWnd::GetDesktopWindow();
     CDC* pDC = pDesktop->GetDC();
 
     WriteProfileString("Glk Settings","Proportional Font Name",CString(m_PropFont.lfFaceName));
-    WriteProfileInt("Glk Settings","Proportional Font Size",
-      -MulDiv(m_PropFont.lfHeight,72,pDC->GetDeviceCaps(LOGPIXELSY)));
-
     WriteProfileString("Glk Settings","Fixed Font Name",CString(m_FixedFont.lfFaceName));
-    WriteProfileInt("Glk Settings","Fixed Font Size",
-      -MulDiv(m_FixedFont.lfHeight,72,pDC->GetDeviceCaps(LOGPIXELSY)));
+    WriteProfileInt("Glk Settings","Font Size",m_iFontPointSize);
 
     WriteProfileInt("Glk Settings","Window Left",m_WindowRect.left);
     WriteProfileInt("Glk Settings","Window Top",m_WindowRect.top);
@@ -343,18 +342,7 @@ void CGlkApp::LoadConfigFile(const char* pszConfigName)
         if (key.CompareNoCase("FontSize") == 0)
         {
           if (sscanf(value,"%d",&fontSize) == 1)
-          {
-            m_PropFont.lfHeight = -MulDiv(fontSize,
-              pDC->GetDeviceCaps(LOGPIXELSY),72);
-          }
-        }
-        if (key.CompareNoCase("FixedFontSize") == 0)
-        {
-          if (sscanf(value,"%d",&fontSize) == 1)
-          {
-            m_FixedFont.lfHeight = -MulDiv(fontSize,
-              pDC->GetDeviceCaps(LOGPIXELSY),72);
-          }
+            m_iFontPointSize = fontSize;
         }
         if (key.CompareNoCase("FontFile") == 0)
         {

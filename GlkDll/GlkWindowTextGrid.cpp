@@ -673,12 +673,9 @@ CWinGlkGridDC::CWinGlkGridDC(CWinGlkWnd* pWnd, int iSize) : CWinGlkDC(pWnd)
   m_iSize = iSize;
 }
 
-void CWinGlkGridDC::GetFonts(LOGFONT*& pTextFont, LOGFONT*& pSizeFont)
+LOGFONT* CWinGlkGridDC::GetFont(void)
 {
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-
-  pTextFont = pApp->GetFixedFont();
-  pSizeFont = pApp->GetFixedFont();
+  return ((CGlkApp*)AfxGetApp())->GetFixedFont();
 }
 
 void CWinGlkGridDC::SetFontStyles(LOGFONT& Font)

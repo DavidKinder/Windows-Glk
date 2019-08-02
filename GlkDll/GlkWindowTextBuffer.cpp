@@ -2497,15 +2497,10 @@ CWinGlkWndTextBuffer::CHyperlink::CHyperlink() : CRect(0,0,0,0)
 // Device context class
 /////////////////////////////////////////////////////////////////////////////
 
-void CWinGlkBufferDC::GetFonts(LOGFONT*& pTextFont, LOGFONT*& pSizeFont)
+LOGFONT* CWinGlkBufferDC::GetFont(void)
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-
-  if (m_Style.m_Proportional)
-    pTextFont = pApp->GetPropFont();
-  else
-    pTextFont = pApp->GetFixedFont();
-  pSizeFont = pApp->GetPropFont();
+  return m_Style.m_Proportional ? pApp->GetPropFont() : pApp->GetFixedFont();
 }
 
 void CWinGlkBufferDC::SetFontStyles(LOGFONT& Font)

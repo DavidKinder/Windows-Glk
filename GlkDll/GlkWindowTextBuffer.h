@@ -287,7 +287,7 @@ public:
   CWinGlkBufferDC(CWinGlkWnd* pWnd) : CWinGlkDC(pWnd) {}
   virtual ~CWinGlkBufferDC() {}
 
-  virtual void GetFonts(LOGFONT*& pTextFont, LOGFONT*& pSizeFont);
+  virtual LOGFONT* GetFont(void);
   virtual void SetFontStyles(LOGFONT& Font);
   virtual int GetStyleFontSize(void);
 };

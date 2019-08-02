@@ -279,7 +279,7 @@ public:
 
   CWinGlkStyle* GetStyleFromWindow(int iStyle);
 
-  virtual void GetFonts(LOGFONT*& pTextFont, LOGFONT*& pSizeFont) = 0;
+  virtual LOGFONT* GetFont(void) = 0;
   virtual void SetFontStyles(LOGFONT& Font) = 0;
   virtual int GetStyleFontSize(void) = 0;
 

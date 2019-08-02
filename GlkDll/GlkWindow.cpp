@@ -13,6 +13,7 @@
 #include "GlkStream.h"
 #include "GlkWindow.h"
 #include "WinGlk.h"
+#include "DpiFunctions.h"
 
 #include <math.h>
 #include <string.h>
@@ -1247,9 +1248,7 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
     m_pFont = m_Fonts[m_Display.m_iIndex];
   else
   {
-    LOGFONT* pTextFont = NULL;
-    LOGFONT* pSizeFont = NULL;
-    GetFonts(pTextFont,pSizeFont);
+    LOGFONT* pTextFont = GetFont();
     if (pTextFont)
     {
       LOGFONT TextLogFont;
@@ -1264,10 +1263,8 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
       TextLogFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
       TextLogFont.lfQuality = PROOF_QUALITY;
       TextLogFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
-      if (pSizeFont)
-        TextLogFont.lfHeight = pSizeFont->lfHeight;
 
-      int iPointSize = -MulDiv(TextLogFont.lfHeight,72,GetDeviceCaps(LOGPIXELSY));
+      int iPointSize = pApp->GetFontPointSize();
       int iStyleSize = GetStyleFontSize();
       double dPointInc = iPointSize*fabs((double)iStyleSize)*0.1;
       if (dPointInc < 1.0)
@@ -1278,7 +1275,7 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
         iPointSize -= (int)ceil(dPointInc);
       if (iPointSize < 4)
         iPointSize = 4;
-      TextLogFont.lfHeight = -MulDiv(iPointSize,GetDeviceCaps(LOGPIXELSY),72);
+      TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getWindowDPI(m_pWnd),72);
 
       m_pFont = new CFont;
       m_pFont->CreateFontIndirect(&TextLogFont);

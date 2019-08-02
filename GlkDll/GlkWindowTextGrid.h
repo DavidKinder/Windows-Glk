@@ -146,7 +146,7 @@ public:
   CWinGlkGridDC(CWinGlkWnd* pWnd, int iSize);
   virtual ~CWinGlkGridDC() {}
 
-  virtual void GetFonts(LOGFONT*& pTextFont, LOGFONT*& pSizeFont);
+  virtual LOGFONT* GetFont(void);
   virtual void SetFontStyles(LOGFONT& Font);
   virtual int GetStyleFontSize(void);
 

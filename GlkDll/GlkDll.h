@@ -56,6 +56,7 @@ public:
 public:
   LOGFONT* GetPropFont(void) { return &m_PropFont; }
   LOGFONT* GetFixedFont(void) { return &m_FixedFont; }
+  int GetFontPointSize(void) { return m_iFontPointSize; }
   CRect& GetWindowRect(void) { return m_WindowRect; }
   CRect& GetInnerRect(void) { return m_InnerRect; }
   int& GetWindowState(void) { return m_iWindowState; }
@@ -187,6 +188,7 @@ protected:
 
   LOGFONT m_PropFont;
   LOGFONT m_FixedFont;
+  int m_iFontPointSize;
   CRect m_WindowRect;
   CRect m_InnerRect;
   int m_iWindowState;
