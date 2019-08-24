@@ -34,7 +34,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,126,130,50,14
     GROUPBOX        "Glk Info",IDC_ABOUT_GROUP,7,7,169,50
-    ICON            IDR_GLK,IDC_STATIC,15,21,20,20,0,WS_EX_CLIENTEDGE
+    ICON            IDR_GLK,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Versione per Windows di David Kinder\nTraduzione di Tommaso Caldarola\nSpecifiche Glk di Andrew Plotkin\nGlk %glk%, versione %winglk%",
                     IDC_ABOUT_TEXT,42,19,130,33
     GROUPBOX        "Ringraziamenti",IDC_ADDITION_GROUP,7,59,169,65
@@ -88,7 +88,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,162,100,58,9
     CONTROL         "Ro&vesciato",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,162,112,54,9
-    GROUPBOX        "Proprietà",IDC_STYLE_STATIC,4,5,218,139
+    GROUPBOX        "Proprietà",IDC_STYLE_STATIC,4,5,218,124
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 227, 148
@@ -97,29 +97,35 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION |
 CAPTION "&Generale"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Opzioni",IDC_OPTIONS_STATIC,4,5,218,51
+    GROUPBOX        "Carattere e colori",IDC_FONTS_STATIC,4,5,218,74
+    LTEXT           "Ca&rattere",IDC_STATIC,11,19,28,9
+    COMBOBOX        IDC_SIZE_FONT,43,17,36,137,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_PROP_FONT,89,17,122,100,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Carattere a larg&hezza fissa",IDC_STATIC,10,36,80,9
+    COMBOBOX        IDC_FIXED_FONT,89,34,122,100,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Testo",IDC_STATIC,16,50,40,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,16,60,44,13
+    LTEXT           "S&fondo",IDC_STATIC,78,50,40,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,78,60,44,13
+    LTEXT           "&Collegamenti ipertestuali",IDC_STATIC,140,50,80,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,140,60,44,13
+    GROUPBOX        "Opzioni",IDC_OPTIONS_STATIC,4,81,219,46
     CONTROL         "&Visualizza i bordi delle windows",IDC_BORDERS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,19,16,132,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,91,132,8
     CONTROL         "&Abilita menu, barra di stato e barra degli strumenti",
-                    IDC_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,28,185,
-                    8
-    CONTROL         "Abilita &stili personalizzati",IDC_STYLEHINT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,19,41,175,8
-    GROUPBOX        "Colori",IDC_LINKS_STATIC,4,59,218,42
-    LTEXT           "&Testo",IDC_STATIC,24,71,16,9
-    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,81,44,13
-    LTEXT           "S&fondo",IDC_STATIC,89,71,39,9
-    PUSHBUTTON      "",IDC_BACK_COLOUR,89,81,44,13
-    CTEXT           "&Collegamenti ipertestuali",IDC_STATIC,136,71,80,9
-    PUSHBUTTON      "",IDC_LINK_COLOUR,154,81,44,13
-    GROUPBOX        "Avvio",IDC_STARTUP,4,105,218,39
+                    IDC_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,102,185,8
+    CONTROL         "Abilita &stili personalizzati",IDC_STYLEHINT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,113,175,8
+    GROUPBOX        "Avvio",IDC_STARTUP,4,129,218,36
     LTEXT           "Se il gioco contiene un i&Fiction record, mostra le informazioni",
-                    IDC_LABEL_IFICTION,19,116,111,18
-    COMBOBOX        IDC_SHOW_IFICTION,133,118,71,58,CBS_DROPDOWNLIST | 
+                    IDC_LABEL_IFICTION,19,141,111,18
+    COMBOBOX        IDC_SHOW_IFICTION,133,143,71,58,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 227, 147
+IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 227, 170
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Voce"
@@ -213,6 +219,32 @@ END
 
 IDD_OPTIONS_GENERAL DLGINIT
 BEGIN
+    IDC_SIZE_FONT, 0x403, 2, 0
+0x0038, 
+    IDC_SIZE_FONT, 0x403, 2, 0
+0x0039, 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3832, "\000" 
     IDC_SHOW_IFICTION, 0x403, 4, 0
 0x614d, 0x0069, 
     IDC_SHOW_IFICTION, 0x403, 12, 0
@@ -225,42 +257,12 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menu
-//
-
-IDR_FONTS MENU 
-BEGIN
-    MENUITEM "Carattere &proporzionale",    IDM_FONT_PROPORTIONAL
-    MENUITEM "Carattere a larghezza fissa", IDM_FONT_FIXED
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDR_GLK                 ICON                    "..\\res\\Glk.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_GLK                 BITMAP                  "..\\res\\Toolbar.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Toolbar
 //
 
 IDR_GLK TOOLBAR  16, 15
 BEGIN
     BUTTON      IDM_SYS_SCROLLBACK
-    BUTTON      IDM_FONT_PROPORTIONAL
-    BUTTON      IDM_FONT_FIXED
     BUTTON      IDM_SYS_OPTIONS
     BUTTON      IDM_SYS_HELP
 END
@@ -298,16 +300,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDM_FONT_PROPORTIONAL   "Cambia il tipo di carattere in proporzionale\nCarattere proporzionale"
-END
-
-STRINGTABLE 
-BEGIN
-    IDM_FONT_FIXED          "Cambia il tipo di carattere a larghezza fissa\nCarattere a larghezza fissa"
-END
-
-STRINGTABLE 
-BEGIN
     ID_APP_EXIT             "Chiudi l'applicazione\nChiudi"
 END
 
@@ -336,12 +328,9 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENU_SCROLLBACK     "Buffer di &scorrimento\tCtrl+L"
-    IDS_MENU_FONTS          "&Tipo di carattere"
     IDS_MENU_OPTIONS        "&Opzioni..."
     IDS_MENU_HELP           "&Guida"
     IDS_MENU_ABOUT          "Glk &Informazioni"
-    IDS_MENU_PROPFONT       "Carattere &proporzionale..."
-    IDS_MENU_FIXEDFONT      "Carattere a larghezza &fissa..."
     IDS_MENU_EXIT           "Chiu&di\tAlt+F4"
     IDS_MENU_ABOUT_GAME     "Informazioni sulla sto&ria"
     IDS_STORY               "Titolo storia"

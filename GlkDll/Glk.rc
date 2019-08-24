@@ -110,7 +110,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,116,125,50,14
     GROUPBOX        "About Glk",IDC_ABOUT_GROUP,7,7,159,43
-    ICON            IDR_GLK,IDC_STATIC,15,21,20,20,0,WS_EX_CLIENTEDGE
+    ICON            IDR_GLK,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Windows Glk by David Kinder\nGlk Specification by Andrew Plotkin\nGlk %glk%, Windows release %winglk%",
                     IDC_ABOUT_TEXT,42,19,118,25
     GROUPBOX        "Additional Credits",IDC_ADDITION_GROUP,7,53,159,65
@@ -163,7 +163,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,162,94,53,9
     CONTROL         "Re&verse",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,162,106,43,9
-    GROUPBOX        "Style Properties",IDC_STYLE_STATIC,4,5,219,136
+    GROUPBOX        "Style Properties",IDC_STYLE_STATIC,4,5,219,120
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 228, 170

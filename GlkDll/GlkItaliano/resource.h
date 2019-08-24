@@ -72,6 +72,7 @@
 #define IDC_FIXED_FONT                  30149
 #define IDC_PROP_FONT                   30141
 #define IDC_SIZE_FONT                   30142
+#define IDC_LOGO                        30143
 #define IDS_GLULXE_TITLE                31000
 #define IDS_GLULXE_OPEN                 31001
 #define IDS_GLULXE_FILTER               31002
