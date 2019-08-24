@@ -1248,39 +1248,40 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
     m_pFont = m_Fonts[m_Display.m_iIndex];
   else
   {
-    LOGFONT* pTextFont = GetFont();
-    if (pTextFont)
-    {
-      LOGFONT TextLogFont;
-      CopyMemory(&TextLogFont,pTextFont,sizeof(LOGFONT));
-      SetFontStyles(TextLogFont);
+    CString name = GetFontName();
 
-      if (m_Display.m_iLink != 0)
-        TextLogFont.lfUnderline = TRUE;
+    LOGFONT TextLogFont = { 0 };
+    strncpy(TextLogFont.lfFaceName,(LPCSTR)name,LF_FACESIZE);
+    SetFontStyles(TextLogFont);
 
-      TextLogFont.lfCharSet = ANSI_CHARSET;
-      TextLogFont.lfOutPrecision = OUT_TT_PRECIS;
-      TextLogFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-      TextLogFont.lfQuality = PROOF_QUALITY;
-      TextLogFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
+    if (m_Display.m_iLink != 0)
+      TextLogFont.lfUnderline = TRUE;
 
-      int iPointSize = pApp->GetFontPointSize();
-      int iStyleSize = GetStyleFontSize();
-      double dPointInc = iPointSize*fabs((double)iStyleSize)*0.1;
-      if (dPointInc < 1.0)
-        dPointInc = 1.0;
-      if (iStyleSize > 0)
-        iPointSize += (int)ceil(dPointInc);
-      else if (iStyleSize < 0)
-        iPointSize -= (int)ceil(dPointInc);
-      if (iPointSize < 4)
-        iPointSize = 4;
+    TextLogFont.lfCharSet = ANSI_CHARSET;
+    TextLogFont.lfOutPrecision = OUT_TT_PRECIS;
+    TextLogFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+    TextLogFont.lfQuality = PROOF_QUALITY;
+    TextLogFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
+
+    int iPointSize = pApp->GetFontPointSize();
+    int iStyleSize = GetStyleFontSize();
+    double dPointInc = iPointSize*fabs((double)iStyleSize)*0.1;
+    if (dPointInc < 1.0)
+      dPointInc = 1.0;
+    if (iStyleSize > 0)
+      iPointSize += (int)ceil(dPointInc);
+    else if (iStyleSize < 0)
+      iPointSize -= (int)ceil(dPointInc);
+    if (iPointSize < 4)
+      iPointSize = 4;
+    if (m_pWnd)
       TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getWindowDPI(m_pWnd),72);
+    else
+      TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getSystemDPI(),72);
 
-      m_pFont = new CFont;
-      m_pFont->CreateFontIndirect(&TextLogFont);
-      m_Fonts[m_Display.m_iIndex] = m_pFont;
-    }
+    m_pFont = new CFont;
+    m_pFont->CreateFontIndirect(&TextLogFont);
+    m_Fonts[m_Display.m_iIndex] = m_pFont;
   }
 
   if (m_pOldFont)

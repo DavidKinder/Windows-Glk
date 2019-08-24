@@ -54,9 +54,6 @@ public:
   DECLARE_MESSAGE_MAP()
 
 public:
-  LOGFONT* GetPropFont(void) { return &m_PropFont; }
-  LOGFONT* GetFixedFont(void) { return &m_FixedFont; }
-  int GetFontPointSize(void) { return m_iFontPointSize; }
   CRect& GetWindowRect(void) { return m_WindowRect; }
   CRect& GetInnerRect(void) { return m_InnerRect; }
   int& GetWindowState(void) { return m_iWindowState; }
@@ -65,6 +62,13 @@ public:
   void WriteSettings(void);
   void LoadConfigFile(const char* pszConfigName);
   void SetSaveOptions(bool bSave) { m_bSaveSettings = bSave; }
+
+  CString GetPropFontName(void) { return m_strPropFontName; }
+  CString GetFixedFontName(void) { return m_strFixedFontName; }
+  int GetFontPointSize(void) { return m_iFontPointSize; }
+  bool SetPropFontName(LPCSTR fontName);
+  bool SetFixedFontName(LPCSTR fontName);
+  bool SetFontPointSize(int iFontPointSize);
 
   bool GetWindowBorders(void) { return m_bWindowBorders; }
   bool SetWindowBorders(bool bBorders);
@@ -186,8 +190,8 @@ protected:
   bool m_bSettingsRead;
   bool m_bSaveSettings;
 
-  LOGFONT m_PropFont;
-  LOGFONT m_FixedFont;
+  CString m_strPropFontName;
+  CString m_strFixedFontName;
   int m_iFontPointSize;
   CRect m_WindowRect;
   CRect m_InnerRect;

@@ -172,6 +172,9 @@ void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_BORDERS, m_bBorders);
   DDX_Check(pDX, IDC_GUI, m_bGUI);
   DDX_Check(pDX, IDC_STYLEHINT, m_bStyleHints);
+  DDX_Control(pDX, IDC_PROP_FONT, m_PropFont);
+  DDX_Control(pDX, IDC_FIXED_FONT, m_FixedFont);
+  DDX_CBString(pDX, IDC_SIZE_FONT, m_FontSize);
   DDX_CBIndex(pDX, IDC_SHOW_IFICTION, m_iFiction);
   //}}AFX_DATA_MAP
 }
@@ -180,12 +183,31 @@ BOOL CWinGlkGeneralPage::OnInitDialog()
 {
   CPropertyPage::OnInitDialog();
 
+  // Get all the possible fonts
+  CDC* dc = GetDC();
+  LOGFONT font = { 0 };
+  font.lfCharSet = ANSI_CHARSET;
+  ::EnumFontFamiliesEx(dc->GetSafeHdc(),&font,(FONTENUMPROC)ListFonts,(LPARAM)this,0);
+  ReleaseDC(dc);
+
+  if (m_PropFont.SelectString(-1,m_PropFontName) == CB_ERR)
+    m_PropFont.SetCurSel(0);
+  if (m_FixedFont.SelectString(-1,m_FixedFontName) == CB_ERR)
+    m_FixedFont.SetCurSel(0);
+
   m_Text.SubclassDlgItem(IDC_TEXT_COLOUR,this);
   m_Back.SubclassDlgItem(IDC_BACK_COLOUR,this);
   m_Link.SubclassDlgItem(IDC_LINK_COLOUR,this);
 
   SetControlState();
   return TRUE;
+}
+
+void CWinGlkGeneralPage::OnOK()
+{
+  m_PropFont.GetWindowText(m_PropFontName);
+  m_FixedFont.GetWindowText(m_FixedFontName);
+  CPropertyPage::OnOK();
 }
 
 COLORREF CWinGlkGeneralPage::GetTextColour(void)
@@ -216,6 +238,30 @@ COLORREF CWinGlkGeneralPage::GetLinkColour(void)
 void CWinGlkGeneralPage::SetLinkColour(COLORREF Colour)
 {
   m_Link.SetCurrentColour(Colour);
+}
+
+// Called when enumerating fonts, populates the font drop down lists in the dialog
+int CALLBACK CWinGlkGeneralPage::ListFonts(ENUMLOGFONTEX *font, NEWTEXTMETRICEX *metric, DWORD fontType, LPARAM param)
+{
+  CWinGlkGeneralPage* page = (CWinGlkGeneralPage*)param;
+
+  // Only allow scaleable fonts (TrueType, etc.)
+  bool allow = false;
+  if (fontType & TRUETYPE_FONTTYPE)
+    allow = true;
+  else if (!(fontType & RASTER_FONTTYPE))
+    allow = ((metric->ntmTm.ntmFlags & NTM_PS_OPENTYPE|NTM_TT_OPENTYPE|NTM_TYPE1) != 0);
+
+  if (allow)
+  {
+    if (font->elfLogFont.lfFaceName[0] != '@')
+    {
+      page->m_PropFont.AddString(font->elfLogFont.lfFaceName);
+      if (font->elfLogFont.lfPitchAndFamily & FIXED_PITCH)
+        page->m_FixedFont.AddString(font->elfLogFont.lfFaceName);
+    }
+  }
+  return 1;
 }
 
 void CWinGlkGeneralPage::SetControlState(void)

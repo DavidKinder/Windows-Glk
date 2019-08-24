@@ -165,28 +165,12 @@ void CGlkApp::ReadSettings(void)
     CWnd* pDesktop = CWnd::GetDesktopWindow();
     CDC* pDC = pDesktop->GetDC();
 
-    ::ZeroMemory(&m_PropFont,sizeof(LOGFONT));
-    m_PropFont.lfCharSet = ANSI_CHARSET;
-    m_PropFont.lfOutPrecision = OUT_TT_PRECIS;
-    m_PropFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-    m_PropFont.lfQuality = PROOF_QUALITY;
-    m_PropFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
-    strncpy(m_PropFont.lfFaceName,
-      GetProfileString("Glk Settings","Proportional Font Name",GetDefaultFont()),LF_FACESIZE);
-    if ((iVersion < 131) && (strcmp(m_PropFont.lfFaceName,"Times New Roman") == 0))
-      strncpy(m_PropFont.lfFaceName,GetDefaultFont(),LF_FACESIZE);
-
-    ::ZeroMemory(&m_FixedFont,sizeof(LOGFONT));
-    m_FixedFont.lfCharSet = ANSI_CHARSET;
-    m_FixedFont.lfOutPrecision = OUT_TT_PRECIS;
-    m_FixedFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-    m_FixedFont.lfQuality = PROOF_QUALITY;
-    m_FixedFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
-    strncpy(m_FixedFont.lfFaceName,
-      GetProfileString("Glk Settings","Fixed Font Name",GetDefaultFixedFont()),LF_FACESIZE);
-    if ((iVersion < 131) && (strcmp(m_FixedFont.lfFaceName,"Courier New") == 0))
-      strncpy(m_FixedFont.lfFaceName,GetDefaultFixedFont(),LF_FACESIZE);
-
+    m_strPropFontName = GetProfileString("Glk Settings","Proportional Font Name",GetDefaultFont());
+    if ((iVersion < 131) && (m_strPropFontName == "Times New Roman"))
+      m_strPropFontName = GetDefaultFont();
+    m_strFixedFontName = GetProfileString("Glk Settings","Fixed Font Name",GetDefaultFixedFont());
+    if ((iVersion < 131) && (m_strFixedFontName == "Courier New"))
+      m_strFixedFontName = GetDefaultFixedFont();
     if (iVersion < 150)
       m_iFontPointSize = GetProfileInt("Glk Settings","Proportional Font Size",10);
     else
@@ -235,8 +219,8 @@ void CGlkApp::WriteSettings(void)
     CWnd* pDesktop = CWnd::GetDesktopWindow();
     CDC* pDC = pDesktop->GetDC();
 
-    WriteProfileString("Glk Settings","Proportional Font Name",CString(m_PropFont.lfFaceName));
-    WriteProfileString("Glk Settings","Fixed Font Name",CString(m_FixedFont.lfFaceName));
+    WriteProfileString("Glk Settings","Proportional Font Name",m_strPropFontName);
+    WriteProfileString("Glk Settings","Fixed Font Name",m_strFixedFontName);
     WriteProfileInt("Glk Settings","Font Size",m_iFontPointSize);
 
     WriteProfileInt("Glk Settings","Window Left",m_WindowRect.left);
@@ -336,9 +320,9 @@ void CGlkApp::LoadConfigFile(const char* pszConfigName)
         // fixed width fonts
         int fontSize = 0;
         if (key.CompareNoCase("FontName") == 0)
-          strncpy(m_PropFont.lfFaceName,value,LF_FACESIZE);
+          m_strPropFontName = value;
         if (key.CompareNoCase("FixedFontName") == 0)
-          strncpy(m_FixedFont.lfFaceName,value,LF_FACESIZE);
+          m_strFixedFontName = value;
         if (key.CompareNoCase("FontSize") == 0)
         {
           if (sscanf(value,"%d",&fontSize) == 1)
@@ -384,6 +368,39 @@ void CGlkApp::LoadInternationalResources(void)
     if (hDll != NULL)
       AfxSetResourceHandle(hDll);
   }
+}
+
+bool CGlkApp::SetPropFontName(LPCSTR fontName)
+{
+  bool bNameChanged = false;
+  if (fontName != m_strPropFontName)
+  {
+    m_strPropFontName = fontName;
+    bNameChanged = true;
+  }
+  return bNameChanged;
+}
+
+bool CGlkApp::SetFixedFontName(LPCSTR fontName)
+{
+  bool bNameChanged = false;
+  if (fontName != m_strFixedFontName)
+  {
+    m_strFixedFontName = fontName;
+    bNameChanged = true;
+  }
+  return bNameChanged;
+}
+
+bool CGlkApp::SetFontPointSize(int iFontPointSize)
+{
+  bool bSizeChanged = false;
+  if (iFontPointSize != m_iFontPointSize)
+  {
+    m_iFontPointSize = iFontPointSize;
+    bSizeChanged = true;
+  }
+  return bSizeChanged;
 }
 
 bool CGlkApp::SetWindowBorders(bool bBorders)

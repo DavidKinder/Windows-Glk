@@ -77,6 +77,9 @@ public:
   BOOL  m_bBorders;
   BOOL  m_bGUI;
   BOOL  m_bStyleHints;
+  CString m_PropFontName;
+  CString m_FixedFontName;
+  CString m_FontSize;
   int   m_iFiction;
   //}}AFX_DATA
 
@@ -93,6 +96,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CWinGlkGeneralPage)
   virtual BOOL OnInitDialog();
+  virtual void OnOK();
   //}}AFX_MSG
 
 public:
@@ -106,6 +110,11 @@ public:
 protected:
   void SetControlState(void);
 
+  // Called when enumerating fonts, and populates the font drop down lists in the dialog
+  static int CALLBACK ListFonts(ENUMLOGFONTEX *font, NEWTEXTMETRICEX *metric, DWORD fontType, LPARAM param);
+
+  CComboBox m_PropFont;
+  CComboBox m_FixedFont;
   ColourButton m_Text;
   ColourButton m_Back;
   ColourButton m_Link;

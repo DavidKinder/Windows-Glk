@@ -16,26 +16,6 @@
 #include "Resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// CToolBarEx control window, derived from CToolBar
-/////////////////////////////////////////////////////////////////////////////
-
-class CToolBarEx : public CToolBar
-{
-public:
-  CToolBarEx() {}
-
-  BOOL LoadToolBar(UINT nIDResource);
-  BOOL LoadToolBar(LPCTSTR lpszResourceName);
-  BOOL LoadBitmap(LPCTSTR lpszResourceName);
-  BOOL SetBitmap(HBITMAP hbmImageWell);
-
-  CBitmap& GetBitmap(void);
-
-private:
-  CBitmap m_bitmap;
-};
-
-/////////////////////////////////////////////////////////////////////////////
 // CWinGlkViewWnd window, derived from the base CWnd class
 /////////////////////////////////////////////////////////////////////////////
 
@@ -112,8 +92,6 @@ protected:
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg void OnScrollback();
   afx_msg void OnUpdateScrollback(CCmdUI* pCmdUI);
-  afx_msg void OnFontProportional();
-  afx_msg void OnFontFixed();
   afx_msg void OnOptions();
   afx_msg void OnAbout();
   afx_msg void OnAboutGame();
@@ -134,16 +112,14 @@ protected:
     GlkTimer
   };
 
-  void ChangeFont(bool bFixed);
   bool CheckMorePending(bool update);
   CRect GetDefaultSize(void);
 
 protected:
   CWinGlkViewWnd m_View;
-  CMenu m_FontMenu;
   CStatusBar m_StatusBar;
-  CToolBarEx m_GlkToolBar;
-  CToolBarEx m_UserToolBar;
+  BitmapToolBar m_GlkToolBar;
+  BitmapToolBar m_UserToolBar;
   CRgn m_Mask;
   UINT m_CodePage;
   TextOutput m_TextOut;

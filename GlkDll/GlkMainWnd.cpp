@@ -25,121 +25,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CToolBarEx control window, derived from CToolBar
-/////////////////////////////////////////////////////////////////////////////
-
-// Internal CToolBar data structure
-struct CToolBarData
-{
-  WORD wVersion;
-  WORD wWidth;
-  WORD wHeight;
-  WORD wItemCount;
-
-  WORD* items()
-  {
-    return (WORD*)(this+1);
-  }
-};
-
-BOOL CToolBarEx::LoadToolBar(UINT nIDResource)
-{
-  return LoadToolBar(MAKEINTRESOURCE(nIDResource));
-}
-
-BOOL CToolBarEx::LoadToolBar(LPCTSTR lpszResourceName)
-{
-  ASSERT_VALID(this);
-  ASSERT(lpszResourceName != NULL);
-
-  HINSTANCE hInst = AfxFindResourceHandle(lpszResourceName,RT_TOOLBAR);
-  HRSRC hRsrc = ::FindResource(hInst,lpszResourceName,RT_TOOLBAR);
-  if (hRsrc == NULL)
-  {
-    hInst = NULL;
-    hRsrc = ::FindResource(hInst,lpszResourceName,RT_TOOLBAR);
-  }
-  if (hRsrc == NULL)
-    return FALSE;
-
-  HGLOBAL hGlobal = LoadResource(hInst,hRsrc);
-  if (hGlobal == NULL)
-    return FALSE;
-
-  CToolBarData* pData = (CToolBarData*)LockResource(hGlobal);
-  if (pData == NULL)
-    return FALSE;
-  ASSERT(pData->wVersion == 1);
-
-  UINT* pItems = new UINT[pData->wItemCount];
-  for (int i = 0; i < pData->wItemCount; i++)
-    pItems[i] = pData->items()[i];
-  BOOL bResult = SetButtons(pItems,pData->wItemCount);
-  delete[] pItems;
-
-  if (bResult)
-  {
-    CSize sizeImage(pData->wWidth,pData->wHeight);
-    CSize sizeButton(pData->wWidth + 7,pData->wHeight + 7);
-    SetSizes(sizeButton,sizeImage);
-
-    bResult = LoadBitmap(lpszResourceName);
-  }
-
-  UnlockResource(hGlobal);
-  FreeResource(hGlobal);
-  return bResult;
-}
-
-BOOL CToolBarEx::LoadBitmap(LPCTSTR lpszResourceName)
-{
-  ASSERT_VALID(this);
-  ASSERT(lpszResourceName != NULL);
-
-  HINSTANCE hInstImageWell = AfxFindResourceHandle(lpszResourceName,RT_BITMAP);
-  HRSRC hRsrcImageWell = ::FindResource(hInstImageWell,lpszResourceName,RT_BITMAP);
-  if (hRsrcImageWell == NULL)
-  {
-    hInstImageWell = NULL;
-    hRsrcImageWell = ::FindResource(hInstImageWell,lpszResourceName,RT_BITMAP);
-  }
-  if (hRsrcImageWell == NULL)
-    return FALSE;
-
-  HBITMAP hbmImageWell;
-  hbmImageWell = AfxLoadSysColorBitmap(hInstImageWell,hRsrcImageWell);
-
-  if (!AddReplaceBitmap(hbmImageWell))
-    return FALSE;
-
-  if (m_bitmap.GetSafeHandle() != 0)
-    m_bitmap.DeleteObject();
-  m_bitmap.Attach(::LoadBitmap((hInstImageWell != 0) ?
-    hInstImageWell : ::GetModuleHandle(NULL),lpszResourceName));
-
-  m_hInstImageWell = hInstImageWell;
-  m_hRsrcImageWell = hRsrcImageWell;
-  return TRUE;
-}
-
-BOOL CToolBarEx::SetBitmap(HBITMAP hbmImageWell)
-{
-  if (CToolBar::SetBitmap(hbmImageWell))
-  {
-    if (m_bitmap.GetSafeHandle() != 0)
-      m_bitmap.DeleteObject();
-    m_bitmap.Attach(hbmImageWell);
-    return TRUE;
-  }
-  return FALSE;
-}
-
-CBitmap& CToolBarEx::GetBitmap(void)
-{
-  return m_bitmap;
-}
-
-/////////////////////////////////////////////////////////////////////////////
 // CWinGlkViewWnd window, derived from the base CWnd class
 /////////////////////////////////////////////////////////////////////////////
 
@@ -257,8 +142,6 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_WM_GETMINMAXINFO()
   ON_COMMAND(IDM_SYS_SCROLLBACK, OnScrollback)
   ON_UPDATE_COMMAND_UI(IDM_SYS_SCROLLBACK, OnUpdateScrollback)
-  ON_COMMAND(IDM_FONT_PROPORTIONAL, OnFontProportional)
-  ON_COMMAND(IDM_FONT_FIXED, OnFontFixed)
   ON_COMMAND(IDM_SYS_OPTIONS, OnOptions)
   ON_COMMAND(IDM_SYS_HELP, OnHelpFinder)
   ON_COMMAND(IDM_SYS_ABOUT, OnAbout)
@@ -321,7 +204,6 @@ bool CWinGlkMainWnd::Create(bool bFrame)
 
   // Set up the system menu
   CString strMenuItem;
-  m_FontMenu.LoadMenu(IDR_FONTS);
   CMenu* pSysMenu = GetSystemMenu(FALSE);
   if (pSysMenu)
   {
@@ -330,9 +212,6 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     strMenuItem.LoadString(IDS_MENU_SCROLLBACK);
     pSysMenu->InsertMenu(SysMenuPos++,MF_BYPOSITION|MF_STRING,IDM_SYS_SCROLLBACK,
       strMenuItem);
-    strMenuItem.LoadString(IDS_MENU_FONTS);
-    pSysMenu->InsertMenu(SysMenuPos++,MF_BYPOSITION|MF_STRING|MF_POPUP,
-      (UINT)m_FontMenu.GetSafeHmenu(),strMenuItem);
     strMenuItem.LoadString(IDS_MENU_OPTIONS);
     pSysMenu->InsertMenu(SysMenuPos++,MF_BYPOSITION|MF_STRING,IDM_SYS_OPTIONS,
       strMenuItem);
@@ -368,20 +247,11 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   if (Menus.GetSafeHmenu() == 0)
     Menus.CreateMenu();
 
-  CMenu GlkMenu, GlkFontMenu;
+  CMenu GlkMenu;
   GlkMenu.CreateMenu();
-  GlkFontMenu.CreateMenu();
 
   strMenuItem.LoadString(IDS_MENU_SCROLLBACK);
   GlkMenu.AppendMenu(MF_STRING,IDM_SYS_SCROLLBACK,strMenuItem);
-
-  strMenuItem.LoadString(IDS_MENU_PROPFONT);
-  GlkFontMenu.AppendMenu(MF_STRING,IDM_FONT_PROPORTIONAL,strMenuItem);
-  strMenuItem.LoadString(IDS_MENU_FIXEDFONT);
-  GlkFontMenu.AppendMenu(MF_STRING,IDM_FONT_FIXED,strMenuItem);
-  strMenuItem.LoadString(IDS_MENU_FONTS);
-  GlkMenu.AppendMenu(MF_STRING|MF_POPUP,(UINT_PTR)GlkFontMenu.Detach(),strMenuItem);
-
   strMenuItem.LoadString(IDS_MENU_OPTIONS);
   GlkMenu.AppendMenu(MF_STRING,IDM_SYS_OPTIONS,strMenuItem);
 
@@ -430,13 +300,6 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     return FALSE;
   if (m_GlkToolBar.LoadToolBar(IDR_GLK) == FALSE)
     return FALSE;
-  if (IsHighColour())
-  {
-    CBitmap bitmap;
-    bitmap.Attach(::LoadBitmap(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDB_TOOLBAR32)));
-    if (m_GlkToolBar.SetBitmap((HBITMAP)bitmap.Detach()) == FALSE)
-      return FALSE;
-  }
 
   // Hide the help button, if help is not available
   if (pApp->HasHelpFile() == false)
@@ -465,12 +328,19 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   if (m_UserToolBar.GetSafeHwnd() != 0)
     m_coolBar.GetReBarCtrl().MinimizeBand((m_menuBar.GetSafeHwnd() != 0) ? 1 : 0);
 
-  // Add the bitmaps from the toolbars to the menus
   if (m_menuBar.GetSafeHwnd() != 0)
   {
+    // Add the bitmaps from the toolbars to the menus
+    CSize sizeImage(16,15);
     if (m_UserToolBar.GetSafeHwnd() != 0)
-      m_menuBar.LoadBitmaps(m_UserToolBar.GetBitmap(),m_UserToolBar.GetToolBarCtrl(),CSize(16,15),false);
-    m_menuBar.LoadBitmaps(m_GlkToolBar.GetBitmap(),m_GlkToolBar.GetToolBarCtrl(),CSize(16,15),IsHighColour());
+    {
+      CBitmap menuUserBitmap;
+      LoadBitmap(menuUserBitmap,ToolbarID);
+      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),CSize(16,15),false);
+    }
+    CBitmap menuGlkBitmap;
+    LoadBitmap(menuGlkBitmap,IDR_GLK);
+    m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),CSize(16,15),false);
     m_menuBar.Update();
   }
 
@@ -776,12 +646,6 @@ void CWinGlkMainWnd::OnSysCommand(UINT nID, LPARAM lParam)
   case IDM_SYS_ABOUT_GAME:
     OnAboutGame();
     break;
-  case IDM_FONT_PROPORTIONAL:
-    ChangeFont(false);
-    break;
-  case IDM_FONT_FIXED:
-    ChangeFont(true);
-    break;
   case IDM_SYS_OPTIONS:
     OnOptions();
     break;
@@ -895,16 +759,6 @@ void CWinGlkMainWnd::OnUpdateScrollback(CCmdUI* pCmdUI)
   pCmdUI->Enable(bEnable);
 }
 
-void CWinGlkMainWnd::OnFontProportional() 
-{
-  ChangeFont(false);
-}
-
-void CWinGlkMainWnd::OnFontFixed() 
-{
-  ChangeFont(true);
-}
-
 void CWinGlkMainWnd::OnOptions() 
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
@@ -922,6 +776,10 @@ void CWinGlkMainWnd::OnOptions()
   GeneralPage.m_bBorders = pApp->GetWindowBorders();
   GeneralPage.m_bGUI = pApp->GetEnableGUI();
   GeneralPage.m_bStyleHints = pApp->GetStyleHints();
+
+  GeneralPage.m_FontSize.Format("%d",pApp->GetFontPointSize());
+  GeneralPage.m_PropFontName = pApp->GetPropFontName();
+  GeneralPage.m_FixedFontName = pApp->GetFixedFontName();
 
   GeneralPage.SetTextColour(GlkToColour(pApp->GetTextColour()));
   GeneralPage.SetBackColour(GlkToColour(pApp->GetBackColour()));
@@ -944,6 +802,18 @@ void CWinGlkMainWnd::OnOptions()
     bool bGUIChanged = pApp->SetEnableGUI(GeneralPage.m_bGUI ? true : false);
     pApp->SetStyleHints(GeneralPage.m_bStyleHints ? true : false);
 
+    int iFontSize = 0;
+    sscanf(GeneralPage.m_FontSize,"%d",&iFontSize);
+    if (iFontSize < 8)
+      iFontSize = 6;
+    if (iFontSize > 100)
+      iFontSize = 100;
+    bool bFontChanged = pApp->SetFontPointSize(iFontSize);
+    if (pApp->SetPropFontName(GeneralPage.m_PropFontName))
+      bFontChanged = true;
+    if (pApp->SetFixedFontName(GeneralPage.m_FixedFontName))
+      bFontChanged = true;
+
     pApp->SetTextColour(ColourToGlk(GeneralPage.GetTextColour()));
     pApp->SetBackColour(ColourToGlk(GeneralPage.GetBackColour()));
     pApp->SetLinkColour(GeneralPage.GetLinkColour());
@@ -958,7 +828,9 @@ void CWinGlkMainWnd::OnOptions()
     if (bVoiceChanged || bRateChanged)
       TextToSpeech::GetSpeechEngine().Update(pApp->GetSpeechVoice(),pApp->GetSpeechRate());
 
-    if (bBorderChanged || bGUIChanged)
+    if (bFontChanged)
+      GetTextOut().Reset();
+    if (bBorderChanged || bGUIChanged || bFontChanged)
       GetView()->SizeWindows();
 
     // Redraw the display
@@ -1156,22 +1028,6 @@ void CWinGlkMainWnd::EnableScrollback(bool bEnable)
     else
       pSysMenu->EnableMenuItem(IDM_SYS_SCROLLBACK,MF_BYCOMMAND|MF_GRAYED);
   }
-}
-
-void CWinGlkMainWnd::ChangeFont(bool bFixed)
-{
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-  CFontDialog FontDlg(
-    bFixed ? pApp->GetFixedFont() : pApp->GetPropFont(),
-    CF_SCREENFONTS|CF_NOSCRIPTSEL|CF_NOVERTFONTS|CF_SCALABLEONLY|(bFixed ? CF_FIXEDPITCHONLY : 0));
-  if (FontDlg.DoModal() == IDOK)
-  {
-    GetTextOut().Reset();
-    GetView()->SizeWindows();
-    Invalidate();
-  }
-  if (CWinGlkWnd::GetActiveWindow())
-    CWinGlkWnd::GetActiveWindow()->SetActiveWindow();
 }
 
 void CWinGlkMainWnd::GetMessageString(UINT nID, CString& rMessage) const
