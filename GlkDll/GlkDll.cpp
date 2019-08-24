@@ -1273,14 +1273,15 @@ void CGlkApp::Speak(LPCWSTR pszText)
 // Initialize the sound engine
 void CGlkApp::InitSoundEngine(void)
 {
-  CreateMainWindow();
-
-  if (CDSoundEngine::GetSoundEngine().Initialize(CWinGlkSndChannel::VolumeFader) == false)
+  if (CreateMainWindow())
   {
-    CString noDSound;
-    noDSound.LoadString(IDS_NO_DSOUND);
-    ::MessageBox(AfxGetMainWnd()->GetSafeHwnd(),
-      noDSound,"Windows Glk",MB_ICONWARNING|MB_OK);
+    if (CDSoundEngine::GetSoundEngine().Initialize(CWinGlkSndChannel::VolumeFader) == false)
+    {
+      CString noDSound;
+      noDSound.LoadString(IDS_NO_DSOUND);
+      ::MessageBox(AfxGetMainWnd()->GetSafeHwnd(),
+        noDSound,"Windows Glk",MB_ICONWARNING|MB_OK);
+    }
   }
 }
 
