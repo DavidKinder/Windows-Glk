@@ -265,7 +265,7 @@ public:
 // Dialog Data
   //{{AFX_DATA(CAboutDialog)
   enum { IDD = IDD_ABOUT };
-    // NOTE: the ClassWizard will add data members here
+  CStatic m_LogoCtrl;
   //}}AFX_DATA
 
 // Overrides

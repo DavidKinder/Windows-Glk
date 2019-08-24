@@ -738,7 +738,7 @@ void CAboutDialog::DoDataExchange(CDataExchange* pDX)
 {
   BaseDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CAboutDialog)
-  // NOTE: the ClassWizard will add DDX and DDV calls here
+  DDX_Control(pDX, IDC_LOGO, m_LogoCtrl);
   //}}AFX_DATA_MAP
 }
 
@@ -751,6 +751,12 @@ BOOL CAboutDialog::OnInitDialog()
 {
   BaseDialog::OnInitDialog();
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+
+  if (m_LogoCtrl.GetIcon() == 0)
+  {
+    HICON icon = ::LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_GLK));
+    m_LogoCtrl.SetIcon(icon);
+  }
 
   CWnd* group = GetDlgItem(IDC_ABOUT_GROUP);
   CString groupName;
