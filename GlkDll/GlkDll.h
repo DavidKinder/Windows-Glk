@@ -106,7 +106,7 @@ public:
   CString& GetAppAboutText(void) { return m_strAppAboutText; }
   CString& GetMenuName(void) { return m_strMenuName; }
   CString& GetResourceDir(void) { return m_strResDir; }
-  CString& GetInitialDir(void) { return m_strInitialDir; }
+  CString& GetInitialPath(void) { return m_strInitialPath; }
   void AddMenuName(CString& text);
 
   UINT GetUserGuiID(void) { return m_UserGuiID; }
@@ -220,7 +220,7 @@ protected:
   CString m_strAppAboutText;
   CString m_strMenuName;
   CString m_strResDir;
-  CString m_strInitialDir;
+  CString m_strInitialPath;
 
   UINT m_UserGuiID;
 

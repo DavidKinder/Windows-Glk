@@ -195,7 +195,10 @@ void CGlkApp::ReadSettings(void)
 
     m_LinkColour = GetProfileInt("Glk Settings","Hyperlink Colour",RGB(0x00,0x00,0xFF));
 
-    m_strInitialDir = GetProfileString("Glk Settings","Directory","");
+    if (iVersion < 150)
+      m_strInitialPath = GetProfileString("Glk Settings","Directory","");
+    else
+      m_strInitialPath = GetProfileString("Glk Settings","Initial Path","");
     m_iFiction = (Show_iFiction)GetProfileInt("Glk Settings","Show iFiction Dialog",
       Show_iF_First_Time);
 
@@ -239,7 +242,7 @@ void CGlkApp::WriteSettings(void)
 
     WriteProfileInt("Glk Settings","Hyperlink Colour",m_LinkColour);
 
-    WriteProfileString("Glk Settings","Directory",m_strInitialDir);
+    WriteProfileString("Glk Settings","Initial Path",m_strInitialPath);
     WriteProfileInt("Glk Settings","Show iFiction Dialog",m_iFiction);
 
     pDesktop->ReleaseDC(pDC);
@@ -3325,7 +3328,7 @@ extern "C" const char* winglk_get_initial_filename(const char* cmdline, const ch
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  CString& strInitialDir = ((CGlkApp*)AfxGetApp())->GetInitialDir();
+  CString& strInitialPath = ((CGlkApp*)AfxGetApp())->GetInitialPath();
 
   // The file name is static so that the returned buffer remains valid
   static CString strFileName;
@@ -3349,8 +3352,7 @@ extern "C" const char* winglk_get_initial_filename(const char* cmdline, const ch
 
   if (strFileName.GetLength() == 0)
   {
-    SimpleFileDialog FileDlg(TRUE,NULL,NULL,OFN_HIDEREADONLY|OFN_ENABLESIZING,filter,NULL);
-    FileDlg.m_ofn.lpstrInitialDir = strInitialDir;
+    SimpleFileDialog FileDlg(TRUE,NULL,strInitialPath,OFN_HIDEREADONLY|OFN_ENABLESIZING,filter,NULL);
     if (title != NULL)
       FileDlg.m_ofn.lpstrTitle = title;
 
@@ -3371,9 +3373,8 @@ extern "C" const char* winglk_get_initial_filename(const char* cmdline, const ch
       iStop = strFileName.GetLength();
     CWinGlkFileRef::SetDefaultNames(strFileName.Mid(iStart,iStop-iStart));
 
-    // Store the directory path
-    strInitialDir = strFileName.Left(iStart);
-
+    // Store the selected path
+    strInitialPath = strFileName;
     return strFileName;
   }
   return NULL;
