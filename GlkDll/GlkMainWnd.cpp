@@ -17,6 +17,7 @@
 #include "GlkWindowGfx.h"
 #include "GlkWindowTextBuffer.h"
 #include "WinGlk.h"
+#include "DpiFunctions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -124,6 +125,8 @@ static UINT Indicators[] =
 
 CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP)
 {
+  m_GlkToolBarIndex = -1;
+  m_UserToolBarIndex = -1;
   m_menuBar.SetUseF10(false);
 }
 
@@ -305,6 +308,35 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   if (pApp->HasHelpFile() == false)
     m_GlkToolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
 
+  // Use "new bar" style buttons if possible
+  ImagePNG normalImage, disabledImage;
+  if (UseNewBar())
+  {
+    m_settings = Settings(DPI::getWindowDPI(this));
+    m_GlkToolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
+    if (m_UserToolBar.GetSafeHwnd())
+      m_UserToolBar.SetSizes(m_settings.sizeButton,CSize(16,15));
+
+    if (m_image.LoadResource(IDR_TOOLBAR))
+    {
+      CSize scaledSize(m_settings.sizeImage);
+      scaledSize.cx *= m_GlkToolBar.GetCount();
+      normalImage.Scale(m_image,scaledSize);
+      disabledImage.Copy(normalImage);
+      normalImage.Fill(m_settings.colourFore);
+      disabledImage.Fill(m_settings.colourDisable);
+
+      m_GlkToolBar.SetBitmap(normalImage.CopyBitmap(this));
+      HIMAGELIST disabledList = ::ImageList_Create(
+        m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
+      if (disabledList)
+      {
+        if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
+          m_GlkToolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
+      }
+    }
+  }
+
   // Create the menu bar and attach the menus to it, or fall back to ordinary
   // Windows menus if the menu bar was not created
   if (CreateMenuBar((UINT)-1,&Menus) == FALSE)
@@ -316,31 +348,41 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   }
 
   // Add the tool bars
-  DWORD addStyle = RBBS_NOGRIPPER|RBBS_BREAK;
+  DWORD addStyle = RBBS_NOGRIPPER;
+  if (!UseNewBar())
+    addStyle |= RBBS_BREAK;
   if (m_UserToolBar.GetSafeHwnd())
   {
     if (m_coolBar.AddBar(&m_UserToolBar,NULL,NULL,addStyle) == FALSE)
       return FALSE;
+    m_UserToolBarIndex = m_coolBar.GetReBarCtrl().GetBandCount()-1;
     addStyle = RBBS_NOGRIPPER;
   }
   if (m_coolBar.AddBar(&m_GlkToolBar,NULL,NULL,addStyle) == FALSE)
     return FALSE;
-  if (m_UserToolBar.GetSafeHwnd() != 0)
-    m_coolBar.GetReBarCtrl().MinimizeBand((m_menuBar.GetSafeHwnd() != 0) ? 1 : 0);
+  m_GlkToolBarIndex = m_coolBar.GetReBarCtrl().GetBandCount()-1;
 
+  // Size and position the toolbars
+  SetToolBarSizes();
+
+  // Add the bitmaps from the toolbars to the menus
   if (m_menuBar.GetSafeHwnd() != 0)
   {
-    // Add the bitmaps from the toolbars to the menus
-    CSize sizeImage(16,15);
     if (m_UserToolBar.GetSafeHwnd() != 0)
     {
       CBitmap menuUserBitmap;
       LoadBitmap(menuUserBitmap,ToolbarID);
       m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),CSize(16,15),false);
     }
-    CBitmap menuGlkBitmap;
-    LoadBitmap(menuGlkBitmap,IDR_GLK);
-    m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),CSize(16,15),false);
+
+    if (UseNewBar() && normalImage.Pixels())
+      m_menuBar.LoadBitmaps(normalImage,m_GlkToolBar.GetToolBarCtrl(),m_settings.sizeImage);
+    else
+    {
+      CBitmap menuGlkBitmap;
+      LoadBitmap(menuGlkBitmap,IDR_GLK);
+      m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),CSize(16,15),false);
+    }
     m_menuBar.Update();
   }
 
@@ -1156,4 +1198,41 @@ CRect CWinGlkMainWnd::GetDefaultSize(void)
   const int y = 14;
   CRect size(l+(w/x),t+(h/y),(w*(x-1))/x,(h*(y-1))/y);
   return size;
+}
+
+void CWinGlkMainWnd::SetToolBarSizes(void)
+{
+  REBARBANDINFO bandInfo = { sizeof(REBARBANDINFO),0 };
+  bandInfo.fMask = RBBIM_CHILDSIZE;
+
+  if (m_menuBar.GetSafeHwnd() != 0)
+  {
+    SIZE size;
+    m_menuBar.SendMessage(TB_GETMAXSIZE,0,(LPARAM)&size);
+    int dpi = DPI::getWindowDPI(this);
+    size.cx += DPI::getSystemMetrics(SM_CXMENUCHECK,dpi);
+
+    bandInfo.cxMinChild = size.cx;
+    bandInfo.cyMinChild = size.cy;
+    m_coolBar.GetReBarCtrl().SetBandInfo(m_menuBarIndex,&bandInfo);
+  }
+
+  if (m_UserToolBar.GetSafeHwnd() != 0)
+  {
+    CSize size = m_UserToolBar.CalcFixedLayout(FALSE,TRUE);
+    bandInfo.cxMinChild = size.cx;
+    bandInfo.cyMinChild = size.cy;
+    m_coolBar.GetReBarCtrl().SetBandInfo(m_UserToolBarIndex,&bandInfo);
+  }
+
+  CSize size = m_GlkToolBar.CalcFixedLayout(FALSE,TRUE);
+  bandInfo.cxMinChild = size.cx;
+  bandInfo.cyMinChild = size.cy;
+  m_coolBar.GetReBarCtrl().SetBandInfo(m_GlkToolBarIndex,&bandInfo);
+
+  if (m_menuBar.GetSafeHwnd() != 0)
+    m_coolBar.GetReBarCtrl().MinimizeBand(m_menuBarIndex);
+  if (m_UserToolBar.GetSafeHwnd() != 0)
+    m_coolBar.GetReBarCtrl().MinimizeBand(m_UserToolBarIndex);
+  m_coolBar.GetReBarCtrl().MaximizeBand(m_GlkToolBarIndex);
 }

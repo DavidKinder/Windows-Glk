@@ -9,6 +9,7 @@
 #define IDD_ABOUTGAME                   30015
 #define IDD_OPTIONS_SPEECH              30016
 #define IDR_GLK                         30020
+#define IDR_TOOLBAR                     30021
 #define IDS_STYLE_NOTE                  30030
 #define IDS_STYLE_NOEDIT                30031
 #define IDS_FREF_OPEN                   30040
