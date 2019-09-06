@@ -101,8 +101,9 @@ protected:
   afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg LRESULT OnSetMessageString(WPARAM wParam, LPARAM lParam);
-  afx_msg LRESULT OnInputLangChange(WPARAM wParam, LPARAM lParam);
   afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+  afx_msg LRESULT OnInputLangChange(WPARAM wParam, LPARAM lParam);
+  afx_msg LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
   DECLARE_MESSAGE_MAP()
 
 protected:
@@ -125,6 +126,7 @@ protected:
   int m_UserToolBarIndex;
   CRgn m_Mask;
   UINT m_CodePage;
+  int m_dpi;
   TextOutput m_TextOut;
   CRect m_NormalSize;
 };

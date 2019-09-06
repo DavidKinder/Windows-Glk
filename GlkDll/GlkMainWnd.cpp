@@ -123,7 +123,7 @@ static UINT Indicators[] =
   ID_INDICATOR_NUM,
 };
 
-CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP)
+CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP), m_dpi(96)
 {
   m_GlkToolBarIndex = -1;
   m_UserToolBarIndex = -1;
@@ -156,7 +156,10 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA,0,0xFFFF,OnToolTipText)
   ON_MESSAGE(WM_SETMESSAGESTRING, OnSetMessageString)
   ON_MESSAGE(WM_INPUTLANGCHANGE, OnInputLangChange)
+  ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
+
+static const CSize FixedTbarImgSize(16,15);
 
 bool CWinGlkMainWnd::Create(bool bFrame)
 {
@@ -176,6 +179,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   DWORD dwStyle = bFrame ? WS_OVERLAPPEDWINDOW : WS_POPUP;
   if (CreateEx(0,AfxRegisterWndClass(0),strTitle,dwStyle,rPlace,NULL,0,NULL) == FALSE)
     return FALSE;
+  m_dpi = DPI::getWindowDPI(this);
 
   // Set the mask for the frame, if any
   int iMaskID = pApp->GetMaskID();
@@ -309,13 +313,13 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     m_GlkToolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
 
   // Use "new bar" style buttons if possible
+  m_settings = Settings(DPI::getWindowDPI(this));
   ImagePNG normalImage, disabledImage;
   if (UseNewBar())
   {
-    m_settings = Settings(DPI::getWindowDPI(this));
     m_GlkToolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
     if (m_UserToolBar.GetSafeHwnd())
-      m_UserToolBar.SetSizes(m_settings.sizeButton,CSize(16,15));
+      m_UserToolBar.SetSizes(m_settings.sizeButton,FixedTbarImgSize);
 
     if (m_image.LoadResource(IDR_TOOLBAR))
     {
@@ -372,7 +376,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     {
       CBitmap menuUserBitmap;
       LoadBitmap(menuUserBitmap,ToolbarID);
-      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),CSize(16,15),false);
+      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
     }
 
     if (UseNewBar() && normalImage.Pixels())
@@ -381,7 +385,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     {
       CBitmap menuGlkBitmap;
       LoadBitmap(menuGlkBitmap,IDR_GLK);
-      m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),CSize(16,15),false);
+      m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
     }
     m_menuBar.Update();
   }
@@ -559,6 +563,61 @@ LRESULT CWinGlkMainWnd::OnInputLangChange(WPARAM wParam, LPARAM lParam)
   if (::TranslateCharsetInfo((DWORD*)wParam,&CharSet,TCI_SRCCHARSET))
     m_CodePage = CharSet.ciACP;
   return DefWindowProc(WM_INPUTLANGCHANGE,wParam,lParam);
+}
+
+LRESULT CWinGlkMainWnd::OnDpiChanged(WPARAM wparam, LPARAM lparam)
+{
+  m_dpi = (int)HIWORD(wparam);
+  m_settings = Settings(m_dpi);
+  MoveWindow((LPRECT)lparam,TRUE);
+
+  ImagePNG normalImage, disabledImage;
+  if (UseNewBar())
+  {
+    // Resize the main toolbar
+    m_GlkToolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
+    if (m_image.Pixels())
+    {
+      CSize scaledSize(m_settings.sizeImage);
+      scaledSize.cx *= m_GlkToolBar.GetCount();
+      normalImage.Scale(m_image,scaledSize);
+      disabledImage.Copy(normalImage);
+      normalImage.Fill(m_settings.colourFore);
+      disabledImage.Fill(m_settings.colourDisable);
+
+      m_GlkToolBar.SetBitmap(normalImage.CopyBitmap(this));
+      HIMAGELIST disabledList = ::ImageList_Create(
+        m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
+      if (disabledList)
+      {
+        if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
+          m_GlkToolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
+      }
+    }
+  }
+
+  // Update the bitmaps for the menus
+  if (m_menuBar.GetSafeHwnd() != 0)
+  {
+    m_menuBar.DeleteBitmaps();
+    if (UseNewBar() && normalImage.Pixels())
+      m_menuBar.LoadBitmaps(normalImage,m_GlkToolBar.GetToolBarCtrl(),m_settings.sizeImage);
+
+    UINT ToolbarID = ((CGlkApp*)AfxGetApp())->GetUserGuiID();
+    if ((m_UserToolBar.GetSafeHwnd() != 0) && (ToolbarID != 0))
+    {
+      CBitmap menuUserBitmap;
+      LoadBitmap(menuUserBitmap,ToolbarID);
+      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
+    }
+
+    m_menuBar.UpdateFont(m_dpi);
+    m_menuBar.Update();
+  }
+
+  SetToolBarSizes();
+  m_StatusBar.SetIndicators(Indicators,sizeof(Indicators)/sizeof(UINT));
+  return 0;
 }
 
 void CWinGlkMainWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
