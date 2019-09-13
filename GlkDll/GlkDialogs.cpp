@@ -13,6 +13,7 @@
 #include "GlkTalk.h"
 #include "GlkWindowTextBuffer.h"
 #include "GlkWindowTextGrid.h"
+#include "DpiFunctions.h"
 
 #include <math.h>
 #include <memory>
@@ -40,6 +41,8 @@ static DWORD CALLBACK RichStreamCB(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG 
 // Implementation of the CScrollBackDlg dialog
 /////////////////////////////////////////////////////////////////////////////
 
+#define WM_SAMESIZEASMAIN WM_APP+101
+
 CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CScrollBackDlg)
@@ -47,6 +50,8 @@ CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, 
   //}}AFX_DATA_INIT
   m_Text = NULL;
   m_TextLen = 0;
+  m_iTextTop = 0;
+  m_dpi = 96;
 }
 
 void CScrollBackDlg::DoDataExchange(CDataExchange* pDX)
@@ -62,6 +67,8 @@ BEGIN_MESSAGE_MAP(CScrollBackDlg, BaseDialog)
   ON_WM_SIZE()
   ON_BN_CLICKED(IDC_COPY, OnCopy)
   //}}AFX_MSG_MAP
+  ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
+  ON_MESSAGE(WM_SAMESIZEASMAIN, OnSameSizeAsMain)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,6 +78,7 @@ END_MESSAGE_MAP()
 BOOL CScrollBackDlg::OnInitDialog() 
 {
   BaseDialog::OnInitDialog();
+  m_dpi = DPI::getWindowDPI(this);
   
   // Subclass the text control
   if (m_RichEdit.SubclassDlgItem(IDC_TEXT,this) == FALSE)
@@ -122,6 +130,32 @@ void CScrollBackDlg::OnSize(UINT nType, int cx, int cy)
   // Resize the text control
   if (m_RichEdit.GetSafeHwnd() != NULL)
     m_RichEdit.SetWindowPos(NULL,0,m_iTextTop,cx,cy-m_iTextTop,SWP_NOZORDER);
+}
+
+LRESULT CScrollBackDlg::OnDpiChanged(WPARAM wparam, LPARAM)
+{
+  int newDpi = (int)HIWORD(wparam);
+  if (m_dpi != newDpi)
+  {
+    m_iTextTop = MulDiv(m_iTextTop,newDpi,m_dpi);
+    m_dpi = newDpi;
+  }
+
+  Default();
+
+  // Same monitor?
+  if (DPI::getMonitorRect(this) == DPI::getMonitorRect(AfxGetMainWnd()))
+    PostMessage(WM_SAMESIZEASMAIN);
+  return 0;
+}
+
+LRESULT CScrollBackDlg::OnSameSizeAsMain(WPARAM, LPARAM)
+{
+  // Resize the dialog to be the same as the main window
+  CRect DialogRect;
+  AfxGetMainWnd()->GetWindowRect(DialogRect);
+  MoveWindow(DialogRect);
+  return 0;
 }
 
 void CScrollBackDlg::OnCopy() 
@@ -587,25 +621,35 @@ void CWinGlkStylePage::StoreStyleSettings(void)
 // CWinGlkPropertySheet property sheet
 /////////////////////////////////////////////////////////////////////////////
 
-#define WM_RESIZEPAGE WM_APP+1
+#define WM_RESIZEPAGE WM_APP+100
 
-static void ChangeDialogFont(CWnd* wnd, CFont* font)
+static void ChangeDialogFont(CWnd* wnd, CFont* font, double scale)
 {
   CRect windowRect;
 
-  TEXTMETRIC tmOld, tmNew;
-  CDC* dc = wnd->GetDC();
-  CFont* oldFont = dc->SelectObject(wnd->GetFont());
-  dc->GetTextMetrics(&tmOld);
-  dc->SelectObject(font);
-  dc->GetTextMetrics(&tmNew);
-  dc->SelectObject(oldFont);
-  wnd->ReleaseDC(dc);
+  double scaleW = 1.0, scaleH = 1.0;
+  if (scale > 0.0)
+  {
+    scaleW = scale;
+    scaleH = scale;
+  }
+  else
+  {
+    TEXTMETRIC tmOld, tmNew;
+    CDC* dc = wnd->GetDC();
+    CFont* oldFont = dc->SelectObject(wnd->GetFont());
+    dc->GetTextMetrics(&tmOld);
+    dc->SelectObject(font);
+    dc->GetTextMetrics(&tmNew);
+    dc->SelectObject(oldFont);
+    wnd->ReleaseDC(dc);
 
-  long oldHeight = tmOld.tmHeight+tmOld.tmExternalLeading;
-  long newHeight = tmNew.tmHeight+tmNew.tmExternalLeading;
+    scaleW = (double)tmNew.tmAveCharWidth / (double)tmOld.tmAveCharWidth;
+    scaleH = (double)(tmNew.tmHeight+tmNew.tmExternalLeading) /
+             (double)(tmOld.tmHeight+tmOld.tmExternalLeading);
+  }
 
-  // calculate new dialog window rectangle
+  // Calculate new dialog window rectangle
   CRect clientRect, newClientRect, newWindowRect;
 
   wnd->GetWindowRect(windowRect);
@@ -614,8 +658,8 @@ static void ChangeDialogFont(CWnd* wnd, CFont* font)
   long yDiff = windowRect.Height() - clientRect.Height();
 
   newClientRect.left = newClientRect.top = 0;
-  newClientRect.right = clientRect.right * tmNew.tmAveCharWidth / tmOld.tmAveCharWidth;
-  newClientRect.bottom = clientRect.bottom * newHeight / oldHeight;
+  newClientRect.right = (long)(clientRect.right * scaleW);
+  newClientRect.bottom = (long)(clientRect.bottom * scaleH);
 
   newWindowRect.left = windowRect.left - (newClientRect.right - clientRect.right)/2;
   newWindowRect.top = windowRect.top - (newClientRect.bottom - clientRect.bottom)/2;
@@ -648,20 +692,21 @@ static void ChangeDialogFont(CWnd* wnd, CFont* font)
     {
       CRect initialRect(windowRect);
 
-      windowRect.left = windowRect.left * tmNew.tmAveCharWidth / tmOld.tmAveCharWidth;
-      windowRect.right = windowRect.right * tmNew.tmAveCharWidth / tmOld.tmAveCharWidth;
-      windowRect.top = windowRect.top * newHeight / oldHeight;
-      windowRect.bottom = windowRect.bottom * newHeight / oldHeight;
+      windowRect.left = (long)(windowRect.left * scaleW);
+      windowRect.right = (long)(windowRect.right * scaleW);
+      windowRect.top = (long)(windowRect.top * scaleH);
+      windowRect.bottom = (long)(windowRect.bottom * scaleH);
 
-      windowRect.InflateRect((initialRect.Width()-windowRect.Width())/2,
+      windowRect.InflateRect(
+        (initialRect.Width()-windowRect.Width())/2,
         (initialRect.Height()-windowRect.Height())/2);
     }
     else
     {
-      windowRect.left = windowRect.left * tmNew.tmAveCharWidth / tmOld.tmAveCharWidth;
-      windowRect.right = windowRect.right * tmNew.tmAveCharWidth / tmOld.tmAveCharWidth;
-      windowRect.top = windowRect.top * newHeight / oldHeight;
-      windowRect.bottom = windowRect.bottom * newHeight / oldHeight;
+      windowRect.left = (long)(windowRect.left * scaleW);
+      windowRect.right = (long)(windowRect.right * scaleW);
+      windowRect.top = (long)(windowRect.top * scaleH);
+      windowRect.bottom = (long)(windowRect.bottom * scaleH);
     }
     childWnd->MoveWindow(windowRect);
 
@@ -676,26 +721,32 @@ CWinGlkPropertySheet::CWinGlkPropertySheet(UINT caption, CWnd* parentWnd)
 {
   GetFontDialog getFont(m_logFont,IDD_ABOUTGAME,parentWnd);
   getFont.DoModal();
+
+  m_dpi = 96;
+  m_fontHeightPerDpi = (double)m_logFont.lfHeight / (double)m_dpi;
 }
 
 BEGIN_MESSAGE_MAP(CWinGlkPropertySheet, CPropertySheet)
-//{{AFX_MSG_MAP(CWinGlkPropertySheet)
-//}}AFX_MSG_MAP
-ON_MESSAGE (WM_RESIZEPAGE, OnResizePage)  
+  ON_MESSAGE (WM_RESIZEPAGE, OnResizePage)  
+  ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
 BOOL CWinGlkPropertySheet::OnInitDialog() 
 {
   CPropertySheet::OnInitDialog();
 
+  m_dpi = DPI::getWindowDPI(this);
+  m_fontHeightPerDpi = (double)m_logFont.lfHeight / (double)m_dpi;
+
   m_font.CreateFontIndirect(&m_logFont);
-  ChangeDialogFont(this,&m_font);
+  ChangeDialogFont(this,&m_font,0.0);
   CPropertyPage* page = GetActivePage();
   for (int i = 0; i < GetPageCount(); i++)
   {
     SetActivePage(i);
     CPropertyPage* page = GetActivePage();
-    ChangeDialogFont(page,&m_font);
+    DPI::disableDialogDPI(page);
+    ChangeDialogFont(page,&m_font,0.0);
   }
   SetActivePage(page);
 
@@ -714,6 +765,51 @@ BOOL CWinGlkPropertySheet::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResu
   if (TCN_SELCHANGE == pnmh->code)
     PostMessage(WM_RESIZEPAGE);
   return CPropertySheet::OnNotify(wParam, lParam, pResult);
+}
+
+LRESULT CWinGlkPropertySheet::OnDpiChanged(WPARAM wparam, LPARAM lparam)
+{
+  int newDpi = (int)HIWORD(wparam);
+  if (m_dpi != newDpi)
+  {
+    if (GetTabControl() != NULL)
+    {
+      // Use the top-left corner of the suggested window rectangle
+      CRect windowRect;
+      GetWindowRect(windowRect);
+      windowRect.left = ((LPRECT)lparam)->left;
+      windowRect.top = ((LPRECT)lparam)->top;
+      MoveWindow(windowRect,TRUE);
+
+      // Update the font
+      m_logFont.lfHeight = (long)(m_fontHeightPerDpi * newDpi);
+      CFont oldFont;
+      oldFont.Attach(m_font.Detach());
+      m_font.CreateFontIndirect(&m_logFont);
+
+      // Update the dialog to use the new font
+      double scaleDpi = (double)newDpi / (double)m_dpi;
+      ChangeDialogFont(this,&m_font,scaleDpi);
+      CPropertyPage* page = GetActivePage();
+      for (int i = 0; i < GetPageCount(); i++)
+      {
+        SetActivePage(i);
+        CPropertyPage* page = GetActivePage();
+        ChangeDialogFont(page,&m_font,scaleDpi);
+      }
+      SetActivePage(page);
+
+      // Resize the property page
+      CTabCtrl* tab = GetTabControl();
+      tab->GetWindowRect(&m_page);
+      ScreenToClient(&m_page);
+      tab->AdjustRect(FALSE,&m_page);
+      page->MoveWindow(&m_page);
+    }
+
+    m_dpi = newDpi;
+  }
+  return 0;
 }
 
 LONG CWinGlkPropertySheet::OnResizePage(UINT, LONG)
@@ -745,6 +841,7 @@ void CAboutDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDialog, BaseDialog)
   //{{AFX_MSG_MAP(CAboutDialog)
   //}}AFX_MSG_MAP
+  ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
 BOOL CAboutDialog::OnInitDialog()
@@ -757,6 +854,9 @@ BOOL CAboutDialog::OnInitDialog()
     HICON icon = ::LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_GLK));
     m_LogoCtrl.SetIcon(icon);
   }
+  CRect LogoRect;
+  m_LogoCtrl.GetWindowRect(LogoRect);
+  m_LogoSize = LogoRect.Size();
 
   CWnd* group = GetDlgItem(IDC_ABOUT_GROUP);
   CString groupName;
@@ -815,6 +915,23 @@ BOOL CAboutDialog::OnInitDialog()
   return TRUE;
 }
 
+LRESULT CAboutDialog::OnDpiChanged(WPARAM wparam, LPARAM)
+{
+  Default();
+
+  if ((m_LogoSize.cx > 0) && (m_LogoSize.cy > 0))
+  {
+    CRect LogoRect;
+    m_LogoCtrl.GetWindowRect(LogoRect);
+    ScreenToClient(LogoRect);
+    LogoRect.InflateRect(
+      (m_LogoSize.cx-LogoRect.Width())/2,
+      (m_LogoSize.cy-LogoRect.Height())/2);
+    m_LogoCtrl.MoveWindow(LogoRect);
+  }
+  return 0;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // About This Game dialog
 /////////////////////////////////////////////////////////////////////////////
@@ -869,11 +986,8 @@ void CRichInfo::SetText(int format, const CString& text)
 
 IMPLEMENT_DYNAMIC(AboutGameDialog, BaseDialog)
 
-AboutGameDialog::AboutGameDialog(CWnd* pParent) : BaseDialog(AboutGameDialog::IDD, pParent)
-{
-}
-
-AboutGameDialog::~AboutGameDialog()
+AboutGameDialog::AboutGameDialog(CWnd* pParent)
+  : BaseDialog(AboutGameDialog::IDD, pParent), m_dpi(96), m_headingEnd(0)
 {
 }
 
@@ -885,11 +999,13 @@ void AboutGameDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(AboutGameDialog, BaseDialog)
   ON_WM_PAINT()
+  ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
 BOOL AboutGameDialog::OnInitDialog()
 {
   BaseDialog::OnInitDialog();
+  m_dpi = DPI::getWindowDPI(this);
 
   // Change the window icon
   if (GetParent() == NULL)
@@ -936,6 +1052,9 @@ BOOL AboutGameDialog::OnInitDialog()
   format.dwEffects = CFE_BOLD;
   m_Info.SetSelectionCharFormat(format);
   m_Info.ReplaceSel(heading);
+  CHARRANGE headingSel;
+  m_Info.GetSel(headingSel);
+  m_headingEnd = headingSel.cpMax;
 
   // Set the dialog title
   SetWindowText(GameInfo.title);
@@ -1032,4 +1151,58 @@ void AboutGameDialog::OnPaint()
   }
   else
     Default();
+}
+
+LRESULT AboutGameDialog::OnDpiChanged(WPARAM wparam, LPARAM)
+{
+  Default();
+
+  int newDpi = (int)HIWORD(wparam);
+  if (m_dpi != newDpi)
+  {
+    // Rescale the cover art
+    if (m_CoverBitmap.GetBits() != NULL)
+    {
+      m_Info.GetWindowRect(m_CoverRect);
+      ScreenToClient(m_CoverRect);
+      m_CoverRect.OffsetRect(-m_CoverRect.Width(),0);
+      m_CoverRect.OffsetRect(-(m_CoverRect.left/2),0);
+
+      CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+      const CGlkApp::GameInfo& GameInfo = pApp->GetGameInfo();
+      if (GameInfo.cover != -1)
+      {
+        std::auto_ptr<CWinGlkGraphic> coverGfx;
+        coverGfx.reset(pApp->LoadGraphic(GameInfo.cover,TRUE,FALSE));
+        if (coverGfx.get() != NULL)
+        {
+          m_CoverBitmap.DeleteBitmap();
+
+          CWindowDC dc(this);
+          if (m_CoverBitmap.CreateBitmap(dc,m_CoverRect.Width(),m_CoverRect.Height()))
+          {
+            m_CoverBitmap.FillSolid(::GetSysColor(COLOR_3DFACE));
+            ScaleGfx((COLORREF*)coverGfx->m_pPixels,
+              coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
+              m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());
+          }
+        }
+      }
+    }
+
+    // Apply formatting
+    if (m_Info.GetSafeHwnd())
+    {
+      m_Info.SetSel(0,m_headingEnd);
+      CHARFORMAT format;
+      format.cbSize = sizeof format;
+      format.dwMask = CFM_BOLD;
+      format.dwEffects = CFE_BOLD;
+      m_Info.SetSelectionCharFormat(format);
+      m_Info.SetSel(0,0);
+    }
+
+    m_dpi = newDpi;
+  }
+  return 0;
 }

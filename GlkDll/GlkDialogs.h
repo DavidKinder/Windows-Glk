@@ -49,6 +49,8 @@ protected:
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnCopy();
   //}}AFX_MSG
+  afx_msg LRESULT OnDpiChanged(WPARAM, LPARAM);
+  afx_msg LRESULT OnSameSizeAsMain(WPARAM, LPARAM);
   DECLARE_MESSAGE_MAP()
 
 public:
@@ -59,6 +61,7 @@ public:
 protected:
   CRichEditCtrl m_RichEdit;
   int m_iTextTop;
+  int m_dpi;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -234,6 +237,9 @@ protected:
   LOGFONT m_logFont;
   CFont m_font;
 
+  int m_dpi;
+  double m_fontHeightPerDpi;
+
   DECLARE_DYNAMIC(CWinGlkPropertySheet)
 
 public:
@@ -247,6 +253,7 @@ public:
   //}}AFX_VIRTUAL
 
   // Generated message map functions
+  afx_msg LRESULT OnDpiChanged(WPARAM, LPARAM);
   afx_msg LONG OnResizePage(UINT, LONG);
 
   DECLARE_MESSAGE_MAP()
@@ -267,11 +274,12 @@ public:
   enum { IDD = IDD_ABOUT };
   CStatic m_LogoCtrl;
   //}}AFX_DATA
+  CSize m_LogoSize;
 
 // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CAboutDialog)
-  protected:
+protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
@@ -281,10 +289,9 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CAboutDialog)
   //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
-
-public:
   virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnDpiChanged(WPARAM, LPARAM);
+  DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -314,7 +321,6 @@ class AboutGameDialog : public BaseDialog
 
 public:
   AboutGameDialog(CWnd* pParent = NULL);   // standard constructor
-  virtual ~AboutGameDialog();
 
 // Dialog Data
   enum { IDD = IDD_ABOUTGAME };
@@ -325,6 +331,7 @@ protected:
   //}}AFX_MSG
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+  afx_msg LRESULT OnDpiChanged(WPARAM, LPARAM);
   DECLARE_MESSAGE_MAP()
 
 protected:
@@ -333,6 +340,8 @@ protected:
 
   CRect m_CoverRect;
   CDibSection m_CoverBitmap;
+  int m_dpi;
+  int m_headingEnd;
 };
 
 #endif // WINGLK_DIALOGS_H_
