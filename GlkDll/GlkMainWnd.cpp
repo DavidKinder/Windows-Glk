@@ -164,10 +164,6 @@ static const CSize FixedTbarImgSize(16,15);
 bool CWinGlkMainWnd::Create(bool bFrame)
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-  CRect rInner(pApp->GetInnerRect());
-  CRect rPlace(pApp->GetWindowRect());
-  if (rPlace.Width() == 0)
-    rPlace = GetDefaultSize();
 
   // Get the title for the frame
   CString strTitle = pApp->GetGameInfo().title;
@@ -177,9 +173,21 @@ bool CWinGlkMainWnd::Create(bool bFrame)
 
   // Create the frame
   DWORD dwStyle = bFrame ? WS_OVERLAPPEDWINDOW : WS_POPUP;
-  if (CreateEx(0,AfxRegisterWndClass(0),strTitle,dwStyle,rPlace,NULL,0,NULL) == FALSE)
+  if (CreateEx(0,AfxRegisterWndClass(0),strTitle,dwStyle,GetDefaultSize(),NULL,0,NULL) == FALSE)
     return FALSE;
   m_dpi = DPI::getWindowDPI(this);
+
+  // Set the size and position of the frame
+  if (pApp->GetWindowRect().Width() > 0)
+  {
+    DPI::ContextUnaware dpiUnaware;
+    WINDOWPLACEMENT Place;
+    GetWindowPlacement(&Place);
+    Place.rcNormalPosition = pApp->GetWindowRect();
+    SetWindowPlacement(&Place);
+  }
+  CRect rWindow;
+  GetWindowRect(rWindow);
 
   // Set the mask for the frame, if any
   int iMaskID = pApp->GetMaskID();
@@ -400,6 +408,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   SetGUI(pApp->GetEnableGUI());
 
   // If the inner size of the window is set, resize
+  const CRect& rInner = pApp->GetInnerRect();
   if (rInner.Width() > 0)
   {
     CRect InnerNow;
@@ -417,9 +426,9 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     TestWnd.GetClientRect(InnerNow);
     TestWnd.DestroyWindow();
 
-    rPlace.right += (rInner.Width() - InnerNow.Width());
-    rPlace.bottom += (rInner.Height() - InnerNow.Height());
-    MoveWindow(rPlace,FALSE);
+    rWindow.right += (rInner.Width() - InnerNow.Width());
+    rWindow.bottom += (rInner.Height() - InnerNow.Height());
+    MoveWindow(rWindow,FALSE);
   }
 
   // Move the frame window, if necessary
@@ -428,11 +437,11 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     CRect r;
     m_View.GetClientRect(r);
     m_View.ClientToScreen(r);
-    rPlace.OffsetRect(-r.left,-r.top);
-    MoveWindow(rPlace,FALSE);
+    rWindow.OffsetRect(-r.left,-r.top);
+    MoveWindow(rWindow,FALSE);
 
     m_View.GetWindowRect(r);
-    MoveWindow(rPlace,FALSE);
+    MoveWindow(rWindow,FALSE);
   }
   else if ((pApp->GetWindowRect().Width() == 0) || (rInner.Width() > 0) || (bFrame == false))
     CenterWindow();
@@ -455,7 +464,10 @@ void CWinGlkMainWnd::OnDestroy()
   KillTimer(GlkTimer);
 
   WINDOWPLACEMENT Place;
-  GetWindowPlacement(&Place);
+  {
+    DPI::ContextUnaware dpiUnaware;
+    GetWindowPlacement(&Place);
+  }
 
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   pApp->GetWindowRect() = Place.rcNormalPosition;
@@ -1253,8 +1265,8 @@ CRect CWinGlkMainWnd::GetDefaultSize(void)
   int w = screen.Width();
   int h = screen.Height();
 
-  const int x = 8;
-  const int y = 14;
+  const int x = 4;
+  const int y = 16;
   CRect size(l+(w/x),t+(h/y),(w*(x-1))/x,(h*(y-1))/y);
   return size;
 }

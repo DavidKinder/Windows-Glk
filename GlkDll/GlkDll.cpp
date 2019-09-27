@@ -182,6 +182,14 @@ void CGlkApp::ReadSettings(void)
     m_WindowRect.bottom = GetProfileInt("Glk Settings","Window Bottom",0);
     m_iWindowState = GetProfileInt("Glk Settings","Window State",SW_SHOW);
     m_bNotifyFull = GetProfileInt("Glk Settings","Notify Full Screen",1) ? true : false;
+    if (iVersion < 150)
+    {
+      double dpiScale = 96.0 / DPI::getSystemDPI();
+      m_WindowRect.left = (int)(m_WindowRect.left * dpiScale);
+      m_WindowRect.top = (int)(m_WindowRect.top * dpiScale);
+      m_WindowRect.bottom = (int)(m_WindowRect.bottom * dpiScale);
+      m_WindowRect.right = (int)(m_WindowRect.right * dpiScale);
+    }
 
     m_bWindowBorders = GetProfileInt("Glk Settings","Window Borders",0) ? true : false;
     if (iVersion < 131)
@@ -3328,8 +3336,6 @@ extern "C" const char* winglk_get_initial_filename(const char* cmdline, const ch
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  CString& strInitialPath = ((CGlkApp*)AfxGetApp())->GetInitialPath();
-
   // The file name is static so that the returned buffer remains valid
   static CString strFileName;
 
@@ -3349,6 +3355,11 @@ extern "C" const char* winglk_get_initial_filename(const char* cmdline, const ch
         strFileName += cmdline[i++];
     }
   }
+
+  CString& strInitialPath = ((CGlkApp*)AfxGetApp())->GetInitialPath();
+  DWORD dwInitialPathAttrs = ::GetFileAttributes(strInitialPath);
+  if ((dwInitialPathAttrs == 0xFFFFFFFF) || (dwInitialPathAttrs & FILE_ATTRIBUTE_DIRECTORY))
+    strInitialPath = "";
 
   if (strFileName.GetLength() == 0)
   {
