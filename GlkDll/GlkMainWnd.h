@@ -104,6 +104,7 @@ protected:
   afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
   afx_msg LRESULT OnInputLangChange(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
+  afx_msg LRESULT OnSoundNotify(WPARAM, LPARAM);
   DECLARE_MESSAGE_MAP()
 
 protected:

@@ -157,6 +157,7 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_MESSAGE(WM_SETMESSAGESTRING, OnSetMessageString)
   ON_MESSAGE(WM_INPUTLANGCHANGE, OnInputLangChange)
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
+  ON_MESSAGE(WM_SOUND_NOTIFY, OnSoundNotify)
 END_MESSAGE_MAP()
 
 static const CSize FixedTbarImgSize(16,15);
@@ -629,6 +630,13 @@ LRESULT CWinGlkMainWnd::OnDpiChanged(WPARAM wparam, LPARAM lparam)
 
   SetToolBarSizes();
   m_StatusBar.SetIndicators(Indicators,sizeof(Indicators)/sizeof(UINT));
+  return 0;
+}
+
+LRESULT CWinGlkMainWnd::OnSoundNotify(WPARAM, LPARAM)
+{
+  for (CWinGlkSndChannel* pSnd = CWinGlkSndChannel::IterateChannels(NULL,NULL); pSnd; pSnd = CWinGlkSndChannel::IterateChannels(pSnd,NULL))
+    pSnd->TimerPulse();
   return 0;
 }
 

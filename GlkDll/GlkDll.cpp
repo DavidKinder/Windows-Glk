@@ -1286,11 +1286,13 @@ void CGlkApp::InitSoundEngine(void)
 {
   if (CreateMainWindow())
   {
-    if (CDSoundEngine::GetSoundEngine().Initialize(CWinGlkSndChannel::VolumeFader) == false)
+    CWnd* mainWnd = AfxGetMainWnd();
+    if (CDSoundEngine::GetSoundEngine().Initialize(
+      CWinGlkSndChannel::VolumeFader,mainWnd,WM_SOUND_NOTIFY) == false)
     {
       CString noDSound;
       noDSound.LoadString(IDS_NO_DSOUND);
-      ::MessageBox(AfxGetMainWnd()->GetSafeHwnd(),
+      ::MessageBox(mainWnd->GetSafeHwnd(),
         noDSound,"Windows Glk",MB_ICONWARNING|MB_OK);
     }
   }
