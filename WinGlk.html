@@ -135,7 +135,7 @@ child windows that correspond with the Glk definition of windows.
 to bring up the options dialog and review the previous output shown in text buffer windows.
 These options can also be accessed from the system menu (this is the menu which appears when
 single-clicking on the icon at the left of the title bar), which is the only means of access
-if toolbars and menus have been switched off in the options dialog.
+if the toolbar and menus have been switched off in the options dialog.
 
 <h2><a name="Visual C"></a>Using Windows Glk with Visual C++</h2>
 
@@ -337,21 +337,20 @@ The default is the current directory for the program.
 
 <h3>void winglk_set_gui(unsigned int id)</h3>
 
-<p>Call this function in winglk_startup_code() to set up any or all of a custom menu, a
-custom toolbar and a custom icon for the application's window. The function takes the numeric
-identifier of the menu, toolbar and icon in your application, e.g.
+<p>Call this function in winglk_startup_code() to set up a custom icon for the application's window,
+and also optionally a custom menu. The function takes the numeric identifier of the icon and menu
+resources in your application, e.g.
 
 <pre>
   winglk_set_gui(IDR_EXAMPLE);
 </pre>
 
-<p>When setting up menus and toolbars, you should keep resource identifiers below 0x7500 and
+<p>When setting up menus, you should keep resource identifiers below 0x7500 and
 command identifiers below 0xD000. This is not usually a problem as most development
 environments generate identifiers well below these values.
 
-<p>If the user selects a menu item or clicks on a toolbar button, your application will
-receive an event of type winglk_evtype_GuiInput. val1 will be the command identifier, and
-val2 zero.
+<p>If the user selects a custom menu item, your application will receive an event of
+type winglk_evtype_GuiInput. val1 will be the command identifier, and val2 zero.
 
 <p>See the
 <a href="#Examples">example</a>
@@ -606,10 +605,15 @@ ModPlug by Olivier Lapicque.
 <li>Support for high DPI and changing DPI with Windows 10: if the DPI is changed
 (from the Display settings app, or by moving the window from one monitor to
 another with a different DPI) then the application rescales itself appropriately.
+
 <li>The choice of font and font size has been moved to the options dialog. As a result there is
 now only one font size, which is used for both proportional and fixed width fonts. (This is also
 true of configuration files: "FixedFontSize" now has no effect in such files.)
+
 <li>The toolbar images have been redrawn for a more modern look.
+
+<li>winglk_set_gui() cannot now set up a custom toolbar: this feature was never used, and does
+not work well with high DPI support.
 </ul>
 
 <h3>1.49</h3>
@@ -639,8 +643,10 @@ the behaviour of zero-size windows, and specifies the encoding of Unicode text f
 <ul>
 <li>A new configuration file option, "FontFile", allows the game's font to be loaded from
 a font file in the same directory as the game.
+
 <li>Some of the Unicode characters above $1000 (that is, those in the Supplementary Multilingual
 Plane) can now be output, provided that an appropriate font is available.
+
 <li>Unicode text files are now encoded as UTF-8, as specified in the latest draft of the Glk
 0.7.5 specification.
 </ul>
