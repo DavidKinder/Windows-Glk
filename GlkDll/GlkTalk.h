@@ -21,7 +21,7 @@ public:
   void Initialize(LPCSTR Voice, int Speed);
   void Destroy(void);
   void Update(LPCSTR Voice, int Speed);
-  void Speak(LPCSTR speech, UINT codePage);
+  void Speak(LPCSTR speech);
   void Speak(LPCWSTR speech);
 
 protected:

@@ -306,17 +306,17 @@ void TextToSpeech::Update(LPCSTR Voice, int Speed)
 }
 
 // Speak some text
-void TextToSpeech::Speak(LPCSTR speech, UINT codePage)
+void TextToSpeech::Speak(LPCSTR speech)
 {
   if (m_Voice != NULL)
   {
-    // Convert the text to Unicode
+    // Convert the text (in Latin-1) to Unicode
     int length = strlen(speech);
     LPWSTR unicode = new WCHAR[length+1];
-    ::ZeroMemory(unicode,(length+1)*sizeof(WCHAR));
+    for (int i = 0; i <= length; i++)
+      unicode[i] = speech[i];
 
-    if (::MultiByteToWideChar(codePage,MB_PRECOMPOSED,speech,length,unicode,length+1) > 0)
-      m_Voice->Speak(unicode,SPF_ASYNC,NULL);
+    m_Voice->Speak(unicode,SPF_ASYNC,NULL);
 
     // Free the Unicode buffer
     delete[] unicode;

@@ -75,7 +75,6 @@ public:
   void EnableScrollback(bool bEnable);
 
   CWinGlkViewWnd* GetView(void) { return &m_View; }
-  UINT GetCodePage(void) { return m_CodePage; }
   virtual void GetMessageString(UINT nID, CString& rMessage) const;
 
   void SetWindowMask(CWinGlkGraphic* pGraphic);
