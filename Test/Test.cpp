@@ -684,9 +684,24 @@ void glk_main(void)
 {
   update_character_output(0);
 
-  load_res("\\programs\\adv\\glk\\test\\test resources\\test.blb");
-  winglk_set_resource_directory("\\programs\\adv\\glk\\test\\test resources");
-  winglk_load_config_file("\\programs\\adv\\glk\\test\\test.cfg");
+  char resPath[_MAX_PATH];
+  if (GetModuleFileName(0,resPath,_MAX_PATH))
+  {
+    char* resPathEnd = strrchr(resPath,'\\');
+    if (resPathEnd)
+    {
+      *(++resPathEnd) = '\0';
+      const char* resDirRelative = "..\\..\\Test\\";
+      strcpy(resPathEnd,resDirRelative);
+      resPathEnd += strlen(resDirRelative);
+      strcpy(resPathEnd,"Test Resources\\test.blb");
+      load_res(resPath);
+      strcpy(resPathEnd,"Test Resources");
+      winglk_set_resource_directory(resPath);
+      strcpy(resPathEnd,"test.cfg");
+      winglk_load_config_file(resPath);
+    }
+  }
   winglk_set_gui(IDR_TEST);
 
   main = glk_window_open(0,0,0,wintype_TextBuffer,0);
