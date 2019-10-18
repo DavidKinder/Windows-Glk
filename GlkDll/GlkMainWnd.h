@@ -115,15 +115,10 @@ protected:
 
   bool CheckMorePending(bool update);
   CRect GetDefaultSize(void);
-  void SetToolBarSizes(void);
 
 protected:
   CWinGlkViewWnd m_View;
   CStatusBar m_StatusBar;
-  BitmapToolBar m_GlkToolBar;
-  BitmapToolBar m_UserToolBar;
-  int m_GlkToolBarIndex;
-  int m_UserToolBarIndex;
   CRgn m_Mask;
   UINT m_CodePage;
   int m_dpi;

@@ -125,8 +125,6 @@ static UINT Indicators[] =
 
 CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP), m_dpi(96)
 {
-  m_GlkToolBarIndex = -1;
-  m_UserToolBarIndex = -1;
   m_menuBar.SetUseF10(false);
 }
 
@@ -299,53 +297,39 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     return FALSE;
   }
 
-  // Load the user toolbar
-  DWORD BarStyle = WS_CHILD|WS_VISIBLE|CBRS_ALIGN_TOP|CBRS_TOOLTIPS|CBRS_FLYBY;
-  UINT ToolbarID = pApp->GetUserGuiID();
-  if (ToolbarID != 0)
-  {
-    if (m_UserToolBar.CreateEx(this,TBSTYLE_FLAT|TBSTYLE_TRANSPARENT,BarStyle))
-    {
-      if (m_UserToolBar.LoadToolBar(ToolbarID) == FALSE)
-        m_UserToolBar.DestroyWindow();
-    }
-  }
-
-  // Load the standard Glk toolbar
-  if (m_GlkToolBar.CreateEx(this,TBSTYLE_FLAT|TBSTYLE_TRANSPARENT,BarStyle) == FALSE)
-    return FALSE;
-  if (m_GlkToolBar.LoadToolBar(IDR_GLK) == FALSE)
-    return FALSE;
-
-  // Hide the help button, if help is not available
-  if (pApp->HasHelpFile() == false)
-    m_GlkToolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
-
-  // Use "new bar" style buttons if possible
-  m_settings = Settings(DPI::getWindowDPI(this));
+  // Load the toolbar
   ImagePNG normalImage, disabledImage;
   if (UseNewBar())
   {
-    m_GlkToolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
-    if (m_UserToolBar.GetSafeHwnd())
-      m_UserToolBar.SetSizes(m_settings.sizeButton,FixedTbarImgSize);
+    const DWORD BarStyle = WS_CHILD|WS_VISIBLE|CBRS_ALIGN_TOP|CBRS_TOOLTIPS|CBRS_FLYBY;
+    if (m_toolBar.CreateEx(this,TBSTYLE_FLAT|TBSTYLE_TRANSPARENT,BarStyle) == FALSE)
+      return FALSE;
+    if (m_toolBar.LoadToolBar(IDR_GLK) == FALSE)
+      return FALSE;
+
+    // Hide the help button, if help is not available
+    if (pApp->HasHelpFile() == false)
+      m_toolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
+
+    m_settings = Settings(DPI::getWindowDPI(this));
+    m_toolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
 
     if (m_image.LoadResource(IDR_TOOLBAR))
     {
       CSize scaledSize(m_settings.sizeImage);
-      scaledSize.cx *= m_GlkToolBar.GetCount();
+      scaledSize.cx *= m_toolBar.GetCount();
       normalImage.Scale(m_image,scaledSize);
       disabledImage.Copy(normalImage);
       normalImage.Fill(m_settings.colourFore);
       disabledImage.Fill(m_settings.colourDisable);
 
-      m_GlkToolBar.SetBitmap(normalImage.CopyBitmap(this));
+      m_toolBar.SetBitmap(normalImage.CopyBitmap(this));
       HIMAGELIST disabledList = ::ImageList_Create(
         m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
       if (disabledList)
       {
         if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
-          m_GlkToolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
+          m_toolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
       }
     }
   }
@@ -360,43 +344,23 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     Menus.Detach();
   }
 
-  // Add the tool bars
-  DWORD addStyle = RBBS_NOGRIPPER;
-  if (!UseNewBar())
-    addStyle |= RBBS_BREAK;
-  if (m_UserToolBar.GetSafeHwnd())
+  // Add the tool bar
+  if (m_toolBar.GetSafeHwnd() != 0)
   {
-    if (m_coolBar.AddBar(&m_UserToolBar,NULL,NULL,addStyle) == FALSE)
+    if (m_coolBar.AddBar(&m_toolBar,NULL,NULL,RBBS_NOGRIPPER) == FALSE)
       return FALSE;
-    m_UserToolBarIndex = m_coolBar.GetReBarCtrl().GetBandCount()-1;
-    addStyle = RBBS_NOGRIPPER;
+    m_toolBarIndex = m_coolBar.GetReBarCtrl().GetBandCount()-1;
   }
-  if (m_coolBar.AddBar(&m_GlkToolBar,NULL,NULL,addStyle) == FALSE)
-    return FALSE;
-  m_GlkToolBarIndex = m_coolBar.GetReBarCtrl().GetBandCount()-1;
+  SetBarSizes();
 
-  // Size and position the toolbars
-  SetToolBarSizes();
-
-  // Add the bitmaps from the toolbars to the menus
-  if (m_menuBar.GetSafeHwnd() != 0)
+  // Add the bitmaps from the toolbar to the menus
+  if ((m_menuBar.GetSafeHwnd() != 0) && (m_toolBar.GetSafeHwnd() != 0))
   {
-    if (m_UserToolBar.GetSafeHwnd() != 0)
+    if (normalImage.Pixels())
     {
-      CBitmap menuUserBitmap;
-      LoadBitmap(menuUserBitmap,ToolbarID);
-      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
+      m_menuBar.LoadBitmaps(normalImage,m_toolBar.GetToolBarCtrl(),m_settings.sizeImage);
+      m_menuBar.Update();
     }
-
-    if (UseNewBar() && normalImage.Pixels())
-      m_menuBar.LoadBitmaps(normalImage,m_GlkToolBar.GetToolBarCtrl(),m_settings.sizeImage);
-    else
-    {
-      CBitmap menuGlkBitmap;
-      LoadBitmap(menuGlkBitmap,IDR_GLK);
-      m_menuBar.LoadBitmaps(menuGlkBitmap,m_GlkToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
-    }
-    m_menuBar.Update();
   }
 
   // Load the icon
@@ -580,55 +544,9 @@ LRESULT CWinGlkMainWnd::OnInputLangChange(WPARAM wParam, LPARAM lParam)
 
 LRESULT CWinGlkMainWnd::OnDpiChanged(WPARAM wparam, LPARAM lparam)
 {
-  m_dpi = (int)HIWORD(wparam);
-  m_settings = Settings(m_dpi);
   MoveWindow((LPRECT)lparam,TRUE);
-
-  ImagePNG normalImage, disabledImage;
-  if (UseNewBar())
-  {
-    // Resize the main toolbar
-    m_GlkToolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
-    if (m_image.Pixels())
-    {
-      CSize scaledSize(m_settings.sizeImage);
-      scaledSize.cx *= m_GlkToolBar.GetCount();
-      normalImage.Scale(m_image,scaledSize);
-      disabledImage.Copy(normalImage);
-      normalImage.Fill(m_settings.colourFore);
-      disabledImage.Fill(m_settings.colourDisable);
-
-      m_GlkToolBar.SetBitmap(normalImage.CopyBitmap(this));
-      HIMAGELIST disabledList = ::ImageList_Create(
-        m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
-      if (disabledList)
-      {
-        if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
-          m_GlkToolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
-      }
-    }
-  }
-
-  // Update the bitmaps for the menus
-  if (m_menuBar.GetSafeHwnd() != 0)
-  {
-    m_menuBar.DeleteBitmaps();
-    if (UseNewBar() && normalImage.Pixels())
-      m_menuBar.LoadBitmaps(normalImage,m_GlkToolBar.GetToolBarCtrl(),m_settings.sizeImage);
-
-    UINT ToolbarID = ((CGlkApp*)AfxGetApp())->GetUserGuiID();
-    if ((m_UserToolBar.GetSafeHwnd() != 0) && (ToolbarID != 0))
-    {
-      CBitmap menuUserBitmap;
-      LoadBitmap(menuUserBitmap,ToolbarID);
-      m_menuBar.LoadBitmaps(menuUserBitmap,m_UserToolBar.GetToolBarCtrl(),FixedTbarImgSize,false);
-    }
-
-    m_menuBar.UpdateFont(m_dpi);
-    m_menuBar.Update();
-  }
-
-  SetToolBarSizes();
+  m_dpi = (int)HIWORD(wparam);
+  UpdateDPI(m_dpi);
   m_StatusBar.SetIndicators(Indicators,sizeof(Indicators)/sizeof(UINT));
   return 0;
 }
@@ -1277,41 +1195,4 @@ CRect CWinGlkMainWnd::GetDefaultSize(void)
   const int y = 16;
   CRect size(l+(w/x),t+(h/y),(w*(x-1))/x,(h*(y-1))/y);
   return size;
-}
-
-void CWinGlkMainWnd::SetToolBarSizes(void)
-{
-  REBARBANDINFO bandInfo = { sizeof(REBARBANDINFO),0 };
-  bandInfo.fMask = RBBIM_CHILDSIZE;
-
-  if (m_menuBar.GetSafeHwnd() != 0)
-  {
-    SIZE size;
-    m_menuBar.SendMessage(TB_GETMAXSIZE,0,(LPARAM)&size);
-    int dpi = DPI::getWindowDPI(this);
-    size.cx += DPI::getSystemMetrics(SM_CXMENUCHECK,dpi);
-
-    bandInfo.cxMinChild = size.cx;
-    bandInfo.cyMinChild = size.cy;
-    m_coolBar.GetReBarCtrl().SetBandInfo(m_menuBarIndex,&bandInfo);
-  }
-
-  if (m_UserToolBar.GetSafeHwnd() != 0)
-  {
-    CSize size = m_UserToolBar.CalcFixedLayout(FALSE,TRUE);
-    bandInfo.cxMinChild = size.cx;
-    bandInfo.cyMinChild = size.cy;
-    m_coolBar.GetReBarCtrl().SetBandInfo(m_UserToolBarIndex,&bandInfo);
-  }
-
-  CSize size = m_GlkToolBar.CalcFixedLayout(FALSE,TRUE);
-  bandInfo.cxMinChild = size.cx;
-  bandInfo.cyMinChild = size.cy;
-  m_coolBar.GetReBarCtrl().SetBandInfo(m_GlkToolBarIndex,&bandInfo);
-
-  if (m_menuBar.GetSafeHwnd() != 0)
-    m_coolBar.GetReBarCtrl().MinimizeBand(m_menuBarIndex);
-  if (m_UserToolBar.GetSafeHwnd() != 0)
-    m_coolBar.GetReBarCtrl().MinimizeBand(m_UserToolBarIndex);
-  m_coolBar.GetReBarCtrl().MaximizeBand(m_GlkToolBarIndex);
 }

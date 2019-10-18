@@ -136,9 +136,6 @@
 		<File
 			RelativePath=".\resource.h">
 		</File>
-		<File
-			RelativePath=".\test.bmp">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

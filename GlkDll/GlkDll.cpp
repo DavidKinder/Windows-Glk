@@ -1262,7 +1262,7 @@ void CGlkApp::Speak(LPCSTR pszText)
 
     // Send the text to the speech engine
     CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
-    TextToSpeech::GetSpeechEngine().Speak(pszText,pMainWnd->GetCodePage());
+    TextToSpeech::GetSpeechEngine().Speak(pszText);
   }
 }
 
