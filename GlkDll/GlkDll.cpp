@@ -375,9 +375,16 @@ void CGlkApp::LoadInternationalResources(void)
 
   if (resDllName != NULL)
   {
-    HINSTANCE hDll = ::LoadLibrary(resDllName);
-    if (hDll != NULL)
-      AfxSetResourceHandle(hDll);
+    HINSTANCE dll = ::LoadLibrary(resDllName);
+    if (dll != NULL)
+    {
+      typedef BOOL(*TRANSLATE_ISENABLED)(VOID);
+
+      TRANSLATE_ISENABLED isEnabled =
+        (TRANSLATE_ISENABLED)::GetProcAddress(dll,"IsEnabled");
+      if (isEnabled && (*isEnabled)())
+        AfxSetResourceHandle(dll);
+    }
   }
 }
 
