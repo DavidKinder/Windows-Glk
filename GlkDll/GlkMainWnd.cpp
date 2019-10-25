@@ -126,6 +126,15 @@ static UINT Indicators[] =
 CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP), m_dpi(96)
 {
   m_menuBar.SetUseF10(false);
+
+  char codePageText[8];
+  if (::GetLocaleInfo(LOWORD(::GetKeyboardLayout(0)),
+    LOCALE_IDEFAULTANSICODEPAGE,codePageText,sizeof codePageText))
+  {
+    int codePage = atoi(codePageText);
+    if (codePage > 0)
+      m_CodePage = codePage;
+  }
 }
 
 CWinGlkMainWnd::~CWinGlkMainWnd()
@@ -536,9 +545,9 @@ void CWinGlkMainWnd::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 LRESULT CWinGlkMainWnd::OnInputLangChange(WPARAM wParam, LPARAM lParam)
 {
-  CHARSETINFO CharSet;
-  if (::TranslateCharsetInfo((DWORD*)wParam,&CharSet,TCI_SRCCHARSET))
-    m_CodePage = CharSet.ciACP;
+  CHARSETINFO charSet = { 0 };
+  if (::TranslateCharsetInfo((DWORD*)wParam,&charSet,TCI_SRCCHARSET))
+    m_CodePage = charSet.ciACP;
   return DefWindowProc(WM_INPUTLANGCHANGE,wParam,lParam);
 }
 
