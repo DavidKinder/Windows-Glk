@@ -141,6 +141,8 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_WM_SYSCOMMAND()
   ON_WM_TIMER()
   ON_WM_GETMINMAXINFO()
+  ON_WM_KILLFOCUS()
+  ON_WM_SETFOCUS()
   ON_COMMAND(IDM_SYS_SCROLLBACK, OnScrollback)
   ON_UPDATE_COMMAND_UI(IDM_SYS_SCROLLBACK, OnUpdateScrollback)
   ON_COMMAND(IDM_SYS_OPTIONS, OnOptions)
@@ -157,8 +159,6 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
   ON_MESSAGE(WM_SOUND_NOTIFY, OnSoundNotify)
 END_MESSAGE_MAP()
-
-static const CSize FixedTbarImgSize(16,15);
 
 bool CWinGlkMainWnd::Create(bool bFrame)
 {
@@ -773,6 +773,22 @@ void CWinGlkMainWnd::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 
   lpMMI->ptMaxSize = size;
   lpMMI->ptMaxTrackSize = size;
+}
+
+void CWinGlkMainWnd::OnKillFocus(CWnd* pNewWnd)
+{
+  CWinGlkWnd* pActiveWnd = CWinGlkWnd::GetActiveWindow();
+  if (pActiveWnd)
+    pActiveWnd->CaretOff();
+  CWnd::OnKillFocus(pNewWnd);
+}
+
+void CWinGlkMainWnd::OnSetFocus(CWnd* pOldWnd)
+{
+  CWnd::OnSetFocus(pOldWnd);
+  CWinGlkWnd* pActiveWnd = CWinGlkWnd::GetActiveWindow();
+  if (pActiveWnd)
+    pActiveWnd->CaretOn();
 }
 
 /////////////////////////////////////////////////////////////////////////////

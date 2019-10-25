@@ -89,6 +89,8 @@ protected:
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT nIDEvent);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
   afx_msg void OnScrollback();
   afx_msg void OnUpdateScrollback(CCmdUI* pCmdUI);
   afx_msg void OnOptions();
