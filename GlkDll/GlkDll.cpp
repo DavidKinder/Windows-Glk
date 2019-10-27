@@ -368,6 +368,9 @@ void CGlkApp::LoadInternationalResources(void)
   case LANG_ITALIAN:
     resDllName = "GlkItaliano.dll";
     break;
+  case LANG_RUSSIAN:
+    resDllName = "GlkRussian.dll";
+    break;
   case LANG_SPANISH:
     resDllName = "GlkEspañol.dll";
     break;
