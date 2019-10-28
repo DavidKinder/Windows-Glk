@@ -189,7 +189,7 @@ BEGIN
     GROUPBOX        "Options",IDC_OPTIONS_STATIC,4,81,219,46
     CONTROL         "&Borders between windows",IDC_BORDERS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,31,91,112,8
-    CONTROL         "&Enable menus, toolbars and status bar",IDC_GUI,"Button",
+    CONTROL         "&Enable menus, toolbar and status bar",IDC_GUI,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,31,102,139,8
     CONTROL         "&Style hints override user settings",IDC_STYLEHINT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,113,121,8
