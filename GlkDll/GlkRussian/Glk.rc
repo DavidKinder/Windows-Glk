@@ -86,7 +86,7 @@ CAPTION "Журнал"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "Закрыть окно",IDOK,2,2,65,13
-    PUSHBUTTON      "Скопировать выделенный текст в буфер обмена",IDC_COPY,73,2,111,13
+    PUSHBUTTON      "Скопировать выделенный текст в буфер обмена",IDC_COPY,73,2,190,13
     CONTROL         "",IDC_TEXT,"RichEdit20A",ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | WS_BORDER | 
                     WS_VSCROLL | WS_TABSTOP,2,17,283,100
@@ -266,8 +266,6 @@ END
 IDR_GLK TOOLBAR  16, 15
 BEGIN
     BUTTON      IDM_SYS_SCROLLBACK
-    BUTTON      IDM_FONT_PROPORTIONAL
-    BUTTON      IDM_FONT_FIXED
     BUTTON      IDM_SYS_OPTIONS
     BUTTON      IDM_SYS_HELP
 END
@@ -305,16 +303,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDM_FONT_PROPORTIONAL   "Изменить на пропорциональный шрифт\nПропорциональный шрифт"
-END
-
-STRINGTABLE 
-BEGIN
-    IDM_FONT_FIXED          "Изменить на моноширинный шрифт\nМоноширинный шрифт"
-END
-
-STRINGTABLE 
-BEGIN
     ID_APP_EXIT             "Выйти из приложения\nВыход"
 END
 
@@ -343,12 +331,9 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENU_SCROLLBACK     "&Журнал\tCtrl+L"
-    IDS_MENU_FONTS          "&Шрифты"
     IDS_MENU_OPTIONS        "&Настройки..."
     IDS_MENU_HELP           "&Справка"
     IDS_MENU_ABOUT          "&О Glk"
-    IDS_MENU_PROPFONT       "&Пропорциональный шрифт..."
-    IDS_MENU_FIXEDFONT      "&Моноширинный шрифт..."
     IDS_MENU_EXIT           "&Выход\tAlt+F4"
     IDS_MENU_ABOUT_GAME     "Об этой &игре"
     IDS_STORY               "История Glk"
