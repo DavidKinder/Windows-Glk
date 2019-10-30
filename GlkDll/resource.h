@@ -32,6 +32,7 @@
 #define IDS_NO_DSOUND                   30065
 #define IDS_MORE                        30066
 #define IDS_FULLSCREEN                  30067
+#define IDS_ADDITION_TEXT               30068
 #define IDC_VOICE                       30101
 #define IDC_LINK_HAND                   30103
 #define IDC_BORDERS                     30104

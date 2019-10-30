@@ -114,8 +114,7 @@ BEGIN
     LTEXT           "Windows Glk by David Kinder\nGlk Specification by Andrew Plotkin\nGlk %glk%, Windows release %winglk%",
                     IDC_ABOUT_TEXT,42,19,118,25
     GROUPBOX        "Additional Credits",IDC_ADDITION_GROUP,7,53,159,65
-    LTEXT           "jpeglib by the Independent JPEG Group.\nlibpng by Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, and others.\nzlib by Jean-loup Gailly and Mark Adler.\nModPlug by Olivier Lapicque.\nlibogg and libvorbis by Xiph.org Foundation.",
-                    IDC_ADDITION_TEXT,12,65,149,50
+    LTEXT           "",IDC_ADDITION_TEXT,12,65,149,50
 END
 
 IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
@@ -462,6 +461,11 @@ BEGIN
     ID_INDICATOR_NUM        "NUM"
     ID_INDICATOR_OVR        "OVR"
     ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ADDITION_TEXT       "jpeglib by the Independent JPEG Group.\nlibpng by Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, and others.\nzlib by Jean-loup Gailly and Mark Adler.\nModPlug by Olivier Lapicque.\nlibogg and libvorbis by Xiph.org Foundation."
 END
 
 #endif    // English (U.K.) resources

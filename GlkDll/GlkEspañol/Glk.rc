@@ -87,8 +87,7 @@ BEGIN
     LTEXT           "Versión para Windows de David Kinder\nTraducción por Javier San José\nEspecificación Glk de Andrew Plotkin\nGlk %glk%, versión de Windows %winglk%",
                     IDC_ABOUT_TEXT,42,19,132,33
     GROUPBOX        "Créditos adicionales",IDC_ADDITION_GROUP,7,59,169,66
-    LTEXT           "jpeglib del Independent JPEG Group.\nlibpng de Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, y otros.\nzlib de Jean-loup Gailly y Mark Adler.\nModPlug de Olivier Lapicque.\nlibogg y libvorbis de Xiph.org Foundation.",
-                    IDC_ADDITION_TEXT,13,71,158,50
+    LTEXT           "",IDC_ADDITION_TEXT,13,71,158,50
 END
 
 IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
@@ -440,6 +439,11 @@ BEGIN
     AFX_IDS_SCMINIMIZE      "Reduce la ventana a un icono"
     AFX_IDS_SCMAXIMIZE      "Maximiza la ventana"
     AFX_IDS_SCCLOSE         "Cierra la ventana y sale del programa"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ADDITION_TEXT       "jpeglib del Independent JPEG Group.\nlibpng de Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, y otros.\nzlib de Jean-loup Gailly y Mark Adler.\nModPlug de Olivier Lapicque.\nlibogg y libvorbis de Xiph.org Foundation."
 END
 
 STRINGTABLE 

@@ -898,6 +898,9 @@ BOOL CAboutDialog::OnInitDialog()
     ctrl->GetWindowRect(size);
     ScreenToClient(size);
     ctrl->MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
+    CString addText;
+    addText.LoadString(IDS_ADDITION_TEXT);
+    ctrl->SetWindowText(addText);
 
     ctrl = GetDlgItem(IDC_ADDITION_GROUP);
     ctrl->GetWindowRect(size);

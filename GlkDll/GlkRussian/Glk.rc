@@ -75,8 +75,7 @@ BEGIN
     LTEXT           "Windows Glk - Дэвид Киндер\nРусский перевод - Никита Цейковец\nСпецификация Glk - Эндрю Плоткин\nGlk %glk%, Windows выпуск %winglk%",
                     IDC_ABOUT_TEXT,42,19,118,25
     GROUPBOX        "Дополнительная благодарность",IDC_ADDITION_GROUP,7,53,159,65
-    LTEXT           "jpeglib, созданная Independent JPEG Group.\nlibpng, созданная Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson и другими.\nzlib, созданная Jean-loup Gailly и Mark Adler.\nModPlug, созданная Olivier Lapicque.\nlibogg и libvorbis, созданные Xiph.org Foundation.",
-                    IDC_ADDITION_TEXT,12,65,149,50
+    LTEXT           "",IDC_ADDITION_TEXT,12,65,149,50
 END
 
 IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
@@ -391,6 +390,11 @@ BEGIN
     IDS_FREF_SCRIPT         "транскрипт"
     IDS_FREF_INPUT          "запись вводимых команд"
     IDS_FREF_FILTER         "Все файлы (*.*)|*.*||"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ADDITION_TEXT       "jpeglib, созданная Independent JPEG Group.\nlibpng, созданная Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson и другими.\nzlib, созданная Jean-loup Gailly и Mark Adler.\nModPlug, созданная Olivier Lapicque.\nlibogg и libvorbis, созданные Xiph.org Foundation."
 END
 
 STRINGTABLE 
