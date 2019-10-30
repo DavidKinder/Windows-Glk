@@ -71,7 +71,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "ОК",IDOK,116,125,50,14
     GROUPBOX        "О Glk",IDC_ABOUT_GROUP,7,7,159,43
-    ICON            IDR_GLK,IDC_STATIC,15,21,20,20,0,WS_EX_CLIENTEDGE
+    ICON            IDR_GLK,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Windows Glk - Дэвид Киндер\nРусский перевод - Никита Цейковец\nСпецификация Glk - Эндрю Плоткин\nGlk %glk%, Windows выпуск %winglk%",
                     IDC_ABOUT_TEXT,42,19,118,25
     GROUPBOX        "Дополнительная благодарность",IDC_ADDITION_GROUP,7,53,159,65
@@ -104,53 +104,60 @@ BEGIN
     RTEXT           "&Стиль",IDC_STATIC,121,19,18,8
     COMBOBOX        IDC_WINDOW_STYLE,144,16,65,75,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    ICON            "",IDC_WARNICON,36,35,20,20
-    CTEXT           "MESSAGE",IDC_MESSAGE,61,37,130,16
+    ICON            "",IDC_WARNICON,33,35,20,20
+    CTEXT           "MESSAGE",IDC_MESSAGE,58,37,138,16
     RTEXT           "О&тступ",IDC_STATIC,11,62,40,8
     EDITTEXT        IDC_INDENTATION,57,60,52,12,ES_AUTOHSCROLL
     RTEXT           "Отступ %абзаца",IDC_STATIC,117,58,39,15
     EDITTEXT        IDC_PARAGRAPH,162,60,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Выравнивание",IDC_STATIC,13,81,38,8
+    RTEXT           "&Выравнивание",IDC_STATIC,8,81,46,8
     COMBOBOX        IDC_JUSTIFICATION,57,79,52,48,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    RTEXT           "&Размер текста",IDC_STATIC,122,81,34,8
+    RTEXT           "&Размер текста",IDC_STATIC,115,81,44,8
     EDITTEXT        IDC_TEXT_SIZE,162,79,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Насыщенность текста",IDC_STATIC,12,99,39,8
+    RTEXT           "&Насыщенность текста",IDC_STATIC,8,95,46,18
     COMBOBOX        IDC_WEIGHT,57,97,52,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "&Курсив",IDC_OBLIQUE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,120,94,31,9
+                    WS_TABSTOP,130,94,31,9
     CONTROL         "&Пропорциональный",IDC_PROPORTIONAL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,162,94,53,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,130,106,70,9
     CONTROL         "В&ыворотка",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,162,106,43,9
-    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,219,136
+                    WS_TABSTOP,130,118,43,9
+    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,219,128
 END
 
-IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 228, 147
+IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 228, 170
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Общее"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Настройки",IDC_OPTIONS_STATIC,4,5,219,51
+    GROUPBOX        "Fonts and colours",IDC_FONTS_STATIC,4,5,218,74
+    LTEXT           "&Шрифт",IDC_STATIC,10,19,24,9
+    COMBOBOX        IDC_SIZE_FONT,46,17,34,147,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_PROP_FONT,90,17,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Шрифт &фиксированной ширины",IDC_STATIC,10,32,80,18
+    COMBOBOX        IDC_FIXED_FONT,90,34,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Цвет &текста",IDC_STATIC,24,50,40,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,60,44,13
+    LTEXT           "&Фон",IDC_STATIC,89,50,40,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,89,60,44,13
+    LTEXT           "&Гиперссылки",IDC_STATIC,154,50,40,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,154,60,44,13
+    GROUPBOX        "Настройки",IDC_OPTIONS_STATIC,4,81,219,46
     CONTROL         "&Границы между окнами",IDC_BORDERS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,31,16,112,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,91,112,8
     CONTROL         "&Включить меню, панели инструментов и строку состояния",IDC_GUI,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,31,28,139,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,102,200,8
     CONTROL         "&Советы по стилю переопределяют пользовательские настройки",IDC_STYLEHINT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,41,121,8
-    GROUPBOX        "Цвета",IDC_LINKS_STATIC,4,59,218,42
-    LTEXT           "Цвет &текста",IDC_STATIC,24,71,16,9
-    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,81,44,13
-    LTEXT           "&Фон",IDC_STATIC,89,71,39,9
-    PUSHBUTTON      "",IDC_BACK_COLOUR,89,81,44,13
-    LTEXT           "&Гиперссылки",IDC_STATIC,154,71,37,9
-    PUSHBUTTON      "",IDC_LINK_COLOUR,154,81,44,13
-    GROUPBOX        "Запуск",IDC_STARTUP,4,105,218,36
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,113,204,8
+    GROUPBOX        "Запуск",IDC_STARTUP,4,129,218,36
     LTEXT           "Если в игре есть запись iFi&ction, то показать диалоговое окно",
-                    IDC_LABEL_IFICTION,21,117,90,18
-    COMBOBOX        IDC_SHOW_IFICTION,118,120,84,58,CBS_DROPDOWNLIST | 
+                    IDC_LABEL_IFICTION,14,141,100,18
+    COMBOBOX        IDC_SHOW_IFICTION,126,143,84,58,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
@@ -162,13 +169,13 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Настройки речи",IDC_STATIC,4,5,219,67
     CONTROL         "&Произносить текст при выводе на экран",IDC_SPEAK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,112,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,160,8
     LTEXT           "&Голос",IDC_STATIC,15,36,19,9
-    COMBOBOX        IDC_VOICE,44,34,164,95,CBS_DROPDOWNLIST | CBS_SORT | 
+    COMBOBOX        IDC_VOICE,50,34,158,95,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "&Скорость",IDC_STATIC,15,55,22,8
+    LTEXT           "&Скорость",IDC_STATIC,15,55,28,8
     CONTROL         "",IDC_SPEECH_RATE,"msctls_trackbar32",TBS_BOTH | 
-                    TBS_NOTICKS | WS_TABSTOP,44,52,164,13,WS_EX_TRANSPARENT
+                    TBS_NOTICKS | WS_TABSTOP,50,52,158,13,WS_EX_TRANSPARENT
 END
 
 IDD_ABOUTGAME DIALOGEX 0, 0, 111, 68
@@ -248,12 +255,38 @@ END
 
 IDD_OPTIONS_GENERAL DLGINIT
 BEGIN
-    IDC_SHOW_IFICTION, 0x403, 6, 0
-0x654e, 0x6576, 0x0072, 
+    IDC_SIZE_FONT, 0x403, 2, 0
+0x0038, 
+    IDC_SIZE_FONT, 0x403, 2, 0
+0x0039, 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_SIZE_FONT, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_SHOW_IFICTION, 0x403, 8, 0
+0xe8cd, 0xeeea, 0xe4e3, 0x00e0, 
     IDC_SHOW_IFICTION, 0x403, 11, 0
-0x6946, 0x7372, 0x2074, 0x6974, 0x656d, "\000" 
+0xe5cf, 0xe2f0, 0xe9fb, 0xf020, 0xe7e0, "\000" 
     IDC_SHOW_IFICTION, 0x403, 7, 0
-0x6c41, 0x6177, 0x7379, "\000" 
+0xf1c2, 0xe3e5, 0xe0e4, "\000" 
     0
 END
 
