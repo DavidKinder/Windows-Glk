@@ -600,9 +600,6 @@
 					RelativePath=".\res\Toolbar.bmp">
 				</File>
 				<File
-					RelativePath="res\Toolbar32.bmp">
-				</File>
-				<File
 					RelativePath=".\res\hand.cur">
 				</File>
 			</Filter>
