@@ -871,6 +871,11 @@ BOOL CAboutDialog::OnInitDialog()
   about.Replace("%winglk%","1.50");
   ctrl->SetWindowText(about);
 
+  ctrl = GetDlgItem(IDC_ADDITION_TEXT);
+  CString addText;
+  addText.LoadString(IDS_ADDITION_TEXT);
+  ctrl->SetWindowText(addText);
+
   const CString& appAbout = pApp->GetAppAboutText();
   if (appAbout.IsEmpty() == FALSE)
   {
@@ -898,9 +903,6 @@ BOOL CAboutDialog::OnInitDialog()
     ctrl->GetWindowRect(size);
     ScreenToClient(size);
     ctrl->MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
-    CString addText;
-    addText.LoadString(IDS_ADDITION_TEXT);
-    ctrl->SetWindowText(addText);
 
     ctrl = GetDlgItem(IDC_ADDITION_GROUP);
     ctrl->GetWindowRect(size);
