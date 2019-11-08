@@ -467,9 +467,12 @@ void CGlkApp::AddMenuName(CString& text)
 
 void CGlkApp::SetHelpFile(const char* filename)
 {
-  free((void*)m_pszHelpFilePath);
-  m_pszHelpFilePath = strdup(filename);
-  m_bHasHelpFile = true;
+  if (GetFileAttributes(filename) != INVALID_FILE_ATTRIBUTES)
+  {
+    free((void*)m_pszHelpFilePath);
+    m_pszHelpFilePath = strdup(filename);
+    m_bHasHelpFile = true;
+  }
 }
 
 bool CGlkApp::CreateMainWindow(void)
