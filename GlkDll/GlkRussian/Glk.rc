@@ -91,17 +91,17 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP,2,17,283,100
 END
 
-IDD_OPTIONS_STYLE DIALOGEX 0, 0, 228, 147
+IDD_OPTIONS_STYLE DIALOGEX 0, 0, 228, 153
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Стили"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    RTEXT           "&Окно",IDC_STATIC,17,19,27,8
-    COMBOBOX        IDC_WINDOW_TYPE,49,16,65,36,CBS_DROPDOWNLIST | 
+    RTEXT           "&Окно",IDC_STATIC,5,19,27,8
+    COMBOBOX        IDC_WINDOW_TYPE,37,16,65,36,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    RTEXT           "&Стиль",IDC_STATIC,121,19,18,8
-    COMBOBOX        IDC_WINDOW_STYLE,144,16,65,75,CBS_DROPDOWNLIST | 
+    RTEXT           "&Стиль",IDC_STATIC,109,19,18,8
+    COMBOBOX        IDC_WINDOW_STYLE,132,16,81,75,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     ICON            "",IDC_WARNICON,33,35,20,20
     CTEXT           "MESSAGE",IDC_MESSAGE,58,37,138,16
@@ -109,21 +109,21 @@ BEGIN
     EDITTEXT        IDC_INDENTATION,57,60,52,12,ES_AUTOHSCROLL
     RTEXT           "Отступ &абзаца",IDC_STATIC,117,58,39,15
     EDITTEXT        IDC_PARAGRAPH,162,60,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Выравнивание",IDC_STATIC,8,81,46,8
-    COMBOBOX        IDC_JUSTIFICATION,57,79,52,48,CBS_DROPDOWNLIST | 
+    RTEXT           "&Выравнивание",IDC_STATIC,4,81,50,8
+    COMBOBOX        IDC_JUSTIFICATION,57,79,66,48,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    RTEXT           "&Размер текста",IDC_STATIC,115,81,44,8
+    RTEXT           "&Размер текста",IDC_STATIC,130,77,29,15
     EDITTEXT        IDC_TEXT_SIZE,162,79,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Насыщенность текста",IDC_STATIC,8,95,46,18
-    COMBOBOX        IDC_WEIGHT,57,97,52,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    RTEXT           "&Начертание текста",IDC_STATIC,4,95,50,18
+    COMBOBOX        IDC_WEIGHT,57,97,66,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "&Курсив",IDC_OBLIQUE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,130,94,31,9
+                    WS_TABSTOP,130,100,76,9
     CONTROL         "&Пропорциональный",IDC_PROPORTIONAL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,130,106,70,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,130,112,76,9
     CONTROL         "В&ыворотка",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,130,118,43,9
-    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,219,128
+                    WS_TABSTOP,130,124,76,9
+    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,219,134
 END
 
 IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 228, 170
@@ -132,15 +132,15 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION |
 CAPTION "Общее"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Fonts and colours",IDC_FONTS_STATIC,4,5,218,74
+    GROUPBOX        "Шрифты и цвета",IDC_FONTS_STATIC,4,5,218,74
     LTEXT           "&Шрифт",IDC_STATIC,10,19,24,9
     COMBOBOX        IDC_SIZE_FONT,46,17,34,147,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_PROP_FONT,90,17,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Шрифт &фиксированной ширины",IDC_STATIC,10,32,80,18
+    LTEXT           "Шрифт &фиксированной ширины",IDC_STATIC,10,32,84,18
     COMBOBOX        IDC_FIXED_FONT,90,34,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Цвет &текста",IDC_STATIC,24,50,40,9
+    LTEXT           "Цвет &текста",IDC_STATIC,24,50,44,9
     PUSHBUTTON      "",IDC_TEXT_COLOUR,24,60,44,13
     LTEXT           "&Фон",IDC_STATIC,89,50,40,9
     PUSHBUTTON      "",IDC_BACK_COLOUR,89,60,44,13
@@ -148,14 +148,14 @@ BEGIN
     PUSHBUTTON      "",IDC_LINK_COLOUR,154,60,44,13
     GROUPBOX        "Настройки",IDC_OPTIONS_STATIC,4,81,219,46
     CONTROL         "&Границы между окнами",IDC_BORDERS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,91,112,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,91,200,8
     CONTROL         "&Включить меню, панели инструментов и строку состояния",IDC_GUI,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,102,200,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,102,208,8
     CONTROL         "&Советы по стилю переопределяют пользовательские настройки",IDC_STYLEHINT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,113,204,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,113,208,8
     GROUPBOX        "Запуск",IDC_STARTUP,4,129,218,36
     LTEXT           "Если в игре есть запись iFi&ction, то показать диалоговое окно",
-                    IDC_LABEL_IFICTION,14,141,100,18
+                    IDC_LABEL_IFICTION,14,141,104,18
     COMBOBOX        IDC_SHOW_IFICTION,126,143,84,58,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
@@ -168,7 +168,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Настройки речи",IDC_STATIC,4,5,219,67
     CONTROL         "&Произносить текст при выводе на экран",IDC_SPEAK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,160,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,180,8
     LTEXT           "&Голос",IDC_STATIC,15,36,19,9
     COMBOBOX        IDC_VOICE,50,34,158,95,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
@@ -209,46 +209,47 @@ END
 
 IDD_OPTIONS_STYLE DLGINIT
 BEGIN
-    IDC_WINDOW_TYPE, 0x403, 12, 0
-0x6554, 0x7478, 0x4220, 0x6675, 0x6566, 0x0072, 
-    IDC_WINDOW_TYPE, 0x403, 10, 0
-0x6554, 0x7478, 0x4720, 0x6972, 0x0064, 
-    IDC_WINDOW_STYLE, 0x403, 7, 0
-0x6f4e, 0x6d72, 0x6c61, "\000" 
-    IDC_WINDOW_STYLE, 0x403, 11, 0
-0x6d45, 0x6870, 0x7361, 0x7a69, 0x6465, "\000" 
+    IDC_WINDOW_TYPE, 0x403, 16, 0
+0xe5d2, 0xf1ea, 0xeef2, 0xfbe2, 0x20e9, 0xf3e1, 0xe5f4, 0x00f0, 
+    IDC_WINDOW_TYPE, 0x403, 16, 0
+0xe5d2, 0xf1ea, 0xeef2, 0xe0e2, 0x20ff, 0xe5f1, 0xeaf2, 0x00e0, 
+    IDC_WINDOW_STYLE, 0x403, 8, 0
+0xe1ce, 0xf7fb, 0xfbed, 0x00e9, 
     IDC_WINDOW_STYLE, 0x403, 13, 0
-0x7250, 0x6665, 0x726f, 0x616d, 0x7474, 0x6465, "\000" 
-    IDC_WINDOW_STYLE, 0x403, 7, 0
-0x6548, 0x6461, 0x7265, "\000" 
+0xeecf, 0xf7e4, 0xf0b8, 0xedea, 0xf2f3, 0xe9fb, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 19, 0
+0xf0cf, 0xf4e5, 0xf0ee, 0xe0ec, 0xe8f2, 0xeef0, 0xe0e2, 0xeded, 0xe9fb, 
+"\000" 
+    IDC_WINDOW_STYLE, 0x403, 10, 0
+0xe0c7, 0xeee3, 0xeeeb, 0xeee2, 0x00ea, 
+    IDC_WINDOW_STYLE, 0x403, 13, 0
+0xeecf, 0xe7e4, 0xe3e0, 0xebee, 0xe2ee, 0xeaee, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 15, 0
+0xf0cf, 0xe4e5, 0xeff3, 0xe5f0, 0xe4e6, 0xede5, 0xe5e8, "\000" 
     IDC_WINDOW_STYLE, 0x403, 11, 0
-0x7553, 0x2062, 0x6568, 0x6461, 0x7265, "\000" 
-    IDC_WINDOW_STYLE, 0x403, 6, 0
-0x6c41, 0x7265, 0x0074, 
+0xf0cf, 0xece8, 0xf7e5, 0xede0, 0xe5e8, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 15, 0
+0xebc1, 0xf7ee, 0xe0ed, 0x20ff, 0xe8f6, 0xe0f2, 0xe0f2, "\000" 
     IDC_WINDOW_STYLE, 0x403, 5, 0
-0x6f4e, 0x6574, "\000" 
-    IDC_WINDOW_STYLE, 0x403, 12, 0
-0x6c42, 0x636f, 0x206b, 0x7571, 0x746f, 0x0065, 
-    IDC_WINDOW_STYLE, 0x403, 6, 0
-0x6e49, 0x7570, 0x0074, 
-    IDC_WINDOW_STYLE, 0x403, 6, 0
-0x7355, 0x7265, 0x0031, 
-    IDC_WINDOW_STYLE, 0x403, 6, 0
-0x7355, 0x7265, 0x0032, 
-    IDC_JUSTIFICATION, 0x403, 11, 0
-0x654c, 0x7466, 0x6620, 0x756c, 0x6873, "\000" 
-    IDC_JUSTIFICATION, 0x403, 5, 0
-0x7546, 0x6c6c, "\000" 
-    IDC_JUSTIFICATION, 0x403, 12, 0
-0x6952, 0x6867, 0x2074, 0x6c66, 0x7375, 0x0068, 
-    IDC_JUSTIFICATION, 0x403, 9, 0
-0x6543, 0x746e, 0x7265, 0x6465, "\000" 
+0xe2c2, 0xe4ee, "\000" 
+    IDC_WINDOW_STYLE, 0x403, 14, 0
+0xeecf, 0xfceb, 0xeee7, 0xe0e2, 0xe5f2, 0xfceb, 0x0031, 
+    IDC_WINDOW_STYLE, 0x403, 14, 0
+0xeecf, 0xfceb, 0xeee7, 0xe0e2, 0xe5f2, 0xfceb, 0x0032, 
+    IDC_JUSTIFICATION, 0x403, 15, 0
+0xeecf, 0xeb20, 0xe2e5, 0xecee, 0x20f3, 0xf0ea, 0xfee0, "\000" 
+    IDC_JUSTIFICATION, 0x403, 10, 0
+0xeecf, 0xf820, 0xf0e8, 0xede8, 0x00e5, 
+    IDC_JUSTIFICATION, 0x403, 16, 0
+0xeecf, 0xef20, 0xe0f0, 0xeee2, 0xf3ec, 0xea20, 0xe0f0, 0x00fe, 
+    IDC_JUSTIFICATION, 0x403, 10, 0
+0xeecf, 0xf620, 0xede5, 0xf0f2, 0x00f3, 
+    IDC_WEIGHT, 0x403, 11, 0
+0xeecd, 0xecf0, 0xebe0, 0xedfc, 0xe5ee, "\000" 
     IDC_WEIGHT, 0x403, 7, 0
-0x6f4e, 0x6d72, 0x6c61, "\000" 
-    IDC_WEIGHT, 0x403, 5, 0
-0x6f42, 0x646c, "\000" 
-    IDC_WEIGHT, 0x403, 6, 0
-0x694c, 0x6867, 0x0074, 
+0xe8c6, 0xedf0, 0xe5ee, "\000" 
+    IDC_WEIGHT, 0x403, 7, 0
+0xb8cb, 0xeae3, 0xe5ee, "\000" 
     0
 END
 
