@@ -56,7 +56,12 @@ Section "DoInstall"
   WriteRegStr HKLM "SOFTWARE\David Kinder\Glulxe\Install" "Directory" "$INSTDIR"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "DisplayName" "Windows Glulxe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "DisplayIcon" "$INSTDIR\Glulxe.exe,0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "DisplayVersion" ${GLULXE_VERSION}
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "Publisher" "David Kinder"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "NoRepair" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "EstimatedSize" 2110
 
   WriteRegStr HKCR ".ulx" "" "Glulx.ulx"
   WriteRegStr HKCR "Glulx.ulx" "" "Glulx Game"
