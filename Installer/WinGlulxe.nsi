@@ -61,7 +61,7 @@ Section "DoInstall"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "NoRepair" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "EstimatedSize" 2110
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsGlulxe" "EstimatedSize" 2420
 
   WriteRegStr HKCR ".ulx" "" "Glulx.ulx"
   WriteRegStr HKCR "Glulx.ulx" "" "Glulx Game"
