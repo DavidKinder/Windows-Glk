@@ -49,6 +49,6 @@ pushd Scare
 popd
 
 pushd Installer
-"%ProgramFiles(x86)%\NSIS\makensis" Glulxe.nsi
+"%ProgramFiles(x86)%\NSIS\makensis" WinGlulxe.nsi
 move *.exe \Temp
 popd
