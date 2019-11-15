@@ -220,7 +220,8 @@ void CWinGlkWnd::SetActiveWindow(void)
 
     if (GetSafeHwnd())
     {
-      int iCaretWidth = ::GetSystemMetrics(SM_CXBORDER);
+      int dpi = DPI::getWindowDPI(this);
+      int iCaretWidth = DPI::getSystemMetrics(SM_CXBORDER,dpi);
       if (iCaretWidth < 2)
         iCaretWidth = 2;
       CreateSolidCaret(iCaretWidth,GetCaretHeight());
