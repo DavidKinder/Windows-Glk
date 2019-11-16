@@ -15,7 +15,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Russian resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
 #ifdef _WIN32
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 #pragma code_page(1251)
@@ -71,10 +71,11 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "ОК",IDOK,142,130,50,14
     GROUPBOX        "О Glk",IDC_ABOUT_GROUP,7,7,184,50
-    ICON            IDR_GLK,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
+    ICON            30020,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Windows Glk - Дэвид Киндер\nРусский перевод - Никита Цейковец\nСпецификация Glk - Эндрю Плоткин\nGlk %glk%, Windows выпуск %winglk%",
                     IDC_ABOUT_TEXT,42,19,146,33
-    GROUPBOX        "Дополнительная благодарность",IDC_ADDITION_GROUP,7,59,184,65
+    GROUPBOX        "Дополнительная благодарность",IDC_ADDITION_GROUP,7,59,
+                    184,65
     LTEXT           "",IDC_ADDITION_TEXT,12,71,172,50
 END
 
@@ -85,96 +86,100 @@ CAPTION "Журнал"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "Закрыть окно",IDOK,2,2,65,13
-    PUSHBUTTON      "Скопировать выделенный текст в буфер обмена",IDC_COPY,73,2,190,13
+    PUSHBUTTON      "Скопировать выделенный текст в буфер обмена",IDC_COPY,
+                    73,2,190,13
     CONTROL         "",IDC_TEXT,"RichEdit20A",ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | WS_BORDER | 
                     WS_VSCROLL | WS_TABSTOP,2,17,283,100
 END
 
-IDD_OPTIONS_STYLE DIALOGEX 0, 0, 228, 153
+IDD_OPTIONS_STYLE DIALOGEX 0, 0, 280, 153
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Стили"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    RTEXT           "&Окно",IDC_STATIC,5,19,27,8
-    COMBOBOX        IDC_WINDOW_TYPE,37,16,65,36,CBS_DROPDOWNLIST | 
+    RTEXT           "&Окно",IDC_STATIC,11,19,23,8
+    COMBOBOX        IDC_WINDOW_TYPE,39,16,79,36,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    RTEXT           "&Стиль",IDC_STATIC,109,19,18,8
-    COMBOBOX        IDC_WINDOW_STYLE,132,16,81,75,CBS_DROPDOWNLIST | 
+    RTEXT           "&Стиль",IDC_STATIC,122,19,26,8
+    COMBOBOX        IDC_WINDOW_STYLE,151,16,99,75,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    ICON            "",IDC_WARNICON,33,35,20,20
-    CTEXT           "MESSAGE",IDC_MESSAGE,58,37,138,16
-    RTEXT           "О&тступ",IDC_STATIC,11,62,40,8
-    EDITTEXT        IDC_INDENTATION,57,60,52,12,ES_AUTOHSCROLL
-    RTEXT           "Отступ &абзаца",IDC_STATIC,117,58,39,15
-    EDITTEXT        IDC_PARAGRAPH,162,60,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Выравнивание",IDC_STATIC,4,81,50,8
-    COMBOBOX        IDC_JUSTIFICATION,57,79,66,48,CBS_DROPDOWNLIST | 
+    ICON            "",IDC_WARNICON,37,35,20,20
+    CTEXT           "MESSAGE",IDC_MESSAGE,62,37,181,16
+    RTEXT           "О&тступ",IDC_STATIC,22,62,40,8
+    EDITTEXT        IDC_INDENTATION,68,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "Отступ &абзаца",IDC_STATIC,140,57,39,15
+    EDITTEXT        IDC_PARAGRAPH,185,60,52,12,ES_AUTOHSCROLL
+    RTEXT           "&Выравнивание",IDC_STATIC,5,81,58,8
+    COMBOBOX        IDC_JUSTIFICATION,68,79,78,48,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    RTEXT           "&Размер текста",IDC_STATIC,130,77,29,15
-    EDITTEXT        IDC_TEXT_SIZE,162,79,52,12,ES_AUTOHSCROLL
-    RTEXT           "&Начертание текста",IDC_STATIC,4,95,50,18
-    COMBOBOX        IDC_WEIGHT,57,97,66,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    RTEXT           "&Размер текста",IDC_STATIC,147,76,35,15
+    EDITTEXT        IDC_TEXT_SIZE,185,78,52,12,ES_AUTOHSCROLL
+    RTEXT           "&Начертание текста",IDC_STATIC,13,94,50,18
+    COMBOBOX        IDC_WEIGHT,68,97,78,48,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "&Курсив",IDC_OBLIQUE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,130,100,76,9
+                    WS_TABSTOP,155,98,76,9
     CONTROL         "&Пропорциональный",IDC_PROPORTIONAL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,130,112,76,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,155,110,94,9
     CONTROL         "В&ыворотка",IDC_REVERSE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,130,124,76,9
-    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,219,134
+                    WS_TABSTOP,155,122,76,9
+    GROUPBOX        "Свойства стиля",IDC_STYLE_STATIC,4,5,272,134
 END
 
-IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 228, 170
+IDD_OPTIONS_GENERAL DIALOGEX 0, 0, 280, 170
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Общее"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Шрифты и цвета",IDC_FONTS_STATIC,4,5,218,74
+    GROUPBOX        "Шрифты и цвета",IDC_FONTS_STATIC,4,5,272,74
     LTEXT           "&Шрифт",IDC_STATIC,10,19,24,9
-    COMBOBOX        IDC_SIZE_FONT,46,17,34,147,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_PROP_FONT,90,17,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
+    COMBOBOX        IDC_SIZE_FONT,91,17,34,147,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_PROP_FONT,142,17,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Шрифт &фиксированной ширины",IDC_STATIC,10,32,84,18
-    COMBOBOX        IDC_FIXED_FONT,90,34,125,100,CBS_DROPDOWNLIST | CBS_SORT | 
-                    WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Цвет &текста",IDC_STATIC,24,50,44,9
-    PUSHBUTTON      "",IDC_TEXT_COLOUR,24,60,44,13
-    LTEXT           "&Фон",IDC_STATIC,89,50,40,9
-    PUSHBUTTON      "",IDC_BACK_COLOUR,89,60,44,13
-    LTEXT           "&Гиперссылки",IDC_STATIC,154,50,40,9
-    PUSHBUTTON      "",IDC_LINK_COLOUR,154,60,44,13
-    GROUPBOX        "Настройки",IDC_OPTIONS_STATIC,4,81,219,46
+    LTEXT           "Шрифт &фиксированной ширины",IDC_STATIC,10,36,129,9
+    COMBOBOX        IDC_FIXED_FONT,142,34,125,100,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Цвет &текста",IDC_STATIC,40,50,55,9
+    PUSHBUTTON      "",IDC_TEXT_COLOUR,40,60,44,13
+    LTEXT           "&Фон",IDC_STATIC,106,50,40,9
+    PUSHBUTTON      "",IDC_BACK_COLOUR,106,60,44,13
+    LTEXT           "&Гиперссылки",IDC_STATIC,170,50,52,9
+    PUSHBUTTON      "",IDC_LINK_COLOUR,170,60,44,13
+    GROUPBOX        "Настройки",IDC_OPTIONS_STATIC,4,80,272,48
     CONTROL         "&Границы между окнами",IDC_BORDERS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,12,91,200,8
-    CONTROL         "&Включить меню, панели инструментов и строку состояния",IDC_GUI,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,102,208,8
-    CONTROL         "&Советы по стилю переопределяют пользовательские настройки",IDC_STYLEHINT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,113,208,8
-    GROUPBOX        "Запуск",IDC_STARTUP,4,129,218,36
+    CONTROL         "&Включить меню, панели инструментов и строку состояния",
+                    IDC_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,102,256,
+                    8
+    CONTROL         "&Советы по стилю переопределяют пользовательские настройки",
+                    IDC_STYLEHINT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
+                    113,255,8
+    GROUPBOX        "Запуск",IDC_STARTUP,4,129,272,36
     LTEXT           "Если в игре есть запись iFi&ction, то показать диалоговое окно",
-                    IDC_LABEL_IFICTION,14,141,104,18
-    COMBOBOX        IDC_SHOW_IFICTION,126,143,84,58,CBS_DROPDOWNLIST | 
+                    IDC_LABEL_IFICTION,29,141,124,18
+    COMBOBOX        IDC_SHOW_IFICTION,164,143,84,58,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 228, 147
+IDD_OPTIONS_SPEECH DIALOGEX 0, 0, 280, 147
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Речь"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Настройки речи",IDC_STATIC,4,5,219,67
-    CONTROL         "&Произносить текст при выводе на экран",IDC_SPEAK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,20,180,8
+    GROUPBOX        "Настройки речи",IDC_STATIC,4,5,272,67
+    CONTROL         "&Произносить текст при выводе на экран",IDC_SPEAK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,20,227,8
     LTEXT           "&Голос",IDC_STATIC,15,36,19,9
-    COMBOBOX        IDC_VOICE,50,34,158,95,CBS_DROPDOWNLIST | CBS_SORT | 
+    COMBOBOX        IDC_VOICE,50,34,210,95,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "&Скорость",IDC_STATIC,15,55,28,8
     CONTROL         "",IDC_SPEECH_RATE,"msctls_trackbar32",TBS_BOTH | 
-                    TBS_NOTICKS | WS_TABSTOP,50,52,158,13,WS_EX_TRANSPARENT
+                    TBS_NOTICKS | WS_TABSTOP,50,52,209,13,WS_EX_TRANSPARENT
 END
 
 IDD_ABOUTGAME DIALOGEX 0, 0, 111, 68
@@ -306,6 +311,22 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_OPTIONS_GENERAL, DIALOG
+    BEGIN
+        RIGHTMARGIN, 276
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -380,6 +401,7 @@ BEGIN
     IDS_NO_DSOUND           "Не удалось инициализировать DirectSound"
     IDS_MORE                "[Далее]"
     IDS_FULLSCREEN          "Это приложение собирается перейти в полноэкранный режим . Вы хотите продолжить?\n\nПримечание: Чтобы вернуться к обычному экрану, нажмите Alt+Enter ещё раз."
+    IDS_ADDITION_TEXT       "jpeglib, созданная Independent JPEG Group.\nlibpng, созданная Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson и другими.\nzlib, созданная Jean-loup Gailly и Mark Adler.\nModPlug, созданная Olivier Lapicque.\nlibogg и libvorbis, созданные Xiph.org Foundation."
 END
 
 STRINGTABLE 
@@ -391,11 +413,6 @@ BEGIN
     IDS_FREF_SCRIPT         "транскрипт"
     IDS_FREF_INPUT          "запись вводимых команд"
     IDS_FREF_FILTER         "Все файлы (*.*)|*.*||"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ADDITION_TEXT       "jpeglib, созданная Independent JPEG Group.\nlibpng, созданная Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson и другими.\nzlib, созданная Jean-loup Gailly и Mark Adler.\nModPlug, созданная Olivier Lapicque.\nlibogg и libvorbis, созданные Xiph.org Foundation."
 END
 
 STRINGTABLE 
