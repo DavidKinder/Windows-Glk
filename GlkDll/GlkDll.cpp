@@ -2335,7 +2335,8 @@ extern "C" void glk_request_timer_events(glui32 millisecs)
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
   CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
-  pMainWnd->StartTimer(millisecs);
+  if (pMainWnd)
+    pMainWnd->StartTimer(millisecs);
   invalidate = true;
 }
 
