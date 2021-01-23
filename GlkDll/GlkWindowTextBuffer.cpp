@@ -610,8 +610,8 @@ void CWinGlkWndTextBuffer::Paint(bool bMark)
 
   // Format each paragraph
   CPaintInfo FormatInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,m_Hyperlinks);
-  int numParas = m_TextBuffer.GetSize();
-  for (int i = 0; i < numParas; i++)
+  int i, numParas = m_TextBuffer.GetSize();
+  for (i = 0; i < numParas; i++)
     m_TextBuffer[i]->Format(FormatInfo);
 
   // Determine where to start displaying text
@@ -696,7 +696,8 @@ void CWinGlkWndTextBuffer::CheckDeleteOldText(int iTop, int iClientHeight)
 
     // Work out how much vertical space is being used by
     // paragraphs off the top of the display
-    for (int i = 0; i < iTop; i++)
+    int i;
+    for (i = 0; i < iTop; i++)
       height += m_TextBuffer[i]->GetHeight();
 
     // If over 10 times the height of the display,
@@ -777,15 +778,15 @@ void CWinGlkWndTextBuffer::PreparePaintInfo(
       else if (para == iParagraph)
       {
         // A [More] prompt is required if there is more to show than can fit in the window.
-        CRect ClientArea;
-        GetClientRect(ClientArea);
+        CRect r;
+        GetClientRect(r);
         int iHeightLeft = m_TextBuffer[para]->GetHeight()-m_TextBuffer[para]->LastShownHeight();
         for (int i = para + 1; i < m_TextBuffer.GetSize(); i++)
         {
           if (ShowParagraph(i))
             iHeightLeft += m_TextBuffer[i]->GetHeight();
         }
-        if (iHeightLeft > ClientArea.Height())
+        if (iHeightLeft > r.Height())
         {
           m_bMorePending = true;
           iParagraph = para;
@@ -1429,10 +1430,10 @@ CWinGlkWndTextBuffer::CParagraph::~CParagraph()
   for (int i = 0; i < m_InlineGraphics.GetSize(); i++)
     delete m_InlineGraphics[i];
   m_InlineGraphics.RemoveAll();
-  for (i = 0; i < m_MarginGraphics.GetSize(); i++)
+  for (int i = 0; i < m_MarginGraphics.GetSize(); i++)
     delete m_MarginGraphics[i];
   m_MarginGraphics.RemoveAll();
-  for (i = 0; i < m_TextColours.GetSize(); i++)
+  for (int i = 0; i < m_TextColours.GetSize(); i++)
     delete m_TextColours[i];
   m_TextColours.RemoveAll();
 }
@@ -1607,7 +1608,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
         if (bTest == false)
         {
           // Move formatting to start after the style change
-          CSize sz = Info.m_DeviceContext.GetTextExtent(str);
+          sz = Info.m_DeviceContext.GetTextExtent(str);
           left += sz.cx;
           str.Empty();
 
@@ -1668,7 +1669,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
         if (bTest == false)
         {
           // Move formatting to start after the graphic
-          CSize sz = Info.m_DeviceContext.GetTextExtent(str);
+          sz = Info.m_DeviceContext.GetTextExtent(str);
           left += sz.cx;
           str.Empty();
 
@@ -1731,7 +1732,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
         if (bTest == false)
         {
           // Move formatting to start after the flow break
-          CSize sz = Info.m_DeviceContext.GetTextExtent(str);
+          sz = Info.m_DeviceContext.GetTextExtent(str);
           left += sz.cx;
           str.Empty();
 

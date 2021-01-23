@@ -308,38 +308,35 @@ bool CWinGlkMainWnd::Create(bool bFrame)
 
   // Load the toolbar
   ImagePNG normalImage, disabledImage;
-  if (UseNewBar())
+  const DWORD BarStyle = WS_CHILD|WS_VISIBLE|CBRS_ALIGN_TOP|CBRS_TOOLTIPS|CBRS_FLYBY;
+  if (m_toolBar.CreateEx(this,TBSTYLE_FLAT|TBSTYLE_TRANSPARENT,BarStyle) == FALSE)
+    return FALSE;
+  if (m_toolBar.LoadToolBar(IDR_GLK) == FALSE)
+    return FALSE;
+
+  // Hide the help button, if help is not available
+  if (pApp->HasHelpFile() == false)
+    m_toolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
+
+  m_settings = Settings(DPI::getWindowDPI(this));
+  m_toolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
+
+  if (m_image.LoadResource(IDR_TOOLBAR))
   {
-    const DWORD BarStyle = WS_CHILD|WS_VISIBLE|CBRS_ALIGN_TOP|CBRS_TOOLTIPS|CBRS_FLYBY;
-    if (m_toolBar.CreateEx(this,TBSTYLE_FLAT|TBSTYLE_TRANSPARENT,BarStyle) == FALSE)
-      return FALSE;
-    if (m_toolBar.LoadToolBar(IDR_GLK) == FALSE)
-      return FALSE;
+    CSize scaledSize(m_settings.sizeImage);
+    scaledSize.cx *= m_toolBar.GetCount();
+    normalImage.Scale(m_image,scaledSize);
+    disabledImage.Copy(normalImage);
+    normalImage.Fill(m_settings.colourFore);
+    disabledImage.Fill(m_settings.colourDisable);
 
-    // Hide the help button, if help is not available
-    if (pApp->HasHelpFile() == false)
-      m_toolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
-
-    m_settings = Settings(DPI::getWindowDPI(this));
-    m_toolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
-
-    if (m_image.LoadResource(IDR_TOOLBAR))
+    m_toolBar.SetBitmap(normalImage.CopyBitmap(this));
+    HIMAGELIST disabledList = ::ImageList_Create(
+      m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
+    if (disabledList)
     {
-      CSize scaledSize(m_settings.sizeImage);
-      scaledSize.cx *= m_toolBar.GetCount();
-      normalImage.Scale(m_image,scaledSize);
-      disabledImage.Copy(normalImage);
-      normalImage.Fill(m_settings.colourFore);
-      disabledImage.Fill(m_settings.colourDisable);
-
-      m_toolBar.SetBitmap(normalImage.CopyBitmap(this));
-      HIMAGELIST disabledList = ::ImageList_Create(
-        m_settings.sizeImage.cx,m_settings.sizeImage.cy,ILC_COLOR32,0,5);
-      if (disabledList)
-      {
-        if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
-          m_toolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
-      }
+      if (::ImageList_Add(disabledList,disabledImage.CopyBitmap(this),0) >= 0)
+        m_toolBar.GetToolBarCtrl().SetDisabledImageList(CImageList::FromHandle(disabledList));
     }
   }
 
@@ -389,7 +386,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
     m_View.GetClientRect(InnerNow);
 
     // Get the style for a test window
-    DWORD dwExStyle = 0;
+    dwExStyle = 0;
     if (((CGlkApp*)AfxGetApp())->GetWindowBorders())
       dwExStyle = WS_EX_CLIENTEDGE;
 

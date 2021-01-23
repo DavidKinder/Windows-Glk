@@ -740,7 +740,7 @@ BOOL CWinGlkPropertySheet::OnInitDialog()
 
   m_font.CreateFontIndirect(&m_logFont);
   ChangeDialogFont(this,&m_font,0.0);
-  CPropertyPage* page = GetActivePage();
+  CPropertyPage* activePage = GetActivePage();
   for (int i = 0; i < GetPageCount(); i++)
   {
     SetActivePage(i);
@@ -748,14 +748,14 @@ BOOL CWinGlkPropertySheet::OnInitDialog()
     DPI::disableDialogDPI(page);
     ChangeDialogFont(page,&m_font,0.0);
   }
-  SetActivePage(page);
+  SetActivePage(activePage);
 
   CTabCtrl* tab = GetTabControl();
   tab->GetWindowRect(&m_page);
   ScreenToClient(&m_page);
   tab->AdjustRect(FALSE,&m_page);
 
-  page->MoveWindow(&m_page);
+  activePage->MoveWindow(&m_page);
   return TRUE;
 }
 
@@ -790,21 +790,21 @@ LRESULT CWinGlkPropertySheet::OnDpiChanged(WPARAM wparam, LPARAM lparam)
       // Update the dialog to use the new font
       double scaleDpi = (double)newDpi / (double)m_dpi;
       ChangeDialogFont(this,&m_font,scaleDpi);
-      CPropertyPage* page = GetActivePage();
+      CPropertyPage* activePage = GetActivePage();
       for (int i = 0; i < GetPageCount(); i++)
       {
         SetActivePage(i);
         CPropertyPage* page = GetActivePage();
         ChangeDialogFont(page,&m_font,scaleDpi);
       }
-      SetActivePage(page);
+      SetActivePage(activePage);
 
       // Resize the property page
       CTabCtrl* tab = GetTabControl();
       tab->GetWindowRect(&m_page);
       ScreenToClient(&m_page);
       tab->AdjustRect(FALSE,&m_page);
-      page->MoveWindow(&m_page);
+      activePage->MoveWindow(&m_page);
     }
 
     m_dpi = newDpi;
@@ -880,7 +880,6 @@ BOOL CAboutDialog::OnInitDialog()
   if (appAbout.IsEmpty() == FALSE)
   {
     ctrl = GetDlgItem(IDC_ABOUT_TEXT);
-    CString about;
     ctrl->GetWindowText(about);
     about = appAbout + CString("\n") + about;
     ctrl->SetWindowText(about);

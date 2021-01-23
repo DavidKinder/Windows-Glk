@@ -954,7 +954,7 @@ void CGlkApp::InitDebugConsole(void)
 
     // Set the title for the console window
     CString title;
-    title.Format("%s Debug",m_strAppName);
+    title.Format("%s Debug",(LPCSTR)m_strAppName);
     ::SetConsoleTitle(title);
 
     // Get the console's window handle, if possible
@@ -1199,10 +1199,10 @@ CWinGlkResource* CGlkApp::LoadResource(int iNumber)
   return 0;
 }
 
-CString CGlkApp::FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix)
+CString CGlkApp::FileName(LPCSTR pszPrefix, int iIndex, LPCSTR pszSuffix)
 {
   CString strFileName;
-  strFileName.Format("%s%s%d.%s",m_strResDir,pszPrefix,iIndex,pszSuffix);
+  strFileName.Format("%s%s%d.%s",(LPCSTR)m_strResDir,pszPrefix,iIndex,pszSuffix);
   return strFileName;
 }
 

@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Windows Glk">
+      <UniqueIdentifier>{dc889913-bd0d-4c32-ab40-d3566ad72ccb}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Windows Glk\Source Files">
+      <UniqueIdentifier>{55e2409f-ec51-43db-b8b7-c322530e8250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows Glk\Header Files">
+      <UniqueIdentifier>{3565f2be-c8d7-4dda-85a2-70d1055c3285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows Glk\Resource Files">
+      <UniqueIdentifier>{23bcefed-eb69-4089-baaf-872a3f5c8d67}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Generic Glk">
+      <UniqueIdentifier>{3f84c674-665f-420f-aa54-b30f71a3c97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{52a893fc-efb3-4146-849c-b3aaada50042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\JPEG">
+      <UniqueIdentifier>{d35094e1-be0d-47d6-8ab7-d486a16c47fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\PNG">
+      <UniqueIdentifier>{b47e32b7-89eb-4006-a380-bb0024b28b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\ZLib">
+      <UniqueIdentifier>{0907cda5-2e16-4e0f-b3fe-cb07c3f021fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\Ogg Vorbis">
+      <UniqueIdentifier>{78ed53d8-d5ce-4768-a8a5-0326e157aac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\MODPlug">
+      <UniqueIdentifier>{3108ba93-b93a-42bf-be49-7850b54c491d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\MFC Extensions">
+      <UniqueIdentifier>{7b776732-c046-4651-a4e6-cfdf13e667c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Glk.def">
+      <Filter>Windows Glk</Filter>
+    </None>
+    <None Include="res\Glk.rc2">
+      <Filter>Windows Glk\Resource Files</Filter>
+    </None>
+    <None Include="res\hand.cur">
+      <Filter>Windows Glk\Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GlkDialogs.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkDll.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkFileRef.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkGraphic.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkGraphicJPEG.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkGraphicPNG.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkMainWnd.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSndChannel.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSound.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSoundAIFF.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSoundMOD.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSoundOGG.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkSoundSONG.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkStream.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkStyle.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkTalk.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkTime.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkUnicode.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkWindow.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkWindowGfx.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkWindowTextBuffer.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GlkWindowTextGrid.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gi_blorb.c">
+      <Filter>Generic Glk</Filter>
+    </ClCompile>
+    <ClCompile Include="gi_debug.c">
+      <Filter>Generic Glk</Filter>
+    </ClCompile>
+    <ClCompile Include="gi_dispa.c">
+      <Filter>Generic Glk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jcomapi.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdapimin.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdapistd.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdatadst.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdatasrc.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdcoefct.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdcolor.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jddctmgr.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdhuff.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdinput.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdmainct.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdmarker.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdmaster.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdmerge.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdphuff.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdpostct.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdsample.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jdtrans.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jerror.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jidctflt.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jidctfst.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jidctint.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jidctred.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jmemmgr.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jmemnobs.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jquant1.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jquant2.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\jpeg\jutils.c">
+      <Filter>Libraries\JPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\png.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngerror.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngget.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngmem.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngpread.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngread.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngrio.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngrtran.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngrutil.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngset.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libpng\pngtrans.c">
+      <Filter>Libraries\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\adler32.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\crc32.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\inffast.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\inflate.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\inftrees.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\trees.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\uncompr.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\zlib\zutil.c">
+      <Filter>Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\analysis.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\bitrate.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libogg\src\bitwise.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\block.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\codebook.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\envelope.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\floor0.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\floor1.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libogg\src\framing.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\info.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\lpc.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\lsp.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\mapping0.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\mdct.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\psy.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\registry.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\res0.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\sharedbook.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\smallft.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\synthesis.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\vorbisfile.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libvorbis\lib\window.c">
+      <Filter>Libraries\Ogg Vorbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\fastmix.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_669.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_amf.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_ams.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_dbm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_dmf.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_dsm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_far.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_it.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_j2b.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_mdl.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_med.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_mod.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_mt2.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_mtm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_okt.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_psm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_ptm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_s3m.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_stm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_ult.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_umx.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_wav.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\load_xm.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\mmcmp.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\snd_dsp.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\snd_flt.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\snd_fx.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\sndfile.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\sndmix.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\libmodplug\tables.cpp">
+      <Filter>Libraries\MODPlug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\ColourButton.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\DSoundEngine.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\Dialogs.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\Dib.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\DpiFunctions.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\ImagePNG.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\MenuBar.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\TextOutput.cpp">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GlkDialogs.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkDll.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkFileRef.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkGraphic.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkGraphicJPEG.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkGraphicPNG.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkMainWnd.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSndChannel.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSound.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSoundAIFF.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSoundMOD.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSoundOGG.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSoundSONG.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkStream.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkStyle.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkTalk.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkTime.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkUnicode.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkWindow.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkWindowGfx.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkWindowTextBuffer.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkWindowTextGrid.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\WinGlk.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\gi_blorb.h">
+      <Filter>Generic Glk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\gi_debug.h">
+      <Filter>Generic Glk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\gi_dispa.h">
+      <Filter>Generic Glk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\glk.h">
+      <Filter>Generic Glk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\ColourButton.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\DSoundEngine.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\Dialogs.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\Dib.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\DpiFunctions.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\ImagePNG.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\MenuBar.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\TextOutput.h">
+      <Filter>Libraries\MFC Extensions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Glk.ico">
+      <Filter>Windows Glk\Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Windows Glk\Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Glk.rc">
+      <Filter>Windows Glk\Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

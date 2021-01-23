@@ -177,7 +177,7 @@ public:
   void DebugToFront(void);
 
 protected:
-  CString FileName(LPCTSTR pszPrefix,int iIndex,LPCTSTR pszSuffix);
+  CString FileName(LPCSTR pszPrefix, int iIndex, LPCSTR pszSuffix);
   void DeleteOldTempFiles(void);
   void LoadInternationalResources(void);
   CString GetDefaultFont(void);

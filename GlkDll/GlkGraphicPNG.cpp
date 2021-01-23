@@ -156,14 +156,14 @@ CWinGlkGraphic* CWinGlkPNGGraphicLoader::LoadGraphic(BYTE* pData, UINT iLength, 
     png_read_image(png_ptr,pRowPointers);
     png_read_end(png_ptr,end_info);
 
-    for (i = 0; i < size; i += 4)
+    for (int i = 0; i < size; i += 4)
     {
       if (pGraphic->m_pPixels[i+3] != 0)
         pGraphic->m_bAlpha = true;
     }
     if (bApplyAlpha && pGraphic->m_bAlpha)
     {
-      for (i = 0; i < size; i += 4)
+      for (int i = 0; i < size; i += 4)
       {
         int alpha = pGraphic->m_pPixels[i+3];
 
