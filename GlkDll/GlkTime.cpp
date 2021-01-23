@@ -150,30 +150,11 @@ void CalibrateNow(void)
 
 LONG GetTimeIncrement(void)
 {
-  typedef BOOL(__stdcall *GETSYSTEMTIMEADJUSTMENT)(PDWORD,PDWORD,PBOOL);
-  static GETSYSTEMTIMEADJUSTMENT getSystemTimeAdjustment = 0;
+  DWORD timeAdjust, timeInc;
+  BOOL timeAdjustDisabled;
 
-  if (getSystemTimeAdjustment == 0)
-  {
-    static HMODULE kernel32 = 0;
-
-    if (kernel32 == 0)
-      kernel32 = ::LoadLibrary("kernel32.dll");
-    if (kernel32 != 0)
-    {
-      getSystemTimeAdjustment = (GETSYSTEMTIMEADJUSTMENT)
-        ::GetProcAddress(kernel32,"GetSystemTimeAdjustment");
-    }
-  }
-
-  if (getSystemTimeAdjustment != 0)
-  {
-    DWORD timeAdjust, timeInc;
-    BOOL timeAdjustDisabled;
-
-    if ((*getSystemTimeAdjustment)(&timeAdjust,&timeInc,&timeAdjustDisabled))
-      return timeAdjustDisabled ? timeAdjust : timeInc;
-  }
+  if (::GetSystemTimeAdjustment(&timeAdjust,&timeInc,&timeAdjustDisabled))
+    return timeAdjustDisabled ? timeAdjust : timeInc;
 
   // Use a default value of 15.625ms
   return 156250;

@@ -117,19 +117,6 @@ BOOL CGlkApp::InitInstance()
   m_strAppName.LoadString(IDS_STORY);
   m_strAppTitle.LoadString(IDS_STORY);
   m_strMenuName = "&Glk";
-
-  // Mark the application as DPI aware
-  HMODULE user = ::LoadLibrary("user32.dll");
-  if (user != 0)
-  {
-    typedef BOOL(__stdcall *SETPROCESSDPIAWARE)(void);
-    SETPROCESSDPIAWARE setProcessDPIAware = (SETPROCESSDPIAWARE)::GetProcAddress(
-      user,"SetProcessDPIAware");
-    if (setProcessDPIAware != NULL)
-      (*setProcessDPIAware)();
-    ::FreeLibrary(user);
-  }
-
   return CWinApp::InitInstance();
 }
 
@@ -958,16 +945,8 @@ void CGlkApp::InitDebugConsole(void)
     title.Format("%s Debug",(LPCSTR)m_strAppName);
     ::SetConsoleTitle(title);
 
-    // Get the console's window handle, if possible
-    HMODULE kernel = ::LoadLibrary("kernel32.dll");
-    if (kernel != 0)
-    {
-      typedef HWND(__stdcall *GETCONSOLEWINDOW)(void);
-      GETCONSOLEWINDOW getConsoleWindow = (GETCONSOLEWINDOW)::GetProcAddress(kernel,"GetConsoleWindow");
-      if (getConsoleWindow != NULL)
-        m_Debug->console = (*getConsoleWindow)();
-      ::FreeLibrary(kernel);
-    }
+    // Get the console's window handle
+    m_Debug->console = ::GetConsoleWindow();
 
     // Set the console window's icon, if possible
     if (m_Debug->console != 0)
