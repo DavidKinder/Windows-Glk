@@ -63,7 +63,7 @@ void glk_main(void)
     {
     /* Windows specific GUI event */
     case winglk_evtype_GuiInput:
-      sprintf(buffer,"Menu or toolbar item selected, identifier is %d\n",ev.val1);
+      sprintf(buffer,"Menu item selected, identifier is %d\n",ev.val1);
       glk_put_string(buffer);
       if (ev.val1 == ID_MENUITEM2)
       {
