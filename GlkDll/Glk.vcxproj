@@ -140,7 +140,6 @@
   <ItemGroup>
     <None Include="Glk.def" />
     <None Include="res\Glk.rc2" />
-    <None Include="res\hand.cur" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Libraries\jpeg\jcomapi.c">

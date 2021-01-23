@@ -47,9 +47,6 @@
     <None Include="res\Glk.rc2">
       <Filter>Windows Glk\Resource Files</Filter>
     </None>
-    <None Include="res\hand.cur">
-      <Filter>Windows Glk\Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GlkDialogs.cpp">

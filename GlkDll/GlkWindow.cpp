@@ -796,10 +796,7 @@ BOOL CWinGlkWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
         // Is there a hyperlink under the point?
         if (GetLinkAtPoint(MousePos) != 0)
         {
-          HCURSOR hand = ::LoadCursor(0,IDC_HAND);
-          if (hand == 0)
-            hand = ::LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_LINK_HAND));
-          ::SetCursor(hand);
+          ::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
           return 1;
         }
       }
