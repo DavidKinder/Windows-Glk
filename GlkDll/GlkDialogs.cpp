@@ -18,8 +18,6 @@
 #include <math.h>
 #include <memory>
 
-extern "C" __declspec(dllimport) void ScaleGfx(COLORREF*, UINT, UINT, COLORREF*, UINT, UINT);
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -1012,11 +1010,11 @@ BOOL AboutGameDialog::OnInitDialog()
   m_dpi = DPI::getWindowDPI(this);
 
   // Change the window icon
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   if (GetParent() == NULL)
-    SetIcon(((CGlkApp*)AfxGetApp())->GetIcon(),TRUE);
+    SetIcon(pApp->GetIcon(),TRUE);
 
   CWaitCursor wc;
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   const CGlkApp::GameInfo& GameInfo = pApp->GetGameInfo();
 
   // Initialize the rich edit text control
@@ -1098,7 +1096,7 @@ BOOL AboutGameDialog::OnInitDialog()
 
     DWORD Tick1 = ::GetTickCount();
 
-    ScaleGfx((COLORREF*)coverGfx->m_pPixels,
+    CGlkApp::ScaleGfx((COLORREF*)coverGfx->m_pPixels,
       coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
       m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());
 
@@ -1186,7 +1184,7 @@ LRESULT AboutGameDialog::OnDpiChanged(WPARAM wparam, LPARAM)
           if (m_CoverBitmap.CreateBitmap(dc,m_CoverRect.Width(),m_CoverRect.Height()))
           {
             m_CoverBitmap.FillSolid(::GetSysColor(COLOR_3DFACE));
-            ScaleGfx((COLORREF*)coverGfx->m_pPixels,
+            CGlkApp::ScaleGfx((COLORREF*)coverGfx->m_pPixels,
               coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
               m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());
           }

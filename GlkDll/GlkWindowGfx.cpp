@@ -16,8 +16,6 @@
 #include <math.h>
 #include <string.h>
 
-extern "C" __declspec(dllimport) void ScaleGfx(COLORREF*, UINT, UINT, COLORREF*, UINT, UINT);
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -206,7 +204,7 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
 
           // Draw the graphic into the temporary DIBSection
           ppvBits = DibSection.GetBits();
-          ScaleGfx((COLORREF*)pGraphic->m_pPixels,
+          CGlkApp::ScaleGfx((COLORREF*)pGraphic->m_pPixels,
             pGraphic->m_pHeader->biWidth,
             abs(pGraphic->m_pHeader->biHeight),
             ppvBits,iWidth,iHeight);

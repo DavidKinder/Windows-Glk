@@ -18,8 +18,6 @@
 #include <math.h>
 #include <string.h>
 
-extern "C" __declspec(dllimport) void ScaleGfx(COLORREF*, UINT, UINT, COLORREF*, UINT, UINT);
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -1303,7 +1301,7 @@ void CWinGlkWndTextBuffer::CPaintInfo::DrawGraphic(CWinGlkGraphic* pGraphic, int
   if (bScale)
   {
     // Copy and stretch the graphic into the temporary DIBSection
-    ScaleGfx((COLORREF*)pGraphic->m_pPixels,
+    CGlkApp::ScaleGfx((COLORREF*)pGraphic->m_pPixels,
       pGraphic->m_pHeader->biWidth,
       abs(pGraphic->m_pHeader->biHeight),
       DibSection.GetBits(),

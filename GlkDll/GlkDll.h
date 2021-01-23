@@ -176,6 +176,9 @@ public:
   char* DebugInput(bool wait);
   void DebugToFront(void);
 
+  static void ScaleGfx(COLORREF* srcImage, UINT srcWidth, UINT srcHeight,
+    COLORREF* destImage, UINT destWidth, UINT destHeight);
+
 protected:
   CString FileName(LPCSTR pszPrefix, int iIndex, LPCSTR pszSuffix);
   void DeleteOldTempFiles(void);

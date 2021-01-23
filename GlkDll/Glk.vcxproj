@@ -1007,8 +1007,8 @@
     <ClCompile Include="..\..\..\Libraries\mfc\DpiFunctions.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\DSoundEngine.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\ImagePNG.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\MenuBar.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\TextOutput.cpp" />
@@ -1113,8 +1113,8 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="GlkDll.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="GlkFileRef.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
