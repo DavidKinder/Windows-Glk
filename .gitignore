@@ -5,10 +5,12 @@ Floo/
 Git/
 GlkDll/Debug/
 GlkDll/Release/
-Glulxe/
+Glulxe/Glulx Files/
+Glulxe/libxml2/
 Scare/
 Glk.txt
 Glulx.txt
 *.user
+*.chm
 .vs
 
