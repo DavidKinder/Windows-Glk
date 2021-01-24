@@ -279,9 +279,10 @@ public:
 
   CWinGlkStyle* GetStyleFromWindow(int iStyle);
 
-  virtual CString GetFontName(void) = 0;
+  virtual CString GetFontName(void) const = 0;
   virtual void SetFontStyles(LOGFONT& Font) = 0;
-  virtual int GetStyleFontSize(void) = 0;
+  virtual int GetStyleFontSize(void) const = 0;
+  virtual bool UseFontSubstitution(void) const = 0;
 
   BOOL TextOut(int x, int y, LPCSTR lpszString, int nCount);
   CSize GetTextExtent(LPCSTR lpszString, int nCount) const;

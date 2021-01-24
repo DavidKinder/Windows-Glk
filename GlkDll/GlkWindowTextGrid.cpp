@@ -673,7 +673,7 @@ CWinGlkGridDC::CWinGlkGridDC(CWinGlkWnd* pWnd, int iSize) : CWinGlkDC(pWnd)
   m_iSize = iSize;
 }
 
-CString CWinGlkGridDC::GetFontName(void)
+CString CWinGlkGridDC::GetFontName(void) const
 {
   return ((CGlkApp*)AfxGetApp())->GetFixedFontName();
 }
@@ -682,7 +682,12 @@ void CWinGlkGridDC::SetFontStyles(LOGFONT& Font)
 {
 }
 
-int CWinGlkGridDC::GetStyleFontSize(void)
+int CWinGlkGridDC::GetStyleFontSize(void) const
 {
   return m_iSize;
+}
+
+bool CWinGlkGridDC::UseFontSubstitution(void) const
+{
+  return false;
 }

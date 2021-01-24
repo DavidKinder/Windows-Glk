@@ -1329,15 +1329,20 @@ BOOL CWinGlkDC::TextOut(int x, int y, LPCSTR lpszString, int nCount)
 CSize CWinGlkDC::GetTextExtent(LPCSTR lpszString, int nCount) const
 {
   SIZE size;
-  ::GetTextExtentPoint32(m_hAttribDC,lpszString,nCount,&size);
+  ::GetTextExtentPoint32(m_hDC,lpszString,nCount,&size);
   return size;
 }
 
 BOOL CWinGlkDC::TextOut(int x, int y, LPCWSTR lpszString, int nCount)
 {
-  ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
-    TextOut(m_hDC,x,y,lpszString,nCount);
-  return TRUE;
+  if (UseFontSubstitution())
+  {
+    ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
+      TextOut(m_hDC,x,y,lpszString,nCount);
+    return TRUE;
+  }
+  else
+    return ::TextOutW(m_hDC,x,y,lpszString,nCount);
 }
 
 BOOL CWinGlkDC::TextOut(int x, int y, const CStringW& str)
@@ -1347,8 +1352,17 @@ BOOL CWinGlkDC::TextOut(int x, int y, const CStringW& str)
 
 CSize CWinGlkDC::GetTextExtent(LPCWSTR lpszString, int nCount) const
 {
-  return ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
-    GetTextExtent(m_hDC,lpszString,nCount);
+  if (UseFontSubstitution())
+  {
+    return ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
+      GetTextExtent(m_hDC,lpszString,nCount);
+  }
+  else
+  {
+    SIZE size;
+    ::GetTextExtentPoint32W(m_hDC,lpszString,nCount,&size);
+    return size;
+  }
 }
 
 CSize CWinGlkDC::GetTextExtent(const CStringW& str) const

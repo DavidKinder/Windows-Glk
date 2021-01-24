@@ -287,9 +287,10 @@ public:
   CWinGlkBufferDC(CWinGlkWnd* pWnd) : CWinGlkDC(pWnd) {}
   virtual ~CWinGlkBufferDC() {}
 
-  virtual CString GetFontName(void);
+  virtual CString GetFontName(void) const;
   virtual void SetFontStyles(LOGFONT& Font);
-  virtual int GetStyleFontSize(void);
+  virtual int GetStyleFontSize(void) const;
+  virtual bool UseFontSubstitution(void) const;
 };
 
 #endif // WINGLK_WINDOW_TEXTBUFFER_H_

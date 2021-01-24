@@ -2496,7 +2496,7 @@ CWinGlkWndTextBuffer::CHyperlink::CHyperlink() : CRect(0,0,0,0)
 // Device context class
 /////////////////////////////////////////////////////////////////////////////
 
-CString CWinGlkBufferDC::GetFontName(void)
+CString CWinGlkBufferDC::GetFontName(void) const
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   return m_Style.m_Proportional ?
@@ -2513,7 +2513,12 @@ void CWinGlkBufferDC::SetFontStyles(LOGFONT& Font)
     Font.lfItalic = TRUE;
 }
 
-int CWinGlkBufferDC::GetStyleFontSize(void)
+int CWinGlkBufferDC::GetStyleFontSize(void) const
 {
   return m_Style.m_Size;
+}
+
+bool CWinGlkBufferDC::UseFontSubstitution(void) const
+{
+  return m_Style.m_Proportional;
 }
