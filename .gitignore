@@ -5,6 +5,9 @@ Floo/
 Git/
 GlkDll/Debug/
 GlkDll/Release/
+GlkDll/GlkEspañol/Release/
+GlkDll/GlkItaliano/Release/
+GlkDll/GlkRussian/Release/
 Glulxe/Glulx Files/
 Glulxe/libxml2/
 Scare/
@@ -13,4 +16,3 @@ Glulx.txt
 *.user
 *.chm
 .vs
-

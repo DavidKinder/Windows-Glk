@@ -4,6 +4,12 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glk", "Glk.vcxproj", "{3FBBA919-4F6F-4342-A04C-DECBF8ABBE67}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlkEspañol", "GlkEspañol\GlkEspañol.vcxproj", "{806E40C5-C75B-4C31-99DF-AD28C1985343}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlkItaliano", "GlkItaliano\GlkItaliano.vcxproj", "{BCF82127-5FA7-46F6-9AF0-EFE0EFF5EE48}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlkRussian", "GlkRussian\GlkRussian.vcxproj", "{E5DCED13-0494-45A2-8EAC-9143B8FAA735}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -14,6 +20,15 @@ Global
 		{3FBBA919-4F6F-4342-A04C-DECBF8ABBE67}.Debug|x86.Build.0 = Debug|Win32
 		{3FBBA919-4F6F-4342-A04C-DECBF8ABBE67}.Release|x86.ActiveCfg = Release|Win32
 		{3FBBA919-4F6F-4342-A04C-DECBF8ABBE67}.Release|x86.Build.0 = Release|Win32
+		{806E40C5-C75B-4C31-99DF-AD28C1985343}.Debug|x86.ActiveCfg = Debug|Win32
+		{806E40C5-C75B-4C31-99DF-AD28C1985343}.Release|x86.ActiveCfg = Release|Win32
+		{806E40C5-C75B-4C31-99DF-AD28C1985343}.Release|x86.Build.0 = Release|Win32
+		{BCF82127-5FA7-46F6-9AF0-EFE0EFF5EE48}.Debug|x86.ActiveCfg = Debug|Win32
+		{BCF82127-5FA7-46F6-9AF0-EFE0EFF5EE48}.Release|x86.ActiveCfg = Release|Win32
+		{BCF82127-5FA7-46F6-9AF0-EFE0EFF5EE48}.Release|x86.Build.0 = Release|Win32
+		{E5DCED13-0494-45A2-8EAC-9143B8FAA735}.Debug|x86.ActiveCfg = Debug|Win32
+		{E5DCED13-0494-45A2-8EAC-9143B8FAA735}.Release|x86.ActiveCfg = Release|Win32
+		{E5DCED13-0494-45A2-8EAC-9143B8FAA735}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
