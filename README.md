@@ -71,4 +71,4 @@ Download the latest stable versions of libogg and libvorbis from https://xiph.or
 
 ### Compiling the project
 
-Start Visual Studio, open the solution "\<root>/Adv/Glk/GlkDll/Glk.sln", then build and run the "Glk" project.
+Start Visual Studio, open the solution "\<root>/Adv/Glk/GlkDll/Glk.sln", then build the "Glk" project.
