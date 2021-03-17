@@ -36,7 +36,7 @@
     <Filter Include="Libraries\MODPlug">
       <UniqueIdentifier>{3108ba93-b93a-42bf-be49-7850b54c491d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\MFC Extensions">
+    <Filter Include="Libraries\MFC">
       <UniqueIdentifier>{7b776732-c046-4651-a4e6-cfdf13e667c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -428,28 +428,31 @@
       <Filter>Libraries\MODPlug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\ColourButton.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\DSoundEngine.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\Dialogs.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\Dib.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\DpiFunctions.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\ImagePNG.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\MenuBar.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\TextOutput.cpp">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\ScaleGfx.cpp">
+      <Filter>Libraries\MFC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,28 +544,31 @@
       <Filter>Generic Glk</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\ColourButton.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\DSoundEngine.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\Dialogs.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\Dib.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\DpiFunctions.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\ImagePNG.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\MenuBar.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\TextOutput.h">
-      <Filter>Libraries\MFC Extensions</Filter>
+      <Filter>Libraries\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\ScaleGfx.h">
+      <Filter>Libraries\MFC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

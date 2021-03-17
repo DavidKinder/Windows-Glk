@@ -14,6 +14,7 @@
 #include "GlkWindowTextBuffer.h"
 #include "GlkWindowTextGrid.h"
 #include "DpiFunctions.h"
+#include "ScaleGfx.h"
 
 #include <math.h>
 #include <memory>
@@ -1096,7 +1097,7 @@ BOOL AboutGameDialog::OnInitDialog()
 
     DWORD Tick1 = ::GetTickCount();
 
-    CGlkApp::ScaleGfx((COLORREF*)coverGfx->m_pPixels,
+    ScaleGfx((COLORREF*)coverGfx->m_pPixels,
       coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
       m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());
 
@@ -1184,7 +1185,7 @@ LRESULT AboutGameDialog::OnDpiChanged(WPARAM wparam, LPARAM)
           if (m_CoverBitmap.CreateBitmap(dc,m_CoverRect.Width(),m_CoverRect.Height()))
           {
             m_CoverBitmap.FillSolid(::GetSysColor(COLOR_3DFACE));
-            CGlkApp::ScaleGfx((COLORREF*)coverGfx->m_pPixels,
+            ScaleGfx((COLORREF*)coverGfx->m_pPixels,
               coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
               m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());
           }

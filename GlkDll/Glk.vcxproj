@@ -68,10 +68,10 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>winmm.lib;dsound.lib;scalegfx.lib;nafxcwd.lib;libcmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;dsound.lib;nafxcwd.lib;libcmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\Executables\Debug/Glk.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>../../../Libraries/ScaleGfx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\Glk.def</ModuleDefinitionFile>
       <DelayLoadDLLs>oleacc.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,10 +116,10 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>winmm.lib;dsound.lib;scalegfx.lib;nafxcw.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;dsound.lib;nafxcw.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\Executables\Release/Glk.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>../../../Libraries/ScaleGfx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\Glk.def</ModuleDefinitionFile>
       <DelayLoadDLLs>oleacc.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <SubSystem>Windows</SubSystem>
@@ -1008,10 +1008,11 @@
     <ClCompile Include="..\..\..\Libraries\mfc\DpiFunctions.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\DSoundEngine.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\ImagePNG.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Libraries\libpng;..\..\..\Libraries\zlib</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\mfc\MenuBar.cpp" />
+    <ClCompile Include="..\..\..\Libraries\mfc\ScaleGfx.cpp" />
     <ClCompile Include="..\..\..\Libraries\mfc\TextOutput.cpp" />
     <ClCompile Include="..\..\..\Libraries\zlib\adler32.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\zlib</AdditionalIncludeDirectories>
@@ -1114,8 +1115,8 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="GlkDll.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\ScaleGfx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="GlkFileRef.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
@@ -1213,6 +1214,7 @@
     <ClInclude Include="..\..\..\Libraries\mfc\DSoundEngine.h" />
     <ClInclude Include="..\..\..\Libraries\mfc\ImagePNG.h" />
     <ClInclude Include="..\..\..\Libraries\mfc\MenuBar.h" />
+    <ClInclude Include="..\..\..\Libraries\mfc\ScaleGfx.h" />
     <ClInclude Include="..\..\..\Libraries\mfc\TextOutput.h" />
     <ClInclude Include="..\Include\gi_blorb.h" />
     <ClInclude Include="..\Include\gi_debug.h" />

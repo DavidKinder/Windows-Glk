@@ -14,6 +14,7 @@
 #include "GlkStream.h"
 #include "GlkWindowTextBuffer.h"
 #include "WinGlk.h"
+#include "ScaleGfx.h"
 
 #include <math.h>
 #include <string.h>
@@ -1301,7 +1302,7 @@ void CWinGlkWndTextBuffer::CPaintInfo::DrawGraphic(CWinGlkGraphic* pGraphic, int
   if (bScale)
   {
     // Copy and stretch the graphic into the temporary DIBSection
-    CGlkApp::ScaleGfx((COLORREF*)pGraphic->m_pPixels,
+    ScaleGfx((COLORREF*)pGraphic->m_pPixels,
       pGraphic->m_pHeader->biWidth,
       abs(pGraphic->m_pHeader->biHeight),
       DibSection.GetBits(),

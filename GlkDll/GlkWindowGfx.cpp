@@ -12,6 +12,7 @@
 #include "GlkMainWnd.h"
 #include "GlkStream.h"
 #include "GlkWindowGfx.h"
+#include "ScaleGfx.h"
 
 #include <math.h>
 #include <string.h>
@@ -204,7 +205,7 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
 
           // Draw the graphic into the temporary DIBSection
           ppvBits = DibSection.GetBits();
-          CGlkApp::ScaleGfx((COLORREF*)pGraphic->m_pPixels,
+          ScaleGfx((COLORREF*)pGraphic->m_pPixels,
             pGraphic->m_pHeader->biWidth,
             abs(pGraphic->m_pHeader->biHeight),
             ppvBits,iWidth,iHeight);
