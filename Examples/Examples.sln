@@ -5,19 +5,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinGlkStart", "WinGlkStart.vcxproj", "{877421F7-ABFA-4C2E-801A-5881635552B8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Model", "Model.vcxproj", "{1BE2A7F3-9106-47F9-B538-10FE00707198}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C94F315A-0570-4F7A-836C-A0E464EBCE92} = {C94F315A-0570-4F7A-836C-A0E464EBCE92}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Multiwin", "Multiwin.vcxproj", "{C94F315A-0570-4F7A-836C-A0E464EBCE92}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A5AE3299-4FC8-4350-A22A-ADB0FE199F72} = {A5AE3299-4FC8-4350-A22A-ADB0FE199F72}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestText", "TestText.vcxproj", "{A5AE3299-4FC8-4350-A22A-ADB0FE199F72}"
-	ProjectSection(ProjectDependencies) = postProject
-		{877421F7-ABFA-4C2E-801A-5881635552B8} = {877421F7-ABFA-4C2E-801A-5881635552B8}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
