@@ -5,9 +5,11 @@ LIBS = -L. -lglk
 OUTPUT = ../Executables/Release/Glulxe
 
 GLULXECFLAGS = -I../Include -DFLOAT_COMPILE_SAFER_POWF
-GLULXESRCS = accel.c debugger.c exec.c files.c float.c funcs.c gestalt.c \
-	glkop.c heap.c main.c operand.c osdepend.c profile.c search.c \
-	serial.c string.c vm.c winstart.c
+GLULXESRCS = glulxe/accel.c glulxe/debugger.c glulxe/exec.c glulxe/files.c \
+	glulxe/float.c glulxe/funcs.c glulxe/gestalt.c glulxe/glkop.c \
+	glulxe/heap.c glulxe/main.c glulxe/operand.c glulxe/osdepend.c \
+	glulxe/profile.c glulxe/search.c glulxe/serial.c glulxe/string.c \
+	glulxe/vm.c glulxe/winstart.c
 LIBXMLSRCS = libxml2/src/buf.c libxml2/src/chvalid.c libxml2/src/dict.c \
 	libxml2/src/encoding.c libxml2/src/entities.c libxml2/src/error.c \
 	libxml2/src/globals.c libxml2/src/hash.c libxml2/src/list.c \
@@ -42,4 +44,3 @@ chm:
 
 clean:
 	del *.o *.a
-
