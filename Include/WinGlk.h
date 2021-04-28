@@ -12,8 +12,13 @@
 extern "C" {
 #endif
 
+#define WINGLK_BUILD_NUMBER 151
+
 /* Function to be implemented in the Glk program. */
 int winglk_startup_code(const char* cmdline);
+
+/* Initialize Windows Glk, or fail with an error message. */
+int InitGlk(unsigned int version);
 
 /* Windows Glk specific functions. */
 strid_t winglk_stream_open_resource(const char* name, const char* type, glui32 rock);
