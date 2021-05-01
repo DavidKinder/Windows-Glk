@@ -58,7 +58,6 @@ public:
   virtual void StartLinkEvent(void);
   virtual void EndLinkEvent(void);
   virtual void InputChar(unsigned long InputChar);
-  virtual void TestLineInput(int iLineEnd);
 
   virtual bool MouseClick(CPoint& Click);
   virtual unsigned int GetLinkAtPoint(const CPoint& Point);
@@ -83,6 +82,8 @@ public:
 protected:
   //{{AFX_MSG(CWinGlkWndTextBuffer)
   afx_msg void OnPaint();
+  afx_msg LRESULT OnSpeedTestLine(WPARAM, LPARAM);
+  afx_msg LRESULT OnSpeedTestChar(WPARAM, LPARAM);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 

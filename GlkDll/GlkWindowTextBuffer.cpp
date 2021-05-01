@@ -12,6 +12,7 @@
 #include "GlkDll.h"
 #include "GlkMainWnd.h"
 #include "GlkStream.h"
+#include "GlkTime.h"
 #include "GlkWindowTextBuffer.h"
 #include "WinGlk.h"
 #include "ScaleGfx.h"
@@ -34,6 +35,8 @@ IMPLEMENT_DYNAMIC(CWinGlkWndTextBuffer,CWinGlkWnd);
 BEGIN_MESSAGE_MAP(CWinGlkWndTextBuffer, CWinGlkWnd)
   //{{AFX_MSG_MAP(CWinGlkWndTextBuffer)
   ON_WM_PAINT()
+  ON_MESSAGE(WM_SPEEDTEST_LINE, OnSpeedTestLine)
+  ON_MESSAGE(WM_SPEEDTEST_CHAR, OnSpeedTestChar)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -319,14 +322,6 @@ void CWinGlkWndTextBuffer::InputChar(unsigned long InputChar)
     }
   }
   CWinGlkWnd::InputChar(InputChar);
-}
-
-void CWinGlkWndTextBuffer::TestLineInput(int iLineEnd)
-{
-  CWinGlkWnd::TestLineInput(iLineEnd);
-  m_bMorePending = false;
-  for (int i = 0; i < m_TextBuffer.GetSize(); i++)
-    m_TextBuffer[i]->SetLastShown(1);
 }
 
 bool CWinGlkWndTextBuffer::MouseClick(CPoint& Click)
@@ -1103,6 +1098,50 @@ void CWinGlkWndTextBuffer::ClearStyleHint(int iStyle, int iHint)
       break;
     }
   }
+}
+
+LRESULT CWinGlkWndTextBuffer::OnSpeedTestLine(WPARAM wparam, LPARAM lparam)
+{
+  static CStdioFile InputFile;
+  static DWORD StartTime;
+  if (InputFile.m_pStream == NULL)
+  {
+    InputFile.Open("TestInput.txt",CFile::modeRead|CFile::typeText);
+    StartTime = ::GetTickCount();
+  }
+  if (InputFile.m_pStream != NULL)
+  {
+    CString InputLine;
+    if (InputFile.ReadString(InputLine))
+    {
+      InputLine.Trim();
+      int InputLen = min(InputLine.GetLength(),m_iLineLength);
+      memcpy(m_pLineBuffer,InputLine,InputLen);
+      m_iLineEnd = InputLen;
+
+      m_bMorePending = false;
+      for (int i = 0; i < m_TextBuffer.GetSize(); i++)
+        m_TextBuffer[i]->SetLastShown(1);
+
+      ((CGlkApp*)AfxGetApp())->AddEvent(evtype_LineInput,(winid_t)this,InputLen,0);
+      EndLineEvent(NULL);
+    }
+    else
+    {
+      CString TestMsg;
+      TestMsg.Format("Time since first input is %.1lfs",0.001*TickCountDiff(::GetTickCount(),StartTime));
+      AfxMessageBox(TestMsg);
+      glk_exit();
+    }
+  }
+  return 0;
+}
+
+LRESULT CWinGlkWndTextBuffer::OnSpeedTestChar(WPARAM wparam, LPARAM lparam)
+{
+  ((CGlkApp*)AfxGetApp())->AddEvent(evtype_CharInput,(winid_t)this,' ',0);
+  EndCharEvent();
+  return 0;
 }
 
 CWinGlkStyles CWinGlkWndTextBuffer::m_DefaultTextBufferStyles;

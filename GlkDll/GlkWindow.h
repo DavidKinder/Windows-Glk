@@ -21,6 +21,9 @@ extern "C"
 
 #include <set>
 
+#define WM_SPEEDTEST_LINE WM_APP+200
+#define WM_SPEEDTEST_CHAR WM_APP+201
+
 /////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 /////////////////////////////////////////////////////////////////////////////
@@ -91,7 +94,6 @@ public:
   virtual void EndLinkEvent(void) {}
   virtual void InputChar(unsigned long InputChar);
   virtual bool AllowMoreLineInput(void) { return true; }
-  virtual void TestLineInput(int iLineEnd) { m_iLineEnd = iLineEnd; }
 
   virtual void StartMouseEvent(void) {}
   virtual void EndMouseEvent(void) { m_bMouseActive = false; }

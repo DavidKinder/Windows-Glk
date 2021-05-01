@@ -2329,34 +2329,7 @@ extern "C" void glk_request_line_event(winid_t win, char *buf, glui32 maxlen, gl
     invalidate = true;
 
 #ifdef WINGLK_SPEED_TEST
-    static CStdioFile InputFile;
-    static DWORD StartTime;
-    if (InputFile.m_pStream == NULL)
-    {
-      InputFile.Open("TestInput.txt",CFile::modeRead|CFile::typeText);
-      StartTime = ::GetTickCount();
-    }
-    if (InputFile.m_pStream != NULL)
-    {
-      CString InputLine;
-      if (InputFile.ReadString(InputLine))
-      {
-        InputLine.Trim();
-        int InputLen = min(InputLine.GetLength(),(int)maxlen);
-        memcpy(buf,InputLine,InputLen);
-        theApp.AddEvent(evtype_LineInput,win,InputLen,0);
-        ((CWinGlkWnd*)win)->TestLineInput(InputLen);
-        ((CWinGlkWnd*)win)->EndLineEvent(NULL);
-        theApp.MessagePump(FALSE);
-      }
-      else
-      {
-        CString TestMsg;
-        TestMsg.Format("Time since first input is %.1lfs",0.001*TickCountDiff(::GetTickCount(),StartTime));
-        AfxMessageBox(TestMsg);
-        glk_exit();
-      }
-    }
+    ((CWinGlkWnd*)win)->PostMessage(WM_SPEEDTEST_LINE);
 #endif
   }
 }
@@ -2371,9 +2344,7 @@ extern "C" void glk_request_char_event(winid_t win)
     invalidate = true;
 
 #ifdef WINGLK_SPEED_TEST
-    theApp.AddEvent(evtype_CharInput,win,' ',0);
-    ((CWinGlkWnd*)win)->EndCharEvent();
-    theApp.MessagePump(FALSE);
+    ((CWinGlkWnd*)win)->PostMessage(WM_SPEEDTEST_CHAR);
 #endif
   }
 }
