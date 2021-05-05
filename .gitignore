@@ -8,11 +8,8 @@ GlkDll/Release/
 GlkDll/GlkEspañol/Release/
 GlkDll/GlkItaliano/Release/
 GlkDll/GlkRussian/Release/
-Glulxe/Glulx Files/
-Glulxe/libxml2/
 Scare/
 Glk.txt
-Glulx.txt
 *.user
 *.chm
 .vs

@@ -13,18 +13,6 @@ pushd \Programs
 "%ProgramFiles(x86)%\Zip\zip" \Temp\WindowsGlkSrc.zip Libraries\ScaleGfx\*.h
 popd
 
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip Executables\Release\Glulxe.*
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip "Executables\Release\Glulxe (no memory checks).exe"
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\WinGlulxe.zip Executables\Release\Glk*.dll
-
-"%ProgramFiles(x86)%\Zip\zip" -r \Temp\WinGlulxeSrc.zip Glulxe\help\* Glulxe\res\* Glulxe\msvc\*
-"%ProgramFiles(x86)%\Zip\zip" -r \Temp\WinGlulxeSrc.zip Installer\*
-"%ProgramFiles(x86)%\Zip\zip" \Temp\WinGlulxeSrc.zip Glulxe\resource.h
-"%ProgramFiles(x86)%\Zip\zip" \Temp\WinGlulxeSrc.zip Glulxe\osdepend.c
-"%ProgramFiles(x86)%\Zip\zip" \Temp\WinGlulxeSrc.zip Glulxe\winstart.c
-"%ProgramFiles(x86)%\Zip\zip" \Temp\WinGlulxeSrc.zip Glulxe\Glulxe.rc
-"%ProgramFiles(x86)%\Zip\zip" \Temp\WinGlulxeSrc.zip Glulxe\Makefile.win
-
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Git.exe
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Git.chm
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Glk*.dll
@@ -40,9 +28,4 @@ popd
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\scare_win.zip Scare\COPYING Scare\doc\RUNNING
 pushd Scare
 "%ProgramFiles(x86)%\Zip\zip" -r \Temp\scare_win.zip win32\*
-popd
-
-pushd Installer
-"%ProgramFiles(x86)%\NSIS\makensis" WinGlulxe.nsi
-move *.exe \Temp
 popd
