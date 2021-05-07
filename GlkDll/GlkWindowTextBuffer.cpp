@@ -1100,10 +1100,15 @@ void CWinGlkWndTextBuffer::ClearStyleHint(int iStyle, int iHint)
   }
 }
 
+static bool TestDone = FALSE;
+
 LRESULT CWinGlkWndTextBuffer::OnSpeedTestLine(WPARAM wparam, LPARAM lparam)
 {
   static CStdioFile InputFile;
   static DWORD StartTime;
+
+  if (TestDone)
+    return 0;
   if (InputFile.m_pStream == NULL)
   {
     InputFile.Open("TestInput.txt",CFile::modeRead|CFile::typeText);
@@ -1131,7 +1136,7 @@ LRESULT CWinGlkWndTextBuffer::OnSpeedTestLine(WPARAM wparam, LPARAM lparam)
       CString TestMsg;
       TestMsg.Format("Time since first input is %.1lfs",0.001*TickCountDiff(::GetTickCount(),StartTime));
       AfxMessageBox(TestMsg);
-      glk_exit();
+      TestDone = true;
     }
   }
   return 0;
@@ -1139,6 +1144,9 @@ LRESULT CWinGlkWndTextBuffer::OnSpeedTestLine(WPARAM wparam, LPARAM lparam)
 
 LRESULT CWinGlkWndTextBuffer::OnSpeedTestChar(WPARAM wparam, LPARAM lparam)
 {
+  if (TestDone)
+    return 0;
+
   ((CGlkApp*)AfxGetApp())->AddEvent(evtype_CharInput,(winid_t)this,' ',0);
   EndCharEvent();
   return 0;
