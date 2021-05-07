@@ -5,8 +5,9 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <stdlib.h>
 
-#include "Glk.h"
+#include "glk.h"
 #include "WinGlk.h"
 
 /* Entry point for all Glk applications */
