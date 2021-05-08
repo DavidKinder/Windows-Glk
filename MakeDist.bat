@@ -13,15 +13,6 @@ pushd \Programs
 "%ProgramFiles(x86)%\Zip\zip" \Temp\WindowsGlkSrc.zip Libraries\ScaleGfx\*.h
 popd
 
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Git.exe
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Git.chm
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Executables\Release\Glk*.dll
-"%ProgramFiles(x86)%\Zip\zip" -j \Temp\wingit.zip Git\README.txt
-
-"%ProgramFiles(x86)%\Zip\zip" \Temp\wingit-src.zip Git\git_windows.c
-"%ProgramFiles(x86)%\Zip\zip" \Temp\wingit-src.zip Git\Makefile.win
-"%ProgramFiles(x86)%\Zip\zip" -r \Temp\wingit-src.zip Git\win\* Git\help\*
-
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\scare_win.zip Executables\Release\Scare.exe
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\scare_win.zip Executables\Release\Glk*.dll
 "%ProgramFiles(x86)%\Zip\zip" -j \Temp\scare_win.zip Scare\README Scare\ChangeLog
