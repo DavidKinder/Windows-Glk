@@ -59,7 +59,7 @@
       <PrecompiledHeader />
       <PrecompiledHeaderOutputFile>.\Debug/Model.pch</PrecompiledHeaderOutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
