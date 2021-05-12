@@ -1582,8 +1582,8 @@ static void init_char_tables(void)
 {
   for (int i = 0; i < 256; i++)
   {
-    char_toupper_table[i] = i;
-    char_tolower_table[i] = i;
+    char_toupper_table[i] = (unsigned char)i;
+    char_tolower_table[i] = (unsigned char)i;
   }
 
   int c = 0;
@@ -1597,8 +1597,8 @@ static void init_char_tables(void)
       c = 0;
     if (c != 0)
     {
-      char_tolower_table[i] = c;
-      char_toupper_table[c] = i;
+      char_tolower_table[i] = (unsigned char)c;
+      char_toupper_table[c] = (unsigned char)i;
     }
   }
 }
