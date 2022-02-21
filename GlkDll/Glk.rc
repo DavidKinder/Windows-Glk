@@ -64,8 +64,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,7,5,51
- PRODUCTVERSION 0,7,5,51
+ FILEVERSION 0,7,5,52
+ PRODUCTVERSION 0,7,5,52
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -82,12 +82,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "David Kinder"
             VALUE "FileDescription", "Glk Library"
-            VALUE "FileVersion", "0, 7, 5, 51"
+            VALUE "FileVersion", "0, 7, 5, 52"
             VALUE "InternalName", "Glk"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2021 David Kinder"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2022 David Kinder"
             VALUE "OriginalFilename", "Glk.dll"
             VALUE "ProductName", "Glk Library"
-            VALUE "ProductVersion", "0, 7, 5, 51"
+            VALUE "ProductVersion", "0, 7, 5, 52"
         END
     END
     BLOCK "VarFileInfo"
