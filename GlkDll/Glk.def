@@ -213,3 +213,7 @@ garglk_set_zcolors                    @163
 garglk_set_zcolors_stream             @164
 garglk_set_reversevideo               @165
 garglk_set_reversevideo_stream        @166
+
+; Standard Blorb functions
+giblorb_unload_chunk                  @167
+giblorb_load_image_info               @168
