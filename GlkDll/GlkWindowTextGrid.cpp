@@ -43,6 +43,7 @@ CWinGlkWndTextGrid::CWinGlkWndTextGrid(glui32 Rock) : CWinGlkWnd(Rock)
   m_iCurrentStyle = style_Normal;
   m_iCurrentLink = 0;
   m_Styles = m_DefaultTextGridStyles;
+  m_BackColour = zcolor_Default;
 }
 
 CWinGlkWndTextGrid::~CWinGlkWndTextGrid()
@@ -112,6 +113,7 @@ void CWinGlkWndTextGrid::ClearWindow(void)
 {
   m_iCursorX = 0;
   m_iCursorY = 0;
+  m_BackColour = m_CurrentColours.back;
 
   CTextColours defaultColours;
   for (int i = 0; i < m_TextGrid.GetSize(); i++)
@@ -438,7 +440,8 @@ void CWinGlkWndTextGrid::OnPaint(void)
   // Clear the window
   CWinGlkStyle* pNormal = GetStyle(style_Normal);
   dcMem.FillSolidRect(ClientArea,GetColour(
-    pNormal->m_ReverseColour ? pNormal->m_TextColour : pNormal->m_BackColour));
+    pNormal->m_ReverseColour ? pNormal->m_TextColour :
+      m_BackColour == zcolor_Default ? pNormal->m_BackColour : m_BackColour));
 
   // Draw the text
   int y = 0;

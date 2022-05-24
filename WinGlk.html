@@ -603,6 +603,10 @@ ModPlug by Olivier Lapicque.
 
 <ul>
 
+<li>If the text background colour is set by a call to <b>garglk_set_zcolors</b> or <b>garglk_set_zcolors_stream</b>
+for a text buffer or text grid window, and that window is then cleared by a call to <b>glk_window_clear</b>,
+that colour will become the background colour for the whole window.
+
 <li>The previously missing functions <b>giblorb_unload_chunk</b> and 
 <b>giblorb_load_image_info</b> are now exported from the DLL.
 

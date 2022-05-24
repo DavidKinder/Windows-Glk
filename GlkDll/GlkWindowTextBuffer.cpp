@@ -48,6 +48,7 @@ CWinGlkWndTextBuffer::CWinGlkWndTextBuffer(glui32 Rock) : CWinGlkWnd(Rock)
   m_iCurrentStyle = style_Normal;
   m_iCurrentLink = 0;
   m_Styles = m_DefaultTextBufferStyles;
+  m_BackColour = zcolor_Default;
   m_bCheckDeleteText = false;
   m_bMorePending = false;
   m_bNextEchoInput = true;
@@ -146,6 +147,8 @@ void CWinGlkWndTextBuffer::ClearWindow(void)
   for (int i = 0; i < m_TextBuffer.GetSize(); i++)
     delete m_TextBuffer[i];
   m_TextBuffer.RemoveAll();
+
+  m_BackColour = m_CurrentColours.back;
 }
 
 void CWinGlkWndTextBuffer::PutCharacter(glui32 c)
@@ -599,8 +602,8 @@ void CWinGlkWndTextBuffer::Paint(bool bMark)
   CBitmap* pbmpOld = dcMem.SelectObject(&bmp);
 
   // Clear the window
-  dcMem.FillSolidRect(ClientArea,
-    GetColour(GetStyle(style_Normal)->m_BackColour));
+  dcMem.FillSolidRect(ClientArea,GetColour(
+    m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour));
 
   // Format each paragraph
   CPaintInfo FormatInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,m_Hyperlinks);
@@ -917,7 +920,8 @@ template<class XCHAR> void CWinGlkWndTextBuffer::PaintInputBuffer(
     m_iLineY += extraH;
 
     COLORREF oldBack = dc.GetBkColor();
-    COLORREF newBack = GetColour(GetStyle(style_Normal)->m_BackColour);
+    COLORREF newBack = GetColour(
+      m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour);
     if (Info.m_iLeft+Info.m_iWidth < ClientArea.Width())
       dc.FillSolidRect(m_iLineX,m_iLineY,Info.m_iLeft+Info.m_iWidth-margin+1-m_iLineX,h,newBack);
     else

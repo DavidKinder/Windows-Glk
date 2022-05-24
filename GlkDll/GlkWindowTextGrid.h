@@ -126,6 +126,7 @@ protected:
   int m_iCurrentStyle;
   unsigned int m_iCurrentLink;
   CTextColours m_CurrentColours;
+  glui32 m_BackColour;
 
 public:
   static void SetStyleHint(int iStyle, int iHint, glsi32 Value);

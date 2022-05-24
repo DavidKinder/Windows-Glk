@@ -264,6 +264,7 @@ protected:
   int m_iCurrentStyle;
   unsigned int m_iCurrentLink;
   CTextColours m_CurrentColours;
+  glui32 m_BackColour;
   bool m_bCheckDeleteText;
   bool m_bMorePending;
   bool m_bNextEchoInput;
