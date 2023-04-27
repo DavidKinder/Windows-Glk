@@ -454,6 +454,9 @@
     <ClCompile Include="..\..\..\Libraries\mfc\ScaleGfx.cpp">
       <Filter>Libraries\MFC</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Libraries\mfc\DarkMode.cpp">
+      <Filter>Libraries\MFC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlkDialogs.h">
@@ -568,6 +571,9 @@
       <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Libraries\mfc\ScaleGfx.h">
+      <Filter>Libraries\MFC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\mfc\DarkMode.h">
       <Filter>Libraries\MFC</Filter>
     </ClInclude>
   </ItemGroup>
