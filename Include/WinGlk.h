@@ -38,6 +38,9 @@ void winglk_show_game_dialog(void);
 /* Windows Glk specific events. */
 #define winglk_evtype_GuiInput (0x80000000)
 
+/* Somewhat official Unix extensions. */
+const char *glkunix_fileref_get_filename(frefid_t fref);
+
 /* Unofficial Glk extensions. */
 void sglk_set_basename(char *s);
 

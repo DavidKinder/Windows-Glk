@@ -56,6 +56,7 @@ void print_list(void)
   glk_put_string("17. Unpause a Sound\n");
   glk_put_string("18. Change the Window Height\n");
   glk_put_string("19. Char Input from Graphics Window\n");
+  glk_put_string("20. Get File Name\n");
 }
 
 void line_input_margins()
@@ -601,6 +602,18 @@ void test_graphics_input()
   glk_window_fill_rect(gfx,0x00FF0000,0,0,32,32);
 }
 
+void test_get_filename()
+{
+  frefid_t fref = glk_fileref_create_by_prompt(fileusage_Data,filemode_Read,0);
+  if (fref != 0)
+  {
+    glk_put_string("\nSelected file: ");
+    glk_put_string((char*)glkunix_fileref_get_filename(fref));
+    glk_put_char('\n');
+    glk_fileref_destroy(fref);
+  }
+}
+
 void test(int number)
 {
   switch (number)
@@ -664,6 +677,9 @@ void test(int number)
     break;
   case 19:
     test_graphics_input();
+    break;
+  case 20:
+    test_get_filename();
     break;
   }
 }
