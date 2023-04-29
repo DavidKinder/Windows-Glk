@@ -48,7 +48,7 @@ CWinGlkWndTextBuffer::CWinGlkWndTextBuffer(glui32 Rock) : CWinGlkWnd(Rock)
   m_iCurrentStyle = style_Normal;
   m_iCurrentLink = 0;
   m_Styles = m_DefaultTextBufferStyles;
-  m_BackColour = zcolor_Default;
+  m_BackColour = (glui32)zcolor_Default;
   m_bCheckDeleteText = false;
   m_bMorePending = false;
   m_bNextEchoInput = true;
