@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define WINGLK_BUILD_NUMBER 152
+#define WINGLK_BUILD_NUMBER 153
 
 /* Function to be implemented in the Glk program. */
 int winglk_startup_code(const char* cmdline);
