@@ -318,7 +318,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   if (pApp->HasHelpFile() == false)
     m_toolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
 
-  m_settings = Settings(DPI::getWindowDPI(this));
+  m_settings = Settings(DPI::getWindowDPI(this),m_dark);
   m_toolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
 
   if (m_image.LoadResource(IDR_TOOLBAR))
