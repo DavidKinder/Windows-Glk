@@ -116,6 +116,11 @@ BOOL CGlkApp::InitInstance()
   m_strAppName.LoadString(IDS_STORY);
   m_strAppTitle.LoadString(IDS_STORY);
   m_strMenuName = "&Glk";
+
+  // Turn on dark mode for the application, if necessary
+  if (DarkMode::IsEnabled(GetRegistryPathForDarkMode()))
+    DarkMode::SetAppDarkMode();
+
   return CWinApp::InitInstance();
 }
 
@@ -339,6 +344,13 @@ void CGlkApp::LoadConfigFile(const char* pszConfigName)
     }
   }
   pDesktop->ReleaseDC(pDC);
+}
+
+CString CGlkApp::GetRegistryPathForDarkMode(void)
+{
+  CString path;
+  path.Format("Software\\Glk Applications\\%s",m_pszProfileName);
+  return path;
 }
 
 void CGlkApp::LoadInternationalResources(void)
@@ -3162,8 +3174,12 @@ giblorb_err_t giblorb_set_resource_map(strid_t file)
     pApp->LoadBabelMetadata();
     if (pApp->CheckGameId())
     {
-      AboutGameDialog Dialog(AfxGetMainWnd());
-      Dialog.DoModal();
+      DarkModeHiddenFrameWnd Frame;
+      if (Frame.Create(pApp->GetRegistryPathForDarkMode()))
+      {
+        AboutGameDialog Dialog(&Frame);
+        Dialog.DoModal();
+      }
     }
   }
 
@@ -3247,6 +3263,10 @@ extern "C" void winglk_app_set_name(const char* name)
 
     // Now the application name is known, the settings can be read
     pApp->ReadSettings();
+
+    // Turn on dark mode for the application, if necessary
+    if (DarkMode::IsEnabled(pApp->GetRegistryPathForDarkMode()))
+      DarkMode::SetAppDarkMode();
   }
 }
 

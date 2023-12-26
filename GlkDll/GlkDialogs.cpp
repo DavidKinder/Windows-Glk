@@ -53,6 +53,14 @@ CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, 
   m_dpi = 96;
 }
 
+void CScrollBackDlg::SetDarkMode(DarkMode* dark)
+{
+  BaseDialog::SetDarkMode(dark);
+
+  if (GetSafeHwnd() != 0)
+    m_RichEdit.SetDarkMode(dark,DarkMode::Back);
+}
+
 void CScrollBackDlg::DoDataExchange(CDataExchange* pDX)
 {
   BaseDialog::DoDataExchange(pDX);
@@ -82,6 +90,10 @@ BOOL CScrollBackDlg::OnInitDialog()
   // Subclass the text control
   if (m_RichEdit.SubclassDlgItem(IDC_TEXT,this) == FALSE)
     return FALSE;
+
+  // Subclass the buttons
+  m_CopyButton.SubclassDlgItem(IDC_COPY,this);
+  m_CloseButton.SubclassDlgItem(IDOK,this);
 
   // Get the relative position of the top of the text control
   CRect size;
@@ -188,7 +200,7 @@ static void DDX_TextNoError(CDataExchange* pDX, int nIDC, int& value)
 /////////////////////////////////////////////////////////////////////////////
 
 CWinGlkGeneralPage::CWinGlkGeneralPage()
-  : CPropertyPage(CWinGlkGeneralPage::IDD)
+  : DarkModePropertyPage(CWinGlkGeneralPage::IDD)
 {
   //{{AFX_DATA_INIT(CWinGlkGeneralPage)
   m_bBorders = FALSE;
@@ -200,7 +212,7 @@ CWinGlkGeneralPage::CWinGlkGeneralPage()
 
 void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  DarkModePropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CWinGlkGeneralPage)
   DDX_Check(pDX, IDC_BORDERS, m_bBorders);
   DDX_Check(pDX, IDC_GUI, m_bGUI);
@@ -214,7 +226,7 @@ void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
 
 BOOL CWinGlkGeneralPage::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  DarkModePropertyPage::OnInitDialog();
 
   // Get all the possible fonts
   CDC* dc = GetDC();
@@ -228,9 +240,17 @@ BOOL CWinGlkGeneralPage::OnInitDialog()
   if (m_FixedFont.SelectString(-1,m_FixedFontName) == CB_ERR)
     m_FixedFont.SetCurSel(0);
 
+  m_FontGroup.SubclassDlgItem(IDC_FONTS_STATIC,this);
+  m_FontSizeCombo.SubclassDlgItem(IDC_SIZE_FONT,this);
   m_Text.SubclassDlgItem(IDC_TEXT_COLOUR,this);
   m_Back.SubclassDlgItem(IDC_BACK_COLOUR,this);
   m_Link.SubclassDlgItem(IDC_LINK_COLOUR,this);
+  m_OptionsGroup.SubclassDlgItem(IDC_OPTIONS_STATIC,this);
+  m_BordersCheck.SubclassDlgItem(IDC_BORDERS,this,IDR_DARK_CHECK);
+  m_GUICheck.SubclassDlgItem(IDC_GUI,this,IDR_DARK_CHECK);
+  m_StyleHintsCheck.SubclassDlgItem(IDC_STYLEHINT,this,IDR_DARK_CHECK);
+  m_StartGroup.SubclassDlgItem(IDC_STARTUP,this);
+  m_iFictionCombo.SubclassDlgItem(IDC_SHOW_IFICTION,this);
 
   SetControlState();
   return TRUE;
@@ -240,7 +260,7 @@ void CWinGlkGeneralPage::OnOK()
 {
   m_PropFont.GetWindowText(m_PropFontName);
   m_FixedFont.GetWindowText(m_FixedFontName);
-  CPropertyPage::OnOK();
+  DarkModePropertyPage::OnOK();
 }
 
 COLORREF CWinGlkGeneralPage::GetTextColour(void)
@@ -310,7 +330,7 @@ void CWinGlkGeneralPage::SetControlState(void)
 /////////////////////////////////////////////////////////////////////////////
 
 CWinGlkSpeechPage::CWinGlkSpeechPage()
-  : CPropertyPage(CWinGlkSpeechPage::IDD)
+  : DarkModePropertyPage(CWinGlkSpeechPage::IDD)
 {
   //{{AFX_DATA_INIT(CWinGlkSpeechPage)
   m_bSpeak = FALSE;
@@ -320,7 +340,7 @@ CWinGlkSpeechPage::CWinGlkSpeechPage()
 
 void CWinGlkSpeechPage::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  DarkModePropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CWinGlkSpeechPage)
   DDX_Check(pDX, IDC_SPEAK, m_bSpeak);
   DDX_Control(pDX, IDC_VOICE, m_VoiceCtrl);
@@ -344,14 +364,17 @@ void CWinGlkSpeechPage::DoDataExchange(CDataExchange* pDX)
   }
 }
 
-BEGIN_MESSAGE_MAP(CWinGlkSpeechPage, CPropertyPage)
+BEGIN_MESSAGE_MAP(CWinGlkSpeechPage, DarkModePropertyPage)
   //{{AFX_MSG_MAP(CWinGlkSpeechPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 BOOL CWinGlkSpeechPage::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  DarkModePropertyPage::OnInitDialog();
+
+  m_SpeechGroup.SubclassDlgItem(IDC_SPEECH_GROUP,this);
+  m_SpeakCheck.SubclassDlgItem(IDC_SPEAK,this,IDR_DARK_CHECK);
 
   CStringArray Voices;
   TextToSpeech::GetSpeechEngine().GetVoices(Voices,m_strDefaultVoice);
@@ -367,7 +390,7 @@ BOOL CWinGlkSpeechPage::OnInitDialog()
 // CWinGlkStylePage property sheet
 /////////////////////////////////////////////////////////////////////////////
 
-CWinGlkStylePage::CWinGlkStylePage() : CPropertyPage(CWinGlkStylePage::IDD),
+CWinGlkStylePage::CWinGlkStylePage() : DarkModePropertyPage(CWinGlkStylePage::IDD),
   m_TextBufferStyles(*(CWinGlkWndTextBuffer::GetDefaultStyles())),
   m_TextGridStyles(*(CWinGlkWndTextGrid::GetDefaultStyles()))
 {
@@ -390,7 +413,7 @@ CWinGlkStylePage::CWinGlkStylePage() : CPropertyPage(CWinGlkStylePage::IDD),
 
 void CWinGlkStylePage::DoDataExchange(CDataExchange* pDX)
 {
-  CPropertyPage::DoDataExchange(pDX);
+  DarkModePropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CWinGlkStylePage)
   DDX_Control(pDX, IDC_MESSAGE, m_MessageCtrl);
   DDX_Control(pDX, IDC_WARNICON, m_WarnCtrl);
@@ -410,7 +433,7 @@ void CWinGlkStylePage::DoDataExchange(CDataExchange* pDX)
   DDX_TextNoError(pDX, IDC_TEXT_SIZE, m_iSize);
 }
 
-BEGIN_MESSAGE_MAP(CWinGlkStylePage, CPropertyPage)
+BEGIN_MESSAGE_MAP(CWinGlkStylePage, DarkModePropertyPage)
   //{{AFX_MSG_MAP(CWinGlkStylePage)
   ON_CBN_SELCHANGE(IDC_WINDOW_TYPE, OnChangeWindowType)
   ON_CBN_SELCHANGE(IDC_WINDOW_STYLE, OnChangeStyle)
@@ -419,14 +442,22 @@ END_MESSAGE_MAP()
 
 BOOL CWinGlkStylePage::OnInitDialog() 
 {
-  CPropertyPage::OnInitDialog();
+  DarkModePropertyPage::OnInitDialog();
+
+  m_StyleGroup.SubclassDlgItem(IDC_STYLE_STATIC,this);
+  m_WindowTypeCombo.SubclassDlgItem(IDC_WINDOW_TYPE,this);
+  m_WindowStyleCombo.SubclassDlgItem(IDC_WINDOW_STYLE,this);
+  m_JustificationCombo.SubclassDlgItem(IDC_JUSTIFICATION,this);
+  m_WeightCombo.SubclassDlgItem(IDC_WEIGHT,this);
+  m_ObliqueCheck.SubclassDlgItem(IDC_OBLIQUE,this,IDR_DARK_CHECK);
+  m_ProportionalCheck.SubclassDlgItem(IDC_PROPORTIONAL,this,IDR_DARK_CHECK);
+  m_ReverseCheck.SubclassDlgItem(IDC_REVERSE,this,IDR_DARK_CHECK);
 
   m_Indent.SetLimitText(32);
   m_ParaIndent.SetLimitText(32);
   m_Size.SetLimitText(32);
 
   SetControlAndMsgState();
-
   return TRUE;
 }
 
@@ -713,10 +744,10 @@ static void ChangeDialogFont(CWnd* wnd, CFont* font, double scale)
   }
 }
 
-IMPLEMENT_DYNAMIC(CWinGlkPropertySheet, CPropertySheet)
+IMPLEMENT_DYNAMIC(CWinGlkPropertySheet, DarkModePropertySheet)
 
 CWinGlkPropertySheet::CWinGlkPropertySheet(UINT caption, CWnd* parentWnd)
-  : CPropertySheet(caption,parentWnd,0)
+  : DarkModePropertySheet(caption,parentWnd)
 {
   GetFontDialog getFont(m_logFont,IDD_ABOUTGAME,parentWnd);
   getFont.DoModal();
@@ -725,14 +756,14 @@ CWinGlkPropertySheet::CWinGlkPropertySheet(UINT caption, CWnd* parentWnd)
   m_fontHeightPerDpi = (double)m_logFont.lfHeight / (double)m_dpi;
 }
 
-BEGIN_MESSAGE_MAP(CWinGlkPropertySheet, CPropertySheet)
+BEGIN_MESSAGE_MAP(CWinGlkPropertySheet, DarkModePropertySheet)
   ON_MESSAGE (WM_RESIZEPAGE, OnResizePage)  
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
 BOOL CWinGlkPropertySheet::OnInitDialog() 
 {
-  CPropertySheet::OnInitDialog();
+  DarkModePropertySheet::OnInitDialog();
 
   m_dpi = DPI::getWindowDPI(this);
   m_fontHeightPerDpi = (double)m_logFont.lfHeight / (double)m_dpi;
@@ -749,6 +780,9 @@ BOOL CWinGlkPropertySheet::OnInitDialog()
   }
   SetActivePage(activePage);
 
+  // Set dark mode only after all pages have been created by being made active
+  SetDarkMode(DarkMode::GetActive(this),true);
+
   CTabCtrl* tab = GetTabControl();
   tab->GetWindowRect(&m_page);
   ScreenToClient(&m_page);
@@ -763,7 +797,7 @@ BOOL CWinGlkPropertySheet::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResu
   NMHDR* pnmh = (LPNMHDR) lParam;
   if (TCN_SELCHANGE == pnmh->code)
     PostMessage(WM_RESIZEPAGE);
-  return CPropertySheet::OnNotify(wParam, lParam, pResult);
+  return DarkModePropertySheet::OnNotify(wParam, lParam, pResult);
 }
 
 LRESULT CWinGlkPropertySheet::OnDpiChanged(WPARAM wparam, LPARAM lparam)
@@ -822,6 +856,24 @@ LONG CWinGlkPropertySheet::OnResizePage(UINT, LONG)
 // CAboutDialog dialog
 /////////////////////////////////////////////////////////////////////////////
 
+BEGIN_MESSAGE_MAP(CLogoStatic, CStatic)
+  ON_WM_NCPAINT()
+END_MESSAGE_MAP()
+
+void CLogoStatic::OnNcPaint()
+{
+  DarkMode* dark = DarkMode::GetActive(this);
+  if (dark)
+  {
+    CWindowDC dc(this);
+    CRect r = dark->PrepareNonClientBorder(this,dc);
+    dc.FillSolidRect(r,RGB(0,0,0));
+    dc.SelectClipRgn(NULL);
+  }
+  else
+    Default();
+}
+
 CAboutDialog::CAboutDialog(CWnd* pParent) : BaseDialog(CAboutDialog::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CAboutDialog)
@@ -848,6 +900,12 @@ BOOL CAboutDialog::OnInitDialog()
   BaseDialog::OnInitDialog();
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
 
+  SetDarkMode(DarkMode::GetActive(this));
+
+  m_Ok.SubclassDlgItem(IDOK,this);
+  m_AboutGroup.SubclassDlgItem(IDC_ABOUT_GROUP,this);
+  m_AdditionalGroup.SubclassDlgItem(IDC_ADDITION_GROUP,this);
+
   if (m_LogoCtrl.GetIcon() == 0)
   {
     HICON icon = ::LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_GLK));
@@ -857,11 +915,10 @@ BOOL CAboutDialog::OnInitDialog()
   m_LogoCtrl.GetWindowRect(LogoRect);
   m_LogoSize = LogoRect.Size();
 
-  CWnd* group = GetDlgItem(IDC_ABOUT_GROUP);
   CString groupName;
-  group->GetWindowText(groupName);
+  m_AboutGroup.GetWindowText(groupName);
   pApp->AddMenuName(groupName);
-  group->SetWindowText(groupName);
+  m_AboutGroup.SetWindowText(groupName);
 
   CWnd* ctrl = GetDlgItem(IDC_ABOUT_TEXT);
   CString about;
@@ -892,25 +949,22 @@ BOOL CAboutDialog::OnInitDialog()
     ScreenToClient(size);
     ctrl->MoveWindow(size.left,size.top,size.Width(),size.Height()+extra);
 
-    ctrl = GetDlgItem(IDC_ABOUT_GROUP);
-    ctrl->GetWindowRect(size);
+    m_AboutGroup.GetWindowRect(size);
     ScreenToClient(size);
-    ctrl->MoveWindow(size.left,size.top,size.Width(),size.Height()+extra);
+    m_AboutGroup.MoveWindow(size.left,size.top,size.Width(),size.Height()+extra);
 
     ctrl = GetDlgItem(IDC_ADDITION_TEXT);
     ctrl->GetWindowRect(size);
     ScreenToClient(size);
     ctrl->MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
 
-    ctrl = GetDlgItem(IDC_ADDITION_GROUP);
-    ctrl->GetWindowRect(size);
+    m_AdditionalGroup.GetWindowRect(size);
     ScreenToClient(size);
-    ctrl->MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
+    m_AdditionalGroup.MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
 
-    ctrl = GetDlgItem(IDOK);
-    ctrl->GetWindowRect(size);
+    m_Ok.GetWindowRect(size);
     ScreenToClient(size);
-    ctrl->MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
+    m_Ok.MoveWindow(size.left,size.top+extra,size.Width(),size.Height());
 
     GetWindowRect(size);
     MoveWindow(size.left,size.top,size.Width(),size.Height()+extra);
@@ -939,9 +993,9 @@ LRESULT CAboutDialog::OnDpiChanged(WPARAM wparam, LPARAM)
 // About This Game dialog
 /////////////////////////////////////////////////////////////////////////////
 
-IMPLEMENT_DYNAMIC(CRichInfo, CRichEditCtrl)
+IMPLEMENT_DYNAMIC(CRichInfo, DarkModeRichEditCtrl)
 
-BEGIN_MESSAGE_MAP(CRichInfo, CRichEditCtrl)
+BEGIN_MESSAGE_MAP(CRichInfo, DarkModeRichEditCtrl)
   ON_WM_SETFOCUS()
   ON_WM_SETCURSOR()
 END_MESSAGE_MAP()
@@ -959,15 +1013,13 @@ BOOL CRichInfo::OnSetCursor(CWnd*, UINT, UINT)
 
 void CRichInfo::PreSubclassWindow()
 {
-  SetBackgroundColor(FALSE,GetSysColor(COLOR_3DFACE));
-
   // Set the control to word wrap the text
   SetTargetDevice(NULL,0);
 
   // Notify the parent window of the control's required size
   SetEventMask(ENM_REQUESTRESIZE);
 
-  CRichEditCtrl::PreSubclassWindow();
+  DarkModeRichEditCtrl::PreSubclassWindow();
 }
 
 void CRichInfo::SetText(int format, UINT id)
@@ -994,6 +1046,13 @@ AboutGameDialog::AboutGameDialog(CWnd* pParent)
 {
 }
 
+void AboutGameDialog::SetDarkMode(DarkMode* dark)
+{
+  BaseDialog::SetDarkMode(dark);
+  if (GetSafeHwnd() != 0)
+    m_Info.SetDarkMode(dark,DarkMode::Darkest);
+}
+
 void AboutGameDialog::DoDataExchange(CDataExchange* pDX)
 {
   BaseDialog::DoDataExchange(pDX);
@@ -1009,6 +1068,11 @@ BOOL AboutGameDialog::OnInitDialog()
 {
   BaseDialog::OnInitDialog();
   m_dpi = DPI::getWindowDPI(this);
+
+  // If the parent window is hidden, make sure that the dialog appears in the taskbar
+  CFrameWnd* frame = GetParentFrame();
+  if (frame && !(frame->IsWindowVisible()))
+    ModifyStyleEx(0,WS_EX_APPWINDOW);
 
   // Change the window icon
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();

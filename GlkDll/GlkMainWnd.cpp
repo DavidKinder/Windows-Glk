@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CWinGlkViewWnd, CWnd)
   //{{AFX_MSG_MAP(CWinGlkViewWnd)
   ON_WM_SIZE()
   ON_WM_PAINT()
+  ON_WM_NCPAINT()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -55,6 +56,20 @@ void CWinGlkViewWnd::OnPaint()
     GetClientRect(Client);
     dc.FillSolidRect(Client,::GetSysColor(COLOR_WINDOW));
   }
+}
+
+void CWinGlkViewWnd::OnNcPaint()
+{
+  DarkMode* dark = DarkMode::GetActive(this);
+  if (dark)
+  {
+    CWindowDC dc(this);
+    CRect r = dark->PrepareNonClientBorder(this,dc);
+    dc.FillSolidRect(r,dark->GetColour(DarkMode::Dark3));
+    dc.SelectClipRgn(NULL);
+  }
+  else
+    Default();
 }
 
 void CWinGlkViewWnd::SizeWindows(void)
@@ -171,7 +186,9 @@ END_MESSAGE_MAP()
 
 bool CWinGlkMainWnd::Create(bool bFrame)
 {
+  // Generate dark mode information, if needed
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  DarkMode* dark = DarkMode::GetEnabled(pApp->GetRegistryPathForDarkMode());
 
   // Get the title for the frame
   CString strTitle = pApp->GetGameInfo().title;
@@ -183,6 +200,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   DWORD dwStyle = bFrame ? WS_OVERLAPPEDWINDOW : WS_POPUP;
   if (CreateEx(0,AfxRegisterWndClass(0),strTitle,dwStyle,GetDefaultSize(),NULL,0,NULL) == FALSE)
     return FALSE;
+  DarkMode::SetDarkTitle(this,dark != NULL);
   m_dpi = DPI::getWindowDPI(this);
 
   // Set the size and position of the frame
@@ -318,7 +336,7 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   if (pApp->HasHelpFile() == false)
     m_toolBar.GetToolBarCtrl().SetState(IDM_SYS_HELP,TBSTATE_HIDDEN);
 
-  m_settings = Settings(DPI::getWindowDPI(this),m_dark);
+  m_settings = Settings(DPI::getWindowDPI(this),dark);
   m_toolBar.SetSizes(m_settings.sizeButton,m_settings.sizeImage);
 
   if (m_image.LoadResource(IDR_TOOLBAR))
@@ -416,6 +434,9 @@ bool CWinGlkMainWnd::Create(bool bFrame)
   }
   else if ((pApp->GetWindowRect().Width() == 0) || (rInner.Width() > 0) || (bFrame == false))
     CenterWindow();
+
+  // Turn on dark mode, if needed
+  SetDarkMode(dark);
 
   // Start a regular 1/2 second pulse timer
   SetTimer(PulseTimer,500,NULL);
@@ -903,7 +924,7 @@ void CWinGlkMainWnd::OnOptions()
 
 void CWinGlkMainWnd::OnAbout() 
 {
-  CAboutDialog AboutDlg;
+  CAboutDialog AboutDlg(this);
   AboutDlg.DoModal();
 }
 

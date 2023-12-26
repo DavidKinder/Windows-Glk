@@ -62,6 +62,7 @@ public:
   void WriteSettings(void);
   void LoadConfigFile(const char* pszConfigName);
   void SetSaveOptions(bool bSave) { m_bSaveSettings = bSave; }
+  CString GetRegistryPathForDarkMode(void);
 
   CString GetPropFontName(void) { return m_strPropFontName; }
   CString GetFixedFontName(void) { return m_strFixedFontName; }

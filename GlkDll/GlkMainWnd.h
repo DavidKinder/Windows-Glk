@@ -38,6 +38,7 @@ protected:
   //{{AFX_MSG(CWinGlkViewWnd)
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnPaint();
+  afx_msg void OnNcPaint();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 
@@ -120,7 +121,7 @@ protected:
 
 protected:
   CWinGlkViewWnd m_View;
-  CStatusBar m_StatusBar;
+  DarkModeStatusBar m_StatusBar;
   CRgn m_Mask;
   UINT m_CodePage;
   int m_dpi;

@@ -130,7 +130,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION |
 CAPTION "Voce"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Discorso opzioni",IDC_STATIC,4,5,218,67
+    GROUPBOX        "Discorso opzioni",IDC_SPEECH_GROUP,4,5,218,67
     CONTROL         "&Abilita sintesi",IDC_SPEAK,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,15,20,69,8
     LTEXT           "&Seleziona voce",IDC_STATIC,15,36,54,9
