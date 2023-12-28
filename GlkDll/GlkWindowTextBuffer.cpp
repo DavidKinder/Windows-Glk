@@ -570,9 +570,8 @@ void CWinGlkWndTextBuffer::InsertFlowBreak(void)
 
 void CWinGlkWndTextBuffer::Scrollback(void)
 {
-  CScrollBackDlg ScrollDlg;
-
   CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
+  CScrollBackDlg ScrollDlg(pMainWnd);
   pMainWnd->GetWindowRect(ScrollDlg.m_DialogRect);
 
   ScrollDlg.m_Text = m_ScrollBuffer.GetData();

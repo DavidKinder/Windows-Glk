@@ -138,7 +138,7 @@ static UINT Indicators[] =
   ID_INDICATOR_NUM,
 };
 
-CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP), m_dpi(96)
+CWinGlkMainWnd::CWinGlkMainWnd() : m_CodePage(CP_ACP), m_dpi(96), m_ModalDialog(NULL)
 {
   m_menuBar.SetUseF10(false);
 
@@ -156,6 +156,8 @@ CWinGlkMainWnd::~CWinGlkMainWnd()
 {
 }
 
+IMPLEMENT_DYNAMIC(CWinGlkMainWnd, MenuBarFrameWnd)
+
 BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   //{{AFX_MSG_MAP(CWinGlkMainWnd)
   ON_WM_CHAR()
@@ -167,6 +169,7 @@ BEGIN_MESSAGE_MAP(CWinGlkMainWnd, MenuBarFrameWnd)
   ON_WM_GETMINMAXINFO()
   ON_WM_KILLFOCUS()
   ON_WM_SETFOCUS()
+  ON_WM_SETTINGCHANGE()
   ON_COMMAND(IDM_SYS_SCROLLBACK, OnScrollback)
   ON_UPDATE_COMMAND_UI(IDM_SYS_SCROLLBACK, OnUpdateScrollback)
   ON_COMMAND(IDM_SYS_OPTIONS, OnOptions)
@@ -818,6 +821,25 @@ void CWinGlkMainWnd::OnSetFocus(CWnd* pOldWnd)
     pActiveWnd->CaretOn();
 }
 
+void CWinGlkMainWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
+{
+  MenuBarFrameWnd::OnSettingChange(uFlags,lpszSection);
+
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  if ((m_dark != NULL) != DarkMode::IsEnabled(pApp->GetRegistryPathForDarkMode()))
+  {
+    SetDarkMode(DarkMode::GetEnabled(pApp->GetRegistryPathForDarkMode()));
+    if (m_ModalDialog != NULL)
+    {
+      if (m_ModalDialog->IsKindOf(RUNTIME_CLASS(GlkDialog)))
+        ((GlkDialog*)m_ModalDialog)->SetDarkMode(DarkMode::GetActive(m_ModalDialog));
+      else if (m_ModalDialog->IsKindOf(RUNTIME_CLASS(CWinGlkPropertySheet)))
+        ((CWinGlkPropertySheet*)m_ModalDialog)->SetDarkMode(DarkMode::GetActive(m_ModalDialog),false);
+    }
+    DarkMode::SetAppDarkMode(m_dark);
+  }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Command handlers
 /////////////////////////////////////////////////////////////////////////////
@@ -1110,6 +1132,11 @@ void CWinGlkMainWnd::EnableScrollback(bool bEnable)
     else
       pSysMenu->EnableMenuItem(IDM_SYS_SCROLLBACK,MF_BYCOMMAND|MF_GRAYED);
   }
+}
+
+void CWinGlkMainWnd::SetModalDialog(CWnd* dialog)
+{
+  m_ModalDialog = dialog;
 }
 
 void CWinGlkMainWnd::GetMessageString(UINT nID, CString& rMessage) const

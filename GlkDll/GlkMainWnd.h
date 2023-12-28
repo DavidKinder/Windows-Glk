@@ -52,6 +52,8 @@ public:
 
 class CWinGlkMainWnd : public MenuBarFrameWnd
 {
+  DECLARE_DYNAMIC(CWinGlkMainWnd)
+
 public:
   CWinGlkMainWnd();
 
@@ -74,6 +76,7 @@ public:
   void SetBorders(bool bBorders);
   void SetGUI(bool bGUI);
   void EnableScrollback(bool bEnable);
+  void SetModalDialog(CWnd* dialog);
 
   CWinGlkViewWnd* GetView(void) { return &m_View; }
   virtual void GetMessageString(UINT nID, CString& rMessage) const;
@@ -92,6 +95,7 @@ protected:
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg void OnKillFocus(CWnd* pNewWnd);
   afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
   afx_msg void OnScrollback();
   afx_msg void OnUpdateScrollback(CCmdUI* pCmdUI);
   afx_msg void OnOptions();
@@ -127,6 +131,7 @@ protected:
   int m_dpi;
   TextOutput m_TextOut;
   CRect m_NormalSize;
+  CWnd* m_ModalDialog;
 };
 
 #endif // WINGLK_MAINWND_H_

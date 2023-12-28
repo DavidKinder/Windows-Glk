@@ -10,6 +10,7 @@
 #include "StdAfx.h"
 #include "GlkDll.h"
 #include "GlkDialogs.h"
+#include "GlkMainWnd.h"
 #include "GlkTalk.h"
 #include "GlkWindowTextBuffer.h"
 #include "GlkWindowTextGrid.h"
@@ -24,6 +25,38 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+/////////////////////////////////////////////////////////////////////////////
+// Base class for Glk dialogs
+/////////////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_DYNAMIC(GlkDialog, BaseDialog)
+
+BEGIN_MESSAGE_MAP(GlkDialog, BaseDialog)
+END_MESSAGE_MAP()
+
+GlkDialog::GlkDialog(UINT templateId, CWnd* parent) : BaseDialog(templateId,parent)
+{
+}
+
+static void SetModalDialogInParent(CWnd* dialog, CWnd* parent)
+{
+  if (parent)
+  {
+    if (parent->IsKindOf(RUNTIME_CLASS(CWinGlkMainWnd)))
+      ((CWinGlkMainWnd*)parent)->SetModalDialog(dialog);
+    else if (parent->IsKindOf(RUNTIME_CLASS(DarkModeHiddenFrameWnd)))
+      ((DarkModeHiddenFrameWnd*)parent)->SetModalDialog(dialog);
+  }
+}
+
+INT_PTR GlkDialog::DoModal()
+{
+  SetModalDialogInParent(this,m_pParentWnd);
+  INT_PTR result = BaseDialog::DoModal();
+  SetModalDialogInParent(NULL,m_pParentWnd);
+  return result;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // Call-back function for streaming into rich edit controls
@@ -42,7 +75,7 @@ static DWORD CALLBACK RichStreamCB(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG 
 
 #define WM_SAMESIZEASMAIN WM_APP+101
 
-CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, pParent)
+CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : GlkDialog(CScrollBackDlg::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CScrollBackDlg)
     // NOTE: the ClassWizard will add member initialization here
@@ -55,7 +88,7 @@ CScrollBackDlg::CScrollBackDlg(CWnd* pParent) : BaseDialog(CScrollBackDlg::IDD, 
 
 void CScrollBackDlg::SetDarkMode(DarkMode* dark)
 {
-  BaseDialog::SetDarkMode(dark);
+  GlkDialog::SetDarkMode(dark);
 
   if (GetSafeHwnd() != 0)
     m_RichEdit.SetDarkMode(dark,DarkMode::Back);
@@ -63,13 +96,13 @@ void CScrollBackDlg::SetDarkMode(DarkMode* dark)
 
 void CScrollBackDlg::DoDataExchange(CDataExchange* pDX)
 {
-  BaseDialog::DoDataExchange(pDX);
+  GlkDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CScrollBackDlg)
     // NOTE: the ClassWizard will add DDX and DDV calls here
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CScrollBackDlg, BaseDialog)
+BEGIN_MESSAGE_MAP(CScrollBackDlg, GlkDialog)
   //{{AFX_MSG_MAP(CScrollBackDlg)
   ON_WM_SIZE()
   ON_BN_CLICKED(IDC_COPY, OnCopy)
@@ -84,7 +117,7 @@ END_MESSAGE_MAP()
 
 BOOL CScrollBackDlg::OnInitDialog() 
 {
-  BaseDialog::OnInitDialog();
+  GlkDialog::OnInitDialog();
   m_dpi = DPI::getWindowDPI(this);
   
   // Subclass the text control
@@ -136,7 +169,7 @@ BOOL CScrollBackDlg::OnInitDialog()
 
 void CScrollBackDlg::OnSize(UINT nType, int cx, int cy) 
 {
-  BaseDialog::OnSize(nType, cx, cy);
+  GlkDialog::OnSize(nType, cx, cy);
 
   // Resize the text control
   if (m_RichEdit.GetSafeHwnd() != NULL)
@@ -761,6 +794,20 @@ BEGIN_MESSAGE_MAP(CWinGlkPropertySheet, DarkModePropertySheet)
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
+INT_PTR CWinGlkPropertySheet::DoModal()
+{
+  CWinGlkMainWnd* frame = NULL;
+  if (m_pParentWnd && m_pParentWnd->IsKindOf(RUNTIME_CLASS(CWinGlkMainWnd)))
+    frame = (CWinGlkMainWnd*)m_pParentWnd;
+
+  if (frame)
+    frame->SetModalDialog(this);
+  INT_PTR result = DarkModePropertySheet::DoModal();
+  if (frame)
+    frame->SetModalDialog(NULL);
+  return result;
+}
+
 BOOL CWinGlkPropertySheet::OnInitDialog() 
 {
   DarkModePropertySheet::OnInitDialog();
@@ -874,7 +921,7 @@ void CLogoStatic::OnNcPaint()
     Default();
 }
 
-CAboutDialog::CAboutDialog(CWnd* pParent) : BaseDialog(CAboutDialog::IDD, pParent)
+CAboutDialog::CAboutDialog(CWnd* pParent) : GlkDialog(CAboutDialog::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CAboutDialog)
     // NOTE: the ClassWizard will add member initialization here
@@ -883,13 +930,13 @@ CAboutDialog::CAboutDialog(CWnd* pParent) : BaseDialog(CAboutDialog::IDD, pParen
 
 void CAboutDialog::DoDataExchange(CDataExchange* pDX)
 {
-  BaseDialog::DoDataExchange(pDX);
+  GlkDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CAboutDialog)
   DDX_Control(pDX, IDC_LOGO, m_LogoCtrl);
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CAboutDialog, BaseDialog)
+BEGIN_MESSAGE_MAP(CAboutDialog, GlkDialog)
   //{{AFX_MSG_MAP(CAboutDialog)
   //}}AFX_MSG_MAP
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
@@ -897,7 +944,7 @@ END_MESSAGE_MAP()
 
 BOOL CAboutDialog::OnInitDialog()
 {
-  BaseDialog::OnInitDialog();
+  GlkDialog::OnInitDialog();
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
 
   SetDarkMode(DarkMode::GetActive(this));
@@ -1039,34 +1086,34 @@ void CRichInfo::SetText(int format, const CString& text)
   StreamIn(format,stream);
 }
 
-IMPLEMENT_DYNAMIC(AboutGameDialog, BaseDialog)
+IMPLEMENT_DYNAMIC(AboutGameDialog, GlkDialog)
 
 AboutGameDialog::AboutGameDialog(CWnd* pParent)
-  : BaseDialog(AboutGameDialog::IDD, pParent), m_dpi(96), m_headingEnd(0)
+  : GlkDialog(AboutGameDialog::IDD, pParent), m_dpi(96), m_headingEnd(0)
 {
 }
 
 void AboutGameDialog::SetDarkMode(DarkMode* dark)
 {
-  BaseDialog::SetDarkMode(dark);
+  GlkDialog::SetDarkMode(dark);
   if (GetSafeHwnd() != 0)
     m_Info.SetDarkMode(dark,DarkMode::Darkest);
 }
 
 void AboutGameDialog::DoDataExchange(CDataExchange* pDX)
 {
-  BaseDialog::DoDataExchange(pDX);
+  GlkDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDOK, m_Ok);
 }
 
-BEGIN_MESSAGE_MAP(AboutGameDialog, BaseDialog)
+BEGIN_MESSAGE_MAP(AboutGameDialog, GlkDialog)
   ON_WM_PAINT()
   ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 END_MESSAGE_MAP()
 
 BOOL AboutGameDialog::OnInitDialog()
 {
-  BaseDialog::OnInitDialog();
+  GlkDialog::OnInitDialog();
   m_dpi = DPI::getWindowDPI(this);
 
   // If the parent window is hidden, make sure that the dialog appears in the taskbar

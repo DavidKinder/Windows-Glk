@@ -21,10 +21,26 @@
 #include "afxwin.h"
 
 /////////////////////////////////////////////////////////////////////////////
+// Base class for Glk dialogs
+/////////////////////////////////////////////////////////////////////////////
+
+class GlkDialog : public BaseDialog
+{
+  DECLARE_DYNAMIC(GlkDialog)
+
+public:
+  GlkDialog(UINT templateId, CWnd* parent = NULL);
+
+  virtual INT_PTR DoModal();
+
+  DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
 // CScrollBackDlg dialog
 /////////////////////////////////////////////////////////////////////////////
 
-class CScrollBackDlg : public BaseDialog
+class CScrollBackDlg : public GlkDialog
 {
 // Construction
 public:
@@ -271,6 +287,7 @@ protected:
 
 public:
   CWinGlkPropertySheet(UINT caption, CWnd* parentWnd);
+  virtual INT_PTR DoModal();
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -297,7 +314,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 };
 
-class CAboutDialog : public BaseDialog
+class CAboutDialog : public GlkDialog
 {
 // Construction
 public:
@@ -353,7 +370,7 @@ public:
   void SetText(int format, const CString& text);
 };
 
-class AboutGameDialog : public BaseDialog
+class AboutGameDialog : public GlkDialog
 {
   DECLARE_DYNAMIC(AboutGameDialog)
 
