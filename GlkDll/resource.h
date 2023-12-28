@@ -10,6 +10,7 @@
 #define IDD_OPTIONS_SPEECH              30016
 #define IDR_GLK                         30020
 #define IDR_TOOLBAR                     30021
+#define IDR_DARK_CHECK                  30022
 #define IDS_STYLE_NOTE                  30030
 #define IDS_STYLE_NOEDIT                30031
 #define IDS_FREF_OPEN                   30040
@@ -74,6 +75,7 @@
 #define IDC_PROP_FONT                   30139
 #define IDC_SIZE_FONT                   30140
 #define IDC_LOGO                        30141
+#define IDC_SPEECH_GROUP                30142
 #define IDS_GLULXE_TITLE                31000
 #define IDS_GLULXE_OPEN                 31001
 #define IDS_GLULXE_FILTER               31002

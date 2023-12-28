@@ -10,11 +10,14 @@
 #ifndef WINGLK_DIALOGS_H_
 #define WINGLK_DIALOGS_H_
 
-#include "ColourButton.h"
 #include "GlkStyle.h"
+#include "Resource.h"
+
+#include "ColourButton.h"
+#include "DarkMode.h"
 #include "Dialogs.h"
 #include "Dib.h"
-#include "Resource.h"
+
 #include "afxwin.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -26,6 +29,8 @@ class CScrollBackDlg : public BaseDialog
 // Construction
 public:
   CScrollBackDlg(CWnd* pParent = NULL);   // standard constructor
+
+  void SetDarkMode(DarkMode* dark);
 
 // Dialog Data
   //{{AFX_DATA(CScrollBackDlg)
@@ -59,7 +64,9 @@ public:
   INT_PTR m_TextLen;
 
 protected:
-  CRichEditCtrl m_RichEdit;
+  DarkModeRichEditCtrl m_RichEdit;
+  DarkModeButton m_CopyButton;
+  DarkModeButton m_CloseButton;
   int m_iTextTop;
   int m_dpi;
 };
@@ -68,7 +75,7 @@ protected:
 // CWinGlkGeneralPage property page
 /////////////////////////////////////////////////////////////////////////////
 
-class CWinGlkGeneralPage : public CPropertyPage
+class CWinGlkGeneralPage : public DarkModePropertyPage
 {
 // Construction
 public:
@@ -116,18 +123,26 @@ protected:
   // Called when enumerating fonts, and populates the font drop down lists in the dialog
   static int CALLBACK ListFonts(ENUMLOGFONTEX *font, NEWTEXTMETRICEX *metric, DWORD fontType, LPARAM param);
 
-  CComboBox m_PropFont;
-  CComboBox m_FixedFont;
+  DarkModeGroupBox m_FontGroup;
+  DarkModeComboBox m_FontSizeCombo;
+  DarkModeComboBox m_PropFont;
+  DarkModeComboBox m_FixedFont;
   ColourButton m_Text;
   ColourButton m_Back;
   ColourButton m_Link;
+  DarkModeGroupBox m_OptionsGroup;
+  DarkModeCheckButton m_BordersCheck;
+  DarkModeCheckButton m_GUICheck;
+  DarkModeCheckButton m_StyleHintsCheck;
+  DarkModeGroupBox m_StartGroup;
+  DarkModeComboBox m_iFictionCombo;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinGlkStylePage property page
 /////////////////////////////////////////////////////////////////////////////
 
-class CWinGlkStylePage : public CPropertyPage
+class CWinGlkStylePage : public DarkModePropertyPage
 {
 // Construction
 public:
@@ -138,9 +153,9 @@ public:
   enum { IDD = IDD_OPTIONS_STYLE };
   CStatic  m_MessageCtrl;
   CStatic  m_WarnCtrl;
-  CEdit  m_Size;
-  CEdit  m_ParaIndent;
-  CEdit  m_Indent;
+  DarkModeEdit  m_Size;
+  DarkModeEdit  m_ParaIndent;
+  DarkModeEdit  m_Indent;
   BOOL  m_bOblique;
   int  m_iJustification;
   BOOL  m_bProportional;
@@ -185,13 +200,22 @@ protected:
   CWinGlkStyles m_TextGridStyles;
   CWinGlkStyles* m_pStyles;
   int m_iStyle;
+
+  DarkModeGroupBox m_StyleGroup;
+  DarkModeComboBox m_WindowTypeCombo;
+  DarkModeComboBox m_WindowStyleCombo;
+  DarkModeComboBox m_JustificationCombo;
+  DarkModeComboBox m_WeightCombo;
+  DarkModeCheckButton m_ObliqueCheck;
+  DarkModeCheckButton m_ProportionalCheck;
+  DarkModeCheckButton m_ReverseCheck;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinGlkSpeechPage property page
 /////////////////////////////////////////////////////////////////////////////
 
-class CWinGlkSpeechPage : public CPropertyPage
+class CWinGlkSpeechPage : public DarkModePropertyPage
 {
 // Construction
 public:
@@ -201,8 +225,8 @@ public:
   //{{AFX_DATA(CWinGlkSpeechPage)
   enum { IDD = IDD_OPTIONS_SPEECH };
   BOOL m_bSpeak;
-  CComboBox m_VoiceCtrl;
-  CSliderCtrl m_RateCtrl;
+  DarkModeComboBox m_VoiceCtrl;
+  DarkModeSliderCtrl m_RateCtrl;
   int m_iRate;
   //}}AFX_DATA
 
@@ -224,13 +248,16 @@ protected:
 
 public:
   CString m_strVoice, m_strDefaultVoice;
+
+  DarkModeGroupBox m_SpeechGroup;
+  DarkModeCheckButton m_SpeakCheck;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CWinGlkPropertySheet property sheet
 /////////////////////////////////////////////////////////////////////////////
 
-class CWinGlkPropertySheet : public CPropertySheet
+class CWinGlkPropertySheet : public DarkModePropertySheet
 {
 protected:
   RECT m_page;
@@ -263,6 +290,13 @@ public:
 // CAboutDialog dialog
 /////////////////////////////////////////////////////////////////////////////
 
+class CLogoStatic : public CStatic
+{
+protected:
+  afx_msg void OnNcPaint();
+  DECLARE_MESSAGE_MAP()
+};
+
 class CAboutDialog : public BaseDialog
 {
 // Construction
@@ -272,7 +306,7 @@ public:
 // Dialog Data
   //{{AFX_DATA(CAboutDialog)
   enum { IDD = IDD_ABOUT };
-  CStatic m_LogoCtrl;
+  CLogoStatic m_LogoCtrl;
   //}}AFX_DATA
   CSize m_LogoSize;
 
@@ -292,13 +326,17 @@ protected:
   virtual BOOL OnInitDialog();
   afx_msg LRESULT OnDpiChanged(WPARAM, LPARAM);
   DECLARE_MESSAGE_MAP()
+
+  DarkModeButton m_Ok;
+  DarkModeGroupBox m_AboutGroup;
+  DarkModeGroupBox m_AdditionalGroup;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // AboutGameDialog dialog
 /////////////////////////////////////////////////////////////////////////////
 
-class CRichInfo : public CRichEditCtrl
+class CRichInfo : public DarkModeRichEditCtrl
 {
   DECLARE_DYNAMIC(CRichInfo)
 
@@ -322,6 +360,8 @@ class AboutGameDialog : public BaseDialog
 public:
   AboutGameDialog(CWnd* pParent = NULL);   // standard constructor
 
+  virtual void SetDarkMode(DarkMode* dark);
+
 // Dialog Data
   enum { IDD = IDD_ABOUTGAME };
 
@@ -336,7 +376,7 @@ protected:
 
 protected:
   CRichInfo m_Info;
-  CButton m_Ok;
+  DarkModeButton m_Ok;
 
   CRect m_CoverRect;
   CDibSection m_CoverBitmap;
