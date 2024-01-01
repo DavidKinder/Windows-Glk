@@ -101,7 +101,7 @@ protected:
     CGridRow() {}
     ~CGridRow() {}
 
-    void DrawRow(CWinGlkDC& dc, int x, int y);
+    void DrawRow(CWinGlkDC& dc, int x, int y, DarkMode* dark);
 
     LPWSTR GetBuffer(int iNewLength);
     void ReleaseBuffer(int iNewLength);

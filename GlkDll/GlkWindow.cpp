@@ -762,9 +762,12 @@ void CWinGlkWnd::OnPaint(void)
 {
   CPaintDC dc(this);
 
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  DarkMode* dark = DarkMode::GetActive(this);
+
   CRect Client;
   GetClientRect(Client);
-  dc.FillSolidRect(Client,::GetSysColor(COLOR_WINDOW));
+  dc.FillSolidRect(Client,pApp->GetSysOrDarkColour(COLOR_WINDOW,dark));
 }
 
 void CWinGlkWnd::OnLButtonDown(UINT nFlags, CPoint point) 
@@ -938,9 +941,10 @@ void CWinGlkWnd::SizeAllWindows(void)
   }
 }
 
-COLORREF CWinGlkWnd::GetColour(glsi32 iColour)
+COLORREF CWinGlkWnd::GetColour(glsi32 iColour, DarkMode* dark)
 {
-  COLORREF Colour;
+  COLORREF Colour = 0;
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
 
   switch (iColour)
   {
@@ -954,10 +958,10 @@ COLORREF CWinGlkWnd::GetColour(glsi32 iColour)
   switch (iColour)
   {
   case 0xFFFFFFFF:
-    Colour = ::GetSysColor(COLOR_WINDOWTEXT);
+    Colour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
     break;
   case 0xFFFFFFFE:
-    Colour = ::GetSysColor(COLOR_WINDOW);
+    Colour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
     break;
   default:
     {
@@ -1222,13 +1226,13 @@ bool CWinGlkDC::CDisplay::operator!=(const CDisplay& Compare)
   return (operator==)(Compare) ? false : true;
 }
 
-void CWinGlkDC::SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours)
+void CWinGlkDC::SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours, DarkMode* dark)
 {
   CDisplay Display(iStyle,iLink,pColours);
-  SetDisplay(Display);
+  SetDisplay(Display,dark);
 }
 
-void CWinGlkDC::SetDisplay(const CDisplay& Display)
+void CWinGlkDC::SetDisplay(const CDisplay& Display, DarkMode* dark)
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   m_Display = Display;
@@ -1295,9 +1299,9 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display)
   if (m_Display.m_pColours != NULL)
     overColours = *(m_Display.m_pColours);
   COLORREF BackColour = CWinGlkWnd::GetColour(
-    overColours.back == zcolor_Default ? m_Style.m_BackColour : overColours.back);
+    overColours.back == zcolor_Default ? m_Style.m_BackColour : overColours.back,dark);
   COLORREF TextColour = CWinGlkWnd::GetColour(
-    overColours.fore == zcolor_Default ? m_Style.m_TextColour : overColours.fore);
+    overColours.fore == zcolor_Default ? m_Style.m_TextColour : overColours.fore,dark);
   if (m_Style.m_ReverseColour || overColours.reverse)
   {
     SetTextColor(BackColour);

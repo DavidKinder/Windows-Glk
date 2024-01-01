@@ -183,7 +183,7 @@ public:
   static void SetExiting(void);
   static void SizeAllWindows(void);
 
-  static COLORREF GetColour(glsi32 iColour);
+  static COLORREF GetColour(glsi32 iColour, DarkMode* dark);
 
 protected:
   static CWinGlkWnd* m_pMainWnd;
@@ -271,8 +271,8 @@ public:
     int m_iIndex;
   };
 
-  void SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours);
-  void SetDisplay(const CDisplay& Display);
+  void SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours, DarkMode* dark);
+  void SetDisplay(const CDisplay& Display, DarkMode* dark);
 
   CDisplay GetDisplay(void) { return m_Display; }
   int GetStyle(void) { return m_Display.m_iStyle; }

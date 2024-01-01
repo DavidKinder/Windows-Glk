@@ -241,6 +241,10 @@ CWinGlkGeneralPage::CWinGlkGeneralPage()
   m_bStyleHints = FALSE;
   m_iFiction = 0;
   //}}AFX_DATA_INIT
+
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  m_DefaultTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,NULL);
+  m_DefaultBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,NULL);
 }
 
 void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
@@ -324,6 +328,31 @@ COLORREF CWinGlkGeneralPage::GetLinkColour(void)
 void CWinGlkGeneralPage::SetLinkColour(COLORREF Colour)
 {
   m_Link.SetCurrentColour(Colour);
+}
+
+void CWinGlkGeneralPage::SetDarkMode(DarkMode* dark, bool init)
+{
+  DarkModePropertyPage::SetDarkMode(dark,init);
+
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  if (init)
+  {
+    m_DefaultTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
+    m_DefaultBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+  }
+  else
+  {
+    COLORREF NewTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
+    COLORREF NewBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+
+    if (GetTextColour() == m_DefaultTextColour)
+      SetTextColour(NewTextColour);
+    if (GetBackColour() == m_DefaultBackColour)
+      SetBackColour(NewBackColour);
+
+    m_DefaultTextColour = NewTextColour;
+    m_DefaultBackColour = NewBackColour;
+  }
 }
 
 // Called when enumerating fonts, populates the font drop down lists in the dialog
@@ -1295,7 +1324,10 @@ LRESULT AboutGameDialog::OnDpiChanged(WPARAM wparam, LPARAM)
           CWindowDC dc(this);
           if (m_CoverBitmap.CreateBitmap(dc,m_CoverRect.Width(),m_CoverRect.Height()))
           {
-            m_CoverBitmap.FillSolid(::GetSysColor(COLOR_3DFACE));
+            CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+            DarkMode* dark = DarkMode::GetActive(this);
+
+            m_CoverBitmap.FillSolid(pApp->GetSysOrDarkColour(COLOR_3DFACE,dark));
             ScaleGfx((COLORREF*)coverGfx->m_pPixels,
               coverGfx->m_pHeader->biWidth,abs(coverGfx->m_pHeader->biHeight),
               m_CoverBitmap.GetBits(),m_CoverRect.Width(),m_CoverRect.Height());

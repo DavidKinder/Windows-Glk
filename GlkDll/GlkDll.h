@@ -30,6 +30,8 @@ extern void (*UnregisterArrFn)(void *array, glui32 len, char *typecode, gidispat
 
 #include <set>
 
+class DarkMode;
+
 /////////////////////////////////////////////////////////////////////////////
 // CGlkApp
 /////////////////////////////////////////////////////////////////////////////
@@ -96,11 +98,11 @@ public:
 
   COLORREF GetLinkColour(void) { return m_LinkColour; }
   void SetLinkColour(COLORREF Colour) { m_LinkColour = Colour; }
-
   glsi32 GetTextColour(void) { return m_TextColour; }
   void SetTextColour(glsi32 Colour) { m_TextColour = Colour; }
   glsi32 GetBackColour(void) { return m_BackColour; }
   void SetBackColour(glsi32 Colour) { m_BackColour = Colour; }
+  COLORREF GetSysOrDarkColour(int index, DarkMode* dark);
 
   CString& GetAppName(void) { return m_strAppName; }
   CString& GetAppTitle(void) { return m_strAppTitle; }

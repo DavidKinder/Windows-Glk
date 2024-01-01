@@ -133,6 +133,8 @@ public:
   COLORREF GetLinkColour(void);
   void SetLinkColour(COLORREF Colour);
 
+  virtual void SetDarkMode(DarkMode* dark, bool init);
+
 protected:
   void SetControlState(void);
 
@@ -152,6 +154,9 @@ protected:
   DarkModeCheckButton m_StyleHintsCheck;
   DarkModeGroupBox m_StartGroup;
   DarkModeComboBox m_iFictionCombo;
+
+  COLORREF m_DefaultTextColour;
+  COLORREF m_DefaultBackColour;
 };
 
 /////////////////////////////////////////////////////////////////////////////

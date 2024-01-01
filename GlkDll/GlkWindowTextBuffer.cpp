@@ -83,10 +83,12 @@ void CWinGlkWndTextBuffer::InitDC(CWinGlkDC& dc, CDC* pdcCompat)
     dc.CreateCompatibleDC(pdcCompat);
 
   // Set colours
-  dc.SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
-  dc.SetBkColor(GetColour(GetStyle(style_Normal)->m_BackColour));
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  DarkMode* dark = DarkMode::GetActive(this);
+  dc.SetTextColor(pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark));
+  dc.SetBkColor(GetColour(GetStyle(style_Normal)->m_BackColour,dark));
 
-  dc.SetStyle(style_Normal,0,NULL);
+  dc.SetStyle(style_Normal,0,NULL,dark);
 }
 
 bool CWinGlkWndTextBuffer::CheckMorePending(bool update)
@@ -129,7 +131,8 @@ int CWinGlkWndTextBuffer::GetCaretHeight(void)
   CDC* pWndDC = GetDC();
   dc.Attach(*pWndDC);
   InitDC(dc);
-  dc.SetStyle(style_Input,0,NULL);
+  DarkMode* dark = DarkMode::GetActive(this);
+  dc.SetStyle(style_Input,0,NULL,dark);
 
   int iHeight = dc.m_FontMetrics.tmHeight;
   ReleaseDC(pWndDC);
@@ -442,11 +445,13 @@ bool CWinGlkWndTextBuffer::DistinguishStyles(int iStyle1, int iStyle2)
       return true;
     if (pStyle1->m_Proportional != pStyle2->m_Proportional)
       return true;
-    if (GetColour(pStyle1->m_TextColour) != GetColour(pStyle2->m_TextColour))
+
+    DarkMode* dark = DarkMode::GetActive(this);
+    if (GetColour(pStyle1->m_TextColour,dark) != GetColour(pStyle2->m_TextColour,dark))
       return true;
-    if (GetColour(pStyle1->m_BackColour) != GetColour(pStyle2->m_BackColour))
+    if (GetColour(pStyle1->m_BackColour,dark) != GetColour(pStyle2->m_BackColour,dark))
       return true;
-    if (GetColour(pStyle1->m_ReverseColour) != GetColour(pStyle2->m_ReverseColour))
+    if (GetColour(pStyle1->m_ReverseColour,dark) != GetColour(pStyle2->m_ReverseColour,dark))
       return true;
   }
   return false;
@@ -492,7 +497,8 @@ bool CWinGlkWndTextBuffer::MeasureStyle(int iStyle, int iHint, glui32* pResult)
     case stylehint_TextColor:
       if (pResult)
       {
-        int iColour = GetColour(pStyle->m_TextColour);
+        DarkMode* dark = DarkMode::GetActive(this);
+        int iColour = GetColour(pStyle->m_TextColour,dark);
         BYTE r = (BYTE)((iColour & 0x00FF0000) >> 16);
         BYTE g = (BYTE)((iColour & 0x0000FF00) >> 8);
         BYTE b = (BYTE)((iColour & 0x000000FF));
@@ -502,7 +508,8 @@ bool CWinGlkWndTextBuffer::MeasureStyle(int iStyle, int iHint, glui32* pResult)
     case stylehint_BackColor:
       if (pResult)
       {
-        int iColour = GetColour(pStyle->m_BackColour);
+        DarkMode* dark = DarkMode::GetActive(this);
+        int iColour = GetColour(pStyle->m_BackColour,dark);
         BYTE r = (BYTE)((iColour & 0x00FF0000) >> 16);
         BYTE g = (BYTE)((iColour & 0x0000FF00) >> 8);
         BYTE b = (BYTE)((iColour & 0x000000FF));
@@ -601,18 +608,19 @@ void CWinGlkWndTextBuffer::Paint(bool bMark)
   CBitmap* pbmpOld = dcMem.SelectObject(&bmp);
 
   // Clear the window
+  DarkMode* dark = DarkMode::GetActive(this);
   dcMem.FillSolidRect(ClientArea,GetColour(
-    m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour));
+    m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour,dark));
 
   // Format each paragraph
-  CPaintInfo FormatInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,m_Hyperlinks);
+  CPaintInfo FormatInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,dark,m_Hyperlinks);
   int i, numParas = m_TextBuffer.GetSize();
   for (i = 0; i < numParas; i++)
     m_TextBuffer[i]->Format(FormatInfo);
 
   // Determine where to start displaying text
   int offset = 0;
-  CPaintInfo PaintInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,m_Hyperlinks);
+  CPaintInfo PaintInfo(0,0,ClientArea.Width(),ClientArea.Height(),dcMem,dark,m_Hyperlinks);
   PreparePaintInfo(PaintInfo,ClientArea,i,offset,bMark);
 
   // Draw each paragraph
@@ -644,10 +652,10 @@ void CWinGlkWndTextBuffer::Paint(bool bMark)
     m_iLineY = top;
 
     CWinGlkDC::CDisplay Display = dcMem.GetDisplay();
-    dcMem.SetStyle(style_Input,0,NULL);
+    dcMem.SetStyle(style_Input,0,NULL,dark);
     dcMem.TextOut(m_iLineX,m_iLineY,m_strMore);
     CSize MoreSize = dcMem.GetTextExtent(m_strMore);
-    dcMem.SetDisplay(Display);
+    dcMem.SetDisplay(Display,dark);
     m_iLineX += MoreSize.cx;
 
     if (GetActiveWindow() == this)
@@ -798,9 +806,9 @@ void CWinGlkWndTextBuffer::PreparePaintInfo(
     // Make enough space for the [More] prompt at the bottom of the display
     CWinGlkDC& dc = Info.m_DeviceContext;
     CWinGlkDC::CDisplay Display = dc.GetDisplay();
-    dc.SetStyle(style_Input,0,NULL);
+    dc.SetStyle(style_Input,0,NULL,Info.m_Dark);
     CSize MoreSize = dc.GetTextExtent(m_strMore);
-    dc.SetDisplay(Display);
+    dc.SetDisplay(Display,Info.m_Dark);
     Info.m_iHeight -= MoreSize.cy;
 
     if (iParagraph < m_TextBuffer.GetSize())
@@ -920,7 +928,7 @@ template<class XCHAR> void CWinGlkWndTextBuffer::PaintInputBuffer(
 
     COLORREF oldBack = dc.GetBkColor();
     COLORREF newBack = GetColour(
-      m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour);
+      m_BackColour == zcolor_Default ? GetStyle(style_Normal)->m_BackColour : m_BackColour,Info.m_Dark);
     if (Info.m_iLeft+Info.m_iWidth < ClientArea.Width())
       dc.FillSolidRect(m_iLineX,m_iLineY,Info.m_iLeft+Info.m_iWidth-margin+1-m_iLineX,h,newBack);
     else
@@ -1164,9 +1172,9 @@ const int CWinGlkWndTextBuffer::CParagraph::m_iIndentStep = 4;
 /////////////////////////////////////////////////////////////////////////////
 
 CWinGlkWndTextBuffer::CPaintInfo::CPaintInfo(int iLeft, int iTop,
-  int iWidth, int iHeight, CWinGlkDC& DeviceContext,
+  int iWidth, int iHeight, CWinGlkDC& DeviceContext, DarkMode* Dark,
   CArray<CHyperlink,CHyperlink&>& Hyperlinks)
-  : m_DeviceContext(DeviceContext), m_Hyperlinks(Hyperlinks)
+  : m_DeviceContext(DeviceContext), m_Dark(Dark), m_Hyperlinks(Hyperlinks)
 {
   m_iLeft = iLeft;
   m_iTop = iTop;
@@ -1367,7 +1375,7 @@ void CWinGlkWndTextBuffer::CPaintInfo::DrawGraphic(CWinGlkGraphic* pGraphic, int
   }
 
   COLORREF BackColour = GetColour(
-    m_DeviceContext.GetStyleFromWindow(style_Normal)->m_BackColour);
+    m_DeviceContext.GetStyleFromWindow(style_Normal)->m_BackColour,m_Dark);
 
   // Split the background colour into red, green and blue.
   int br = GetRValue(BackColour);
@@ -1587,7 +1595,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
   }
 
   // Initialize the device context
-  Info.m_DeviceContext.SetStyle(m_iInitialStyle,m_iInitialLink,m_pInitialColours);
+  Info.m_DeviceContext.SetStyle(m_iInitialStyle,m_iInitialLink,m_pInitialColours,Info.m_Dark);
 
   // Set up indentation
   int in1 = m_iIndentStep * Info.m_DeviceContext.m_Style.m_Indent;
@@ -1668,16 +1676,16 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
             int iNewStyle = style_Normal;
             if (i < m_Text.GetSize())
               iNewStyle = m_Text[i];
-            Info.m_DeviceContext.SetStyle(iNewStyle,
-              Info.m_DeviceContext.GetLink(),Info.m_DeviceContext.GetColours());
+            Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink(),
+              Info.m_DeviceContext.GetColours(),Info.m_Dark);
           }
           else if (c == LinkChange)
           {
             // Switch to the new link
             unsigned int iNewLink = GetInteger(i);
             i++;
-            Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-              iNewLink,Info.m_DeviceContext.GetColours());
+            Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),iNewLink,
+              Info.m_DeviceContext.GetColours(),Info.m_Dark);
           }
           else if (c == ColourChange)
           {
@@ -1685,7 +1693,7 @@ void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
             unsigned int iNewColours = GetInteger(i);
             i++;
             Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-              Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours]);
+              Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours],Info.m_Dark);
           }
 
           // Check that the next entry is not another style change
@@ -1931,7 +1939,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
   bool result = true;
 
   // Initialize the device context and text output array
-  Info.m_DeviceContext.SetStyle(m_iInitialStyle,m_iInitialLink,m_pInitialColours);
+  Info.m_DeviceContext.SetStyle(m_iInitialStyle,m_iInitialLink,m_pInitialColours,Info.m_Dark);
   m_TextOut.RemoveAll();
 
   // Set up indentation and justification
@@ -2010,8 +2018,8 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
             int iNewStyle = style_Normal;
             if (j < m_Text.GetSize())
               iNewStyle = m_Text[j];
-            Info.m_DeviceContext.SetStyle(iNewStyle,
-              Info.m_DeviceContext.GetLink(),Info.m_DeviceContext.GetColours());
+            Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink(),
+              Info.m_DeviceContext.GetColours(),Info.m_Dark);
           }
           break;
         case LinkChange:
@@ -2023,8 +2031,8 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
 
             unsigned int iNewLink = GetInteger(j);
             j++;
-            Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-              iNewLink,Info.m_DeviceContext.GetColours());
+            Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),iNewLink,
+              Info.m_DeviceContext.GetColours(),Info.m_Dark);
           }
           break;
         case ColourChange:
@@ -2037,7 +2045,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
             unsigned int iNewColours = GetInteger(j);
             j++;
             Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-              Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours]);
+              Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours],Info.m_Dark);
           }
           break;
         case InlineGraphic:
@@ -2167,7 +2175,7 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
   for (int i = 0; i < m_TextOut.GetSize(); i++)
   {
     CTextOut& Out = m_TextOut[i];
-    Info.m_DeviceContext.SetDisplay(Out.m_Display);
+    Info.m_DeviceContext.SetDisplay(Out.m_Display,Info.m_Dark);
     Info.m_DeviceContext.SetBkMode(TRANSPARENT);
     Info.m_DeviceContext.TextOut(Out.m_Position.x,Out.m_Position.y,Out.m_Text);
   }
@@ -2288,8 +2296,8 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
           int iNewStyle = style_Normal;
           if (i < m_Text.GetSize())
             iNewStyle = m_Text[i];
-          Info.m_DeviceContext.SetStyle(iNewStyle,
-            Info.m_DeviceContext.GetLink(),Info.m_DeviceContext.GetColours());
+          Info.m_DeviceContext.SetStyle(iNewStyle,Info.m_DeviceContext.GetLink(),
+            Info.m_DeviceContext.GetColours(),Info.m_Dark);
         }
         break;
       case LinkChange:
@@ -2299,8 +2307,8 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
           i++;
 
           unsigned int iNewLink = GetInteger(i);
-          Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-            iNewLink,Info.m_DeviceContext.GetColours());
+          Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),iNewLink,
+            Info.m_DeviceContext.GetColours(),Info.m_Dark);
         }
         break;
       case ColourChange:
@@ -2311,7 +2319,7 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
 
           unsigned int iNewColours = GetInteger(i);
           Info.m_DeviceContext.SetStyle(Info.m_DeviceContext.GetStyle(),
-            Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours]);
+            Info.m_DeviceContext.GetLink(),m_TextColours[iNewColours],Info.m_Dark);
         }
         break;
       case InlineGraphic:
@@ -2354,7 +2362,7 @@ int CWinGlkWndTextBuffer::CParagraph::JustifyLength(CLineFormat* pFormat,
   length += Info.m_DeviceContext.GetTextExtent(pBuffer,pos).cx;
 
   if (Info.m_DeviceContext.GetDisplay() != Display)
-    Info.m_DeviceContext.SetDisplay(Display);
+    Info.m_DeviceContext.SetDisplay(Display,Info.m_Dark);
   return length;
 }
 

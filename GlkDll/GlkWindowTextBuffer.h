@@ -102,7 +102,7 @@ protected:
   {
   public:
     CPaintInfo(int iLeft, int iTop, int iWidth, int iHeight,
-      CWinGlkDC& DeviceContext, CArray<CHyperlink,CHyperlink&>& Hyperlinks);
+      CWinGlkDC& DeviceContext, DarkMode* Dark, CArray<CHyperlink,CHyperlink&>& Hyperlinks);
     ~CPaintInfo();
 
     void MarginAdd(CWinGlkGraphic* pGraphic);
@@ -120,6 +120,7 @@ protected:
     int m_iWidth;
     int m_iHeight;
     CWinGlkDC& m_DeviceContext;
+    DarkMode* m_Dark;
 
   protected:
     class CMarginInsert

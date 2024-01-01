@@ -52,9 +52,12 @@ void CWinGlkViewWnd::OnPaint()
 
   if (CWinGlkWnd::GetMainWindow() == NULL)
   {
+    CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+    DarkMode* dark = DarkMode::GetActive(this);
+
     CRect Client;
     GetClientRect(Client);
-    dc.FillSolidRect(Client,::GetSysColor(COLOR_WINDOW));
+    dc.FillSolidRect(Client,pApp->GetSysOrDarkColour(COLOR_WINDOW,dark));
   }
 }
 
@@ -88,14 +91,14 @@ void CWinGlkViewWnd::SizeWindows(void)
 // CWinGlkMainWnd frame window, derived from the menu bar frame class
 /////////////////////////////////////////////////////////////////////////////
 
-static glsi32 ColourToGlk(COLORREF Colour)
+static glsi32 ColourToGlk(COLORREF Colour, DarkMode* dark)
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   int iColour = 0;
 
-  if (Colour == ::GetSysColor(COLOR_WINDOWTEXT))
+  if (Colour == pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark))
     iColour = 0xFFFFFFFF;
-  else if (Colour == ::GetSysColor(COLOR_WINDOW))
+  else if (Colour == pApp->GetSysOrDarkColour(COLOR_WINDOW,dark))
     iColour = 0xFFFFFFFE;
   else
   {
@@ -108,16 +111,22 @@ static glsi32 ColourToGlk(COLORREF Colour)
   return iColour;
 }
 
-static COLORREF GlkToColour(glsi32 iColour)
+static COLORREF GlkToColour(glsi32 iColour, DarkMode* dark)
 {
   COLORREF Colour;
   switch (iColour)
   {
   case 0xFFFFFFFF:
-    Colour = ::GetSysColor(COLOR_WINDOWTEXT);
+    {
+      CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+      Colour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
+    }
     break;
   case 0xFFFFFFFE:
-    Colour = ::GetSysColor(COLOR_WINDOW);
+    {
+      CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+      Colour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+    }
     break;
   default:
     {
@@ -866,6 +875,8 @@ void CWinGlkMainWnd::OnUpdateScrollback(CCmdUI* pCmdUI)
 void CWinGlkMainWnd::OnOptions() 
 {
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  DarkMode* dark = DarkMode::GetActive(this);
+
   CWinGlkPropertySheet OptionsDlg(IDS_OPTIONS,this);
   CWinGlkGeneralPage GeneralPage;
   CWinGlkStylePage StylePage;
@@ -885,8 +896,8 @@ void CWinGlkMainWnd::OnOptions()
   GeneralPage.m_PropFontName = pApp->GetPropFontName();
   GeneralPage.m_FixedFontName = pApp->GetFixedFontName();
 
-  GeneralPage.SetTextColour(GlkToColour(pApp->GetTextColour()));
-  GeneralPage.SetBackColour(GlkToColour(pApp->GetBackColour()));
+  GeneralPage.SetTextColour(GlkToColour(pApp->GetTextColour(),dark));
+  GeneralPage.SetBackColour(GlkToColour(pApp->GetBackColour(),dark));
   GeneralPage.SetLinkColour(pApp->GetLinkColour());
 
   GeneralPage.m_iFiction = pApp->Get_iFiction();
@@ -901,6 +912,7 @@ void CWinGlkMainWnd::OnOptions()
   if (OptionsDlg.DoModal() == IDOK)
   {
     pApp->SetSaveOptions(true);
+    dark = DarkMode::GetActive(this);
 
     bool bBorderChanged = pApp->SetWindowBorders(GeneralPage.m_bBorders ? true : false);
     bool bGUIChanged = pApp->SetEnableGUI(GeneralPage.m_bGUI ? true : false);
@@ -918,8 +930,8 @@ void CWinGlkMainWnd::OnOptions()
     if (pApp->SetFixedFontName(GeneralPage.m_FixedFontName))
       bFontChanged = true;
 
-    pApp->SetTextColour(ColourToGlk(GeneralPage.GetTextColour()));
-    pApp->SetBackColour(ColourToGlk(GeneralPage.GetBackColour()));
+    pApp->SetTextColour(ColourToGlk(GeneralPage.GetTextColour(),dark));
+    pApp->SetBackColour(ColourToGlk(GeneralPage.GetBackColour(),dark));
     pApp->SetLinkColour(GeneralPage.GetLinkColour());
 
     pApp->Set_iFiction((CGlkApp::Show_iFiction)GeneralPage.m_iFiction);

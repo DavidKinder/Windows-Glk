@@ -457,6 +457,23 @@ bool CGlkApp::SetEnableGUI(bool bEnableGUI)
   return bGUIChanged;
 }
 
+COLORREF CGlkApp::GetSysOrDarkColour(int index, DarkMode* dark)
+{
+  if (dark)
+  {
+    switch (index)
+    {
+    case COLOR_WINDOW:
+      return dark->GetColour(DarkMode::Back);
+    case COLOR_WINDOWTEXT:
+      return dark->GetColour(DarkMode::Fore);
+    case COLOR_3DFACE:
+      return dark->GetColour(DarkMode::Darkest);
+    }
+  }
+  return ::GetSysColor(index);
+}
+
 void CGlkApp::AddMenuName(CString& text)
 {
   CString name(m_strMenuName);
@@ -872,7 +889,7 @@ bool CGlkApp::CanOutputChar(glui32 c)
   dc.CreateCompatibleDC(pDC);
   pDesktop->ReleaseDC(pDC);
 
-  dc.SetStyle(style_Normal,0,NULL);
+  dc.SetStyle(style_Normal,0,NULL,NULL);
 
   CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
   if (pMainWnd)
@@ -2515,7 +2532,7 @@ extern "C" void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, gls
     if (pWnd->IsKindOf(RUNTIME_CLASS(CWinGlkWndGraphics)))
     {
       CRect Rectange(left,top,left+width,top+height);
-      pWnd->FillRect(Rectange,CWinGlkWnd::GetColour(color));
+      pWnd->FillRect(Rectange,CWinGlkWnd::GetColour(color,NULL));
       invalidate = true;
     }
   }
@@ -2530,7 +2547,7 @@ extern "C" void glk_window_set_background_color(winid_t win, glui32 color)
   {
     if (pWnd->IsKindOf(RUNTIME_CLASS(CWinGlkWndGraphics)))
     {
-      pWnd->SetBackColour(CWinGlkWnd::GetColour(color));
+      pWnd->SetBackColour(CWinGlkWnd::GetColour(color,NULL));
       invalidate = true;
     }
   }

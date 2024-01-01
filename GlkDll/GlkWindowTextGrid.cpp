@@ -56,10 +56,12 @@ void CWinGlkWndTextGrid::InitDC(CWinGlkDC& dc, CDC* pdcCompat)
     dc.CreateCompatibleDC(pdcCompat);
 
   // Set colours
-  dc.SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
-  dc.SetBkColor(GetColour(GetStyle(style_Normal)->m_BackColour));
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  DarkMode* dark = DarkMode::GetActive(this);
+  dc.SetTextColor(pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark));
+  dc.SetBkColor(GetColour(GetStyle(style_Normal)->m_BackColour,dark));
 
-  dc.SetStyle(style_Normal,false,NULL);
+  dc.SetStyle(style_Normal,false,NULL,dark);
 }
 
 int CWinGlkWndTextGrid::GetCaretHeight(void)
@@ -350,11 +352,13 @@ bool CWinGlkWndTextGrid::DistinguishStyles(int iStyle1, int iStyle2)
 
   if (pStyle1 && pStyle2)
   {
-    if (GetColour(pStyle1->m_TextColour) != GetColour(pStyle2->m_TextColour))
+    DarkMode* dark = DarkMode::GetActive(this);
+
+    if (GetColour(pStyle1->m_TextColour,dark) != GetColour(pStyle2->m_TextColour,dark))
       return true;
-    if (GetColour(pStyle1->m_BackColour) != GetColour(pStyle2->m_BackColour))
+    if (GetColour(pStyle1->m_BackColour,dark) != GetColour(pStyle2->m_BackColour,dark))
       return true;
-    if (GetColour(pStyle1->m_ReverseColour) != GetColour(pStyle2->m_ReverseColour))
+    if (GetColour(pStyle1->m_ReverseColour,dark) != GetColour(pStyle2->m_ReverseColour,dark))
       return true;
   }
   return false;
@@ -388,7 +392,8 @@ bool CWinGlkWndTextGrid::MeasureStyle(int iStyle, int iHint, glui32* pResult)
     case stylehint_TextColor:
       if (pResult)
       {
-        int iColour = GetColour(pStyle->m_TextColour);
+        DarkMode* dark = DarkMode::GetActive(this);
+        int iColour = GetColour(pStyle->m_TextColour,dark);
         BYTE r = (BYTE)((iColour & 0x00FF0000) >> 16);
         BYTE g = (BYTE)((iColour & 0x0000FF00) >> 8);
         BYTE b = (BYTE)((iColour & 0x000000FF));
@@ -398,7 +403,8 @@ bool CWinGlkWndTextGrid::MeasureStyle(int iStyle, int iHint, glui32* pResult)
     case stylehint_BackColor:
       if (pResult)
       {
-        int iColour = GetColour(pStyle->m_BackColour);
+        DarkMode* dark = DarkMode::GetActive(this);
+        int iColour = GetColour(pStyle->m_BackColour,dark);
         BYTE r = (BYTE)((iColour & 0x00FF0000) >> 16);
         BYTE g = (BYTE)((iColour & 0x0000FF00) >> 8);
         BYTE b = (BYTE)((iColour & 0x000000FF));
@@ -438,16 +444,17 @@ void CWinGlkWndTextGrid::OnPaint(void)
   CBitmap* pbmpOld = dcMem.SelectObject(&bmp);
 
   // Clear the window
+  DarkMode* dark = DarkMode::GetActive(this);
   CWinGlkStyle* pNormal = GetStyle(style_Normal);
   dcMem.FillSolidRect(ClientArea,GetColour(
     pNormal->m_ReverseColour ? pNormal->m_TextColour :
-      m_BackColour == zcolor_Default ? pNormal->m_BackColour : m_BackColour));
+      m_BackColour == zcolor_Default ? pNormal->m_BackColour : m_BackColour,dark));
 
   // Draw the text
   int y = 0;
   for (int i = 0; i < m_TextGrid.GetSize(); i++)
   {
-    m_TextGrid[i].DrawRow(dcMem,0,y);
+    m_TextGrid[i].DrawRow(dcMem,0,y,dark);
     y += dcMem.m_FontMetrics.tmHeight;
   }
 
@@ -588,12 +595,12 @@ bool CWinGlkWndTextGrid::CGridCellInfo::operator!=(const CGridCellInfo& Info)
   return (operator==)(Info) ? false : true;
 }
 
-void CWinGlkWndTextGrid::CGridRow::DrawRow(CWinGlkDC& dc, int x, int y)
+void CWinGlkWndTextGrid::CGridRow::DrawRow(CWinGlkDC& dc, int x, int y, DarkMode* dark)
 {
   CGridCellInfo Info;
   if (m_RowInfo.GetSize() > 0)
     Info = m_RowInfo[0];
-  dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours());
+  dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours(),dark);
 
   int i1 = 0, i2 = 1;
   while (i1+i2 < GetLength())
@@ -604,7 +611,7 @@ void CWinGlkWndTextGrid::CGridRow::DrawRow(CWinGlkDC& dc, int x, int y)
       x += dc.m_FontMetrics.tmAveCharWidth * i2;
 
       Info = m_RowInfo[i1+i2];
-      dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours());
+      dc.SetStyle(Info.GetStyle(),Info.GetLink(),Info.GetColours(),dark);
 
       i1 += i2;
       i2 = 0;
