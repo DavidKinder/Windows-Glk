@@ -97,9 +97,11 @@ static glsi32 ColourToGlk(COLORREF Colour, DarkMode* dark)
   int iColour = 0;
 
   if (Colour == pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark))
-    iColour = 0xFFFFFFFF;
+    iColour = WINGLK_COLOUR_TEXT;
   else if (Colour == pApp->GetSysOrDarkColour(COLOR_WINDOW,dark))
-    iColour = 0xFFFFFFFE;
+    iColour = WINGLK_COLOUR_BACK;
+  else if (Colour == pApp->GetDefaultLinkColour(dark))
+    iColour = WINGLK_COLOUR_LINK;
   else
   {
     int r = GetRValue(Colour);
@@ -116,16 +118,22 @@ static COLORREF GlkToColour(glsi32 iColour, DarkMode* dark)
   COLORREF Colour;
   switch (iColour)
   {
-  case 0xFFFFFFFF:
+  case WINGLK_COLOUR_TEXT:
     {
       CGlkApp* pApp = (CGlkApp*)AfxGetApp();
       Colour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
     }
     break;
-  case 0xFFFFFFFE:
+  case WINGLK_COLOUR_BACK:
     {
       CGlkApp* pApp = (CGlkApp*)AfxGetApp();
       Colour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+    }
+    break;
+  case WINGLK_COLOUR_LINK:
+    {
+      CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+      Colour = pApp->GetDefaultLinkColour(dark);
     }
     break;
   default:
@@ -898,7 +906,7 @@ void CWinGlkMainWnd::OnOptions()
 
   GeneralPage.SetTextColour(GlkToColour(pApp->GetTextColour(),dark));
   GeneralPage.SetBackColour(GlkToColour(pApp->GetBackColour(),dark));
-  GeneralPage.SetLinkColour(pApp->GetLinkColour());
+  GeneralPage.SetLinkColour(GlkToColour(pApp->GetLinkColour(),dark));
 
   GeneralPage.m_iFiction = pApp->Get_iFiction();
 
@@ -932,7 +940,7 @@ void CWinGlkMainWnd::OnOptions()
 
     pApp->SetTextColour(ColourToGlk(GeneralPage.GetTextColour(),dark));
     pApp->SetBackColour(ColourToGlk(GeneralPage.GetBackColour(),dark));
-    pApp->SetLinkColour(GeneralPage.GetLinkColour());
+    pApp->SetLinkColour(ColourToGlk(GeneralPage.GetLinkColour(),dark));
 
     pApp->Set_iFiction((CGlkApp::Show_iFiction)GeneralPage.m_iFiction);
 

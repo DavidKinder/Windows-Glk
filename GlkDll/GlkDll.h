@@ -36,6 +36,10 @@ class DarkMode;
 // CGlkApp
 /////////////////////////////////////////////////////////////////////////////
 
+#define WINGLK_COLOUR_TEXT 0xFFFFFFFF
+#define WINGLK_COLOUR_BACK 0xFFFFFFFE
+#define WINGLK_COLOUR_LINK 0xFFFFFFFD
+
 class CGlkApp : public CWinApp
 {
 public:
@@ -96,13 +100,14 @@ public:
   const std::set<unsigned long>& GetInputTerminators(void) { return m_InputTerminators; }
   void SetInputTerminators(const std::set<unsigned long>& term) { m_InputTerminators = term; }
 
-  COLORREF GetLinkColour(void) { return m_LinkColour; }
-  void SetLinkColour(COLORREF Colour) { m_LinkColour = Colour; }
   glsi32 GetTextColour(void) { return m_TextColour; }
   void SetTextColour(glsi32 Colour) { m_TextColour = Colour; }
   glsi32 GetBackColour(void) { return m_BackColour; }
   void SetBackColour(glsi32 Colour) { m_BackColour = Colour; }
+  glsi32 GetLinkColour(void) { return m_LinkColour; }
+  void SetLinkColour(glsi32 Colour) { m_LinkColour = Colour; }
   COLORREF GetSysOrDarkColour(int index, DarkMode* dark);
+  COLORREF GetDefaultLinkColour(DarkMode* dark);
 
   CString& GetAppName(void) { return m_strAppName; }
   CString& GetAppTitle(void) { return m_strAppTitle; }
@@ -214,9 +219,9 @@ protected:
   CString m_strVoice;
   int m_iSpeakRate;
 
-  COLORREF m_LinkColour;
   glsi32 m_TextColour;
   glsi32 m_BackColour;
+  glsi32 m_LinkColour;
 
   CString m_strAppName;
   CString m_strAppTitle;

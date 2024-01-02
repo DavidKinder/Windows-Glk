@@ -948,20 +948,26 @@ COLORREF CWinGlkWnd::GetColour(glsi32 iColour, DarkMode* dark)
 
   switch (iColour)
   {
-  case 0xFFFFFFFF:
+  case WINGLK_COLOUR_TEXT:
     iColour = ((CGlkApp*)AfxGetApp())->GetTextColour();
     break;
-  case 0xFFFFFFFE:
+  case WINGLK_COLOUR_BACK:
     iColour = ((CGlkApp*)AfxGetApp())->GetBackColour();
+    break;
+  case WINGLK_COLOUR_LINK:
+    iColour = ((CGlkApp*)AfxGetApp())->GetLinkColour();
     break;
   }
   switch (iColour)
   {
-  case 0xFFFFFFFF:
+  case WINGLK_COLOUR_TEXT:
     Colour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
     break;
-  case 0xFFFFFFFE:
+  case WINGLK_COLOUR_BACK:
     Colour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+    break;
+  case WINGLK_COLOUR_LINK:
+    Colour = pApp->GetDefaultLinkColour(dark);
     break;
   default:
     {
@@ -1313,7 +1319,7 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display, DarkMode* dark)
     SetBkColor(BackColour);
   }
   if (m_Display.m_iLink != 0)
-    SetTextColor(pApp->GetLinkColour());
+    SetTextColor(CWinGlkWnd::GetColour(pApp->GetLinkColour(),dark));
   SetBkMode(OPAQUE);
 }
 

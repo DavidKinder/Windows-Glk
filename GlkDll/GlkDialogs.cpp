@@ -245,6 +245,7 @@ CWinGlkGeneralPage::CWinGlkGeneralPage()
   CGlkApp* pApp = (CGlkApp*)AfxGetApp();
   m_DefaultTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,NULL);
   m_DefaultBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,NULL);
+  m_DefaultLinkColour = pApp->GetDefaultLinkColour(NULL);
 }
 
 void CWinGlkGeneralPage::DoDataExchange(CDataExchange* pDX)
@@ -339,19 +340,24 @@ void CWinGlkGeneralPage::SetDarkMode(DarkMode* dark, bool init)
   {
     m_DefaultTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
     m_DefaultBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+    m_DefaultLinkColour = pApp->GetDefaultLinkColour(dark);
   }
   else
   {
     COLORREF NewTextColour = pApp->GetSysOrDarkColour(COLOR_WINDOWTEXT,dark);
     COLORREF NewBackColour = pApp->GetSysOrDarkColour(COLOR_WINDOW,dark);
+    COLORREF NewLinkColour = pApp->GetDefaultLinkColour(dark);
 
     if (GetTextColour() == m_DefaultTextColour)
       SetTextColour(NewTextColour);
     if (GetBackColour() == m_DefaultBackColour)
       SetBackColour(NewBackColour);
+    if (GetLinkColour() == m_DefaultLinkColour)
+      SetLinkColour(NewLinkColour);
 
     m_DefaultTextColour = NewTextColour;
     m_DefaultBackColour = NewBackColour;
+    m_DefaultLinkColour = NewLinkColour;
   }
 }
 

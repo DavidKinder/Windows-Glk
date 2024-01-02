@@ -193,7 +193,22 @@ void CGlkApp::ReadSettings(void)
     m_strVoice = GetProfileString("Glk Settings","Voice","");
     m_iSpeakRate = GetProfileInt("Glk Settings","Speech Rate",0);
 
-    m_LinkColour = GetProfileInt("Glk Settings","Hyperlink Colour",RGB(0x00,0x00,0xFF));
+    if (iVersion < 154)
+    {
+      COLORREF DefaultColour = GetDefaultLinkColour(NULL);
+      COLORREF LinkColour = GetProfileInt("Glk Settings","Hyperlink Colour",DefaultColour);
+      if (LinkColour == DefaultColour)
+        m_LinkColour = WINGLK_COLOUR_LINK;
+      else
+      {
+        int r = GetRValue(LinkColour);
+        int g = GetGValue(LinkColour);
+        int b = GetBValue(LinkColour);
+        m_LinkColour = (r<<16) | (g<<8) | b;
+      }
+    }
+    else
+      m_LinkColour = GetProfileInt("Glk Settings","Hyperlink Colour 2",WINGLK_COLOUR_LINK);
 
     if (iVersion < 150)
       m_strInitialPath = GetProfileString("Glk Settings","Directory","");
@@ -206,8 +221,8 @@ void CGlkApp::ReadSettings(void)
 
     CWinGlkWndTextBuffer::GetDefaultStyles()->ReadSettings("Glk Buffer Style %d",iVersion);
     CWinGlkWndTextGrid::GetDefaultStyles()->ReadSettings("Glk Grid Style %d",iVersion);
-    m_TextColour = GetProfileInt("Glk Buffer Style 0","Text Colour",0xFFFFFFFF);
-    m_BackColour = GetProfileInt("Glk Buffer Style 0","Back Colour",0xFFFFFFFE);
+    m_TextColour = GetProfileInt("Glk Buffer Style 0","Text Colour",WINGLK_COLOUR_TEXT);
+    m_BackColour = GetProfileInt("Glk Buffer Style 0","Back Colour",WINGLK_COLOUR_BACK);
 
     m_bSettingsRead = true;
   }
@@ -217,7 +232,7 @@ void CGlkApp::WriteSettings(void)
 {
   if (m_bSettingsRead && m_bSaveSettings)
   {
-    WriteProfileInt("Glk Settings","Version",150);
+    WriteProfileInt("Glk Settings","Version",154);
 
     CWnd* pDesktop = CWnd::GetDesktopWindow();
     CDC* pDC = pDesktop->GetDC();
@@ -240,7 +255,7 @@ void CGlkApp::WriteSettings(void)
     WriteProfileString("Glk Settings","Voice",m_strVoice);
     WriteProfileInt("Glk Settings","Speech Rate",m_iSpeakRate);
 
-    WriteProfileInt("Glk Settings","Hyperlink Colour",m_LinkColour);
+    WriteProfileInt("Glk Settings","Hyperlink Colour 2",m_LinkColour);
 
     WriteProfileString("Glk Settings","Initial Path",m_strInitialPath);
     WriteProfileInt("Glk Settings","Show iFiction Dialog",m_iFiction);
@@ -472,6 +487,11 @@ COLORREF CGlkApp::GetSysOrDarkColour(int index, DarkMode* dark)
     }
   }
   return ::GetSysColor(index);
+}
+
+COLORREF CGlkApp::GetDefaultLinkColour(DarkMode* dark)
+{
+  return dark ? RGB(0x80,0x80,0xFF) : RGB(0x00,0x00,0xFF);
 }
 
 void CGlkApp::AddMenuName(CString& text)

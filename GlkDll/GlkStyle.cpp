@@ -8,6 +8,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "StdAfx.h"
+#include "GlkDll.h"
 #include "GlkStyle.h"
 
 #ifdef _DEBUG
@@ -131,8 +132,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 0;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Emphasized:
@@ -143,8 +144,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 1;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Preformatted:
@@ -155,8 +156,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 0;
     m_Oblique = 0;
     m_Proportional = 0;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Header:
@@ -167,8 +168,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 1;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Subheader:
@@ -179,8 +180,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 1;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Alert:
@@ -191,8 +192,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 1;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Note:
@@ -203,8 +204,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 0;
     m_Oblique = 1;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_BlockQuote:
@@ -215,8 +216,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 0;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   case style_Input:
@@ -227,8 +228,8 @@ void CWinGlkStyle::SetStyle(int iStyle)
     m_Weight = 1;
     m_Oblique = 0;
     m_Proportional = 1;
-    m_TextColour = 0xFFFFFFFF;
-    m_BackColour = 0xFFFFFFFE;
+    m_TextColour = WINGLK_COLOUR_TEXT;
+    m_BackColour = WINGLK_COLOUR_BACK;
     m_ReverseColour = 0;
     break;
   }

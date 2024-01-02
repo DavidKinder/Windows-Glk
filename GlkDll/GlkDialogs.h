@@ -157,6 +157,7 @@ protected:
 
   COLORREF m_DefaultTextColour;
   COLORREF m_DefaultBackColour;
+  COLORREF m_DefaultLinkColour;
 };
 
 /////////////////////////////////////////////////////////////////////////////
