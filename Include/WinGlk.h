@@ -1,6 +1,6 @@
 /*
    Header file for Windows specific Glk features.
-   Glk API version 0.7.5, WinGlk release 1.53.
+   Glk API version 0.7.6, WinGlk release 1.54.
 */
 
 #ifndef WINGLK_H_
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define WINGLK_BUILD_NUMBER 153
+#define WINGLK_BUILD_NUMBER 154
 
 /* Function to be implemented in the Glk program. */
 int winglk_startup_code(const char* cmdline);

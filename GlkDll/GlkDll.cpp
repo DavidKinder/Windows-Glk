@@ -1476,7 +1476,7 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
   switch (sel)
   {
   case gestalt_Version:
-    return 0x00000705; // Glk 0.7.5
+    return 0x00000706; // Glk 0.7.6
 
   case gestalt_LineInput:
     if ((val >= 32 && val <= 126) || (val >= 160 && val <= 0xFFFF))
@@ -1616,6 +1616,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
     return 1;
 
   case gestalt_GraphicsCharInput:
+    return 1;
+
+  case gestalt_DrawImageScale:
     return 1;
 
   case gestalt_GarglkText:
@@ -2490,6 +2493,13 @@ extern "C" glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, 
     }
   }
   return iDraw;
+}
+
+extern "C" glui32 glk_image_draw_scaled_ext(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height, glui32 imagerule, glui32 maxwidth)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  return 0;
 }
 
 extern "C" glui32 glk_image_get_info(glui32 image, glui32 *width, glui32 *height)
