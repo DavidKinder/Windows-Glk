@@ -41,7 +41,8 @@ public:
   virtual bool MouseClick(CPoint& Click);
 
   virtual bool DrawGraphic(CWinGlkGraphic* pGraphic,
-    int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete);
+    int iValue1, int iValue2, int iWidth, int iHeight,
+    unsigned int iImageRule, unsigned int iMaxWidth, bool& bDelete);
 
   void SetBackColour(COLORREF Colour) { m_BackColour = Colour; }
   void FillRect(CRect& Rect,COLORREF Colour);

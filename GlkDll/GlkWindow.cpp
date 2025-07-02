@@ -749,7 +749,8 @@ void CWinGlkWnd::SetEchoStream(CWinGlkStream* pStream)
   m_pEcho = pStream;
 }
 
-bool CWinGlkWnd::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete)
+bool CWinGlkWnd::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2,
+  int iWidth, int iHeight, unsigned int iImageRule, unsigned int iMaxWidth, bool& bDelete)
 {
   bDelete = true;
   return false;

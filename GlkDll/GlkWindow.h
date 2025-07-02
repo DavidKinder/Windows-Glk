@@ -116,7 +116,8 @@ public:
   virtual bool MeasureStyle(int iStyle, int iHint, glui32* pResult) { return false; }
 
   virtual bool DrawGraphic(CWinGlkGraphic* pGraphic,
-    int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete);
+    int iValue1, int iValue2, int iWidth, int iHeight,
+    unsigned int iImageRule, unsigned int iMaxWidth, bool& bDelete);
 
   virtual void Scrollback(void) {}
 

@@ -531,16 +531,34 @@ bool CWinGlkWndTextBuffer::MeasureStyle(int iStyle, int iHint, glui32* pResult)
   return bMeasured;
 }
 
-bool CWinGlkWndTextBuffer::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete)
+bool CWinGlkWndTextBuffer::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2,
+  int iWidth, int iHeight, unsigned int iImageRule, unsigned int iMaxWidth, bool& bDelete)
 {
   if (pGraphic)
   {
     if (pGraphic->m_pPixels && pGraphic->m_pHeader)
     {
-      if (iWidth < 0)
+      // Get the width and height
+      switch (iImageRule & imagerule_WidthMask)
+      {
+      case imagerule_WidthOrig:
         iWidth = pGraphic->m_pHeader->biWidth;
-      if (iHeight < 0)
+        break;
+      case imagerule_WidthFixed:
+        break;
+      default:
+        return false;
+      }
+      switch (iImageRule & imagerule_HeightMask)
+      {
+      case imagerule_HeightOrig:
         iHeight = abs(pGraphic->m_pHeader->biHeight);
+        break;
+      case imagerule_HeightFixed:
+        break;
+      default:
+        return false;
+      }
 
       if (m_TextBuffer.GetSize() == 0)
         AddNewParagraph();

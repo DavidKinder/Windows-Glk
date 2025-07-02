@@ -153,10 +153,11 @@ bool CWinGlkWndGraphics::MouseClick(CPoint& Click)
   return false;
 }
 
-bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2, int iWidth, int iHeight, bool& bDelete)
+bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int iValue2,
+  int iWidth, int iHeight, unsigned int iImageRule, unsigned int iMaxWidth, bool& bDelete)
 {
   bool bDraw = false;
-  bool bScale = true;
+  bool bScale = false;
   bDelete = true;
 
   if (pGraphic)
@@ -171,12 +172,30 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
 
         // Get the width and height and whether or not the graphic
         // is to be scaled.
-        if ((iWidth < 0) && (iHeight < 0))
-          bScale = false;
-        if (iWidth < 0)
+        switch (iImageRule & imagerule_WidthMask)
+        {
+        case imagerule_WidthOrig:
           iWidth = pGraphic->m_pHeader->biWidth;
-        if (iHeight < 0)
+          break;
+        case imagerule_WidthFixed:
+          bScale = true;
+          break;
+        default:
+          return false;
+        }
+        switch (iImageRule & imagerule_HeightMask)
+        {
+        case imagerule_HeightOrig:
           iHeight = abs(pGraphic->m_pHeader->biHeight);
+          break;
+        case imagerule_HeightFixed:
+          bScale = true;
+          break;
+        default:
+          return false;
+        }
+        if ((iWidth <= 0) || (iHeight <= 0))
+          return false;
 
         // Work out clipping values for graphics which are partially
         // or completely out of the graphics window.

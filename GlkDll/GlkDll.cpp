@@ -2445,61 +2445,38 @@ extern "C" void glk_cancel_mouse_event(winid_t win)
 
 extern "C" glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2)
 {
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-  int iDraw = 0;
-
-  CWinGlkWnd* pWnd = (CWinGlkWnd*)win;
-  if (CWinGlkWnd::IsValidWindow(pWnd))
-  {
-    CWinGlkGraphic* pGraphic = pApp->LoadGraphic(image,TRUE,TRUE);
-    if (pGraphic)
-    {
-      bool bDelete = true;
-      if (pWnd->DrawGraphic(pGraphic,val1,val2,-1,-1,bDelete))
-      {
-        iDraw = 1;
-        invalidate = true;
-      }
-      if (bDelete)
-        delete pGraphic;
-    }
-  }
-  return iDraw;
+  return glk_image_draw_scaled_ext(win,image,val1,val2,0,0,imagerule_WidthOrig|imagerule_HeightOrig,0x10000);
 }
 
 extern "C" glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height)
 {
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
-  int iDraw = 0;
-
-  CWinGlkWnd* pWnd = (CWinGlkWnd*)win;
-  if (CWinGlkWnd::IsValidWindow(pWnd))
-  {
-    CWinGlkGraphic* pGraphic = pApp->LoadGraphic(image,TRUE,TRUE);
-    if (pGraphic)
-    {
-      bool bDelete = true;
-      if (pWnd->DrawGraphic(pGraphic,val1,val2,width,height,bDelete))
-      {
-        iDraw = 1;
-        invalidate = true;
-      }
-      if (bDelete)
-        delete pGraphic;
-    }
-  }
-  return iDraw;
+  return glk_image_draw_scaled_ext(win,image,val1,val2,width,height,imagerule_WidthFixed|imagerule_HeightFixed,0x10000);
 }
 
 extern "C" glui32 glk_image_draw_scaled_ext(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height, glui32 imagerule, glui32 maxwidth)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  return 0;
+  CGlkApp* pApp = (CGlkApp*)AfxGetApp();
+  int iDraw = 0;
+
+  CWinGlkWnd* pWnd = (CWinGlkWnd*)win;
+  if (CWinGlkWnd::IsValidWindow(pWnd))
+  {
+    CWinGlkGraphic* pGraphic = pApp->LoadGraphic(image,TRUE,TRUE);
+    if (pGraphic)
+    {
+      bool bDelete = true;
+      if (pWnd->DrawGraphic(pGraphic,val1,val2,width,height,imagerule,maxwidth,bDelete))
+      {
+        iDraw = 1;
+        invalidate = true;
+      }
+      if (bDelete)
+        delete pGraphic;
+    }
+  }
+  return iDraw;
 }
 
 extern "C" glui32 glk_image_get_info(glui32 image, glui32 *width, glui32 *height)
