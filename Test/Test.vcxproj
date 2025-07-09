@@ -73,6 +73,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\..\Executables\Debug/Test.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
+      <ImageHasSafeExceptionHandlers />
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -111,6 +112,7 @@
       <ProgramDatabaseFile>.\..\Executables\Release/Test.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers />
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

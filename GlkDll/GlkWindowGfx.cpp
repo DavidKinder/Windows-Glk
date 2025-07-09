@@ -180,6 +180,16 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
         case imagerule_WidthFixed:
           bScale = true;
           break;
+        case imagerule_WidthRatio:
+          {
+            CRect Client;
+            GetClientRect(Client);
+
+            double scale = ((double)iWidth) / 0x10000;
+            iWidth = (int)(scale * Client.Width());
+            bScale = true;
+          }
+          break;
         default:
           return false;
         }
@@ -190,6 +200,14 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
           break;
         case imagerule_HeightFixed:
           bScale = true;
+          break;
+        case imagerule_AspectRatio:
+          {
+            double aspect = ((double)abs(pGraphic->m_pHeader->biHeight)) / pGraphic->m_pHeader->biWidth;
+            double scale = ((double)iHeight) / 0x10000;
+            iHeight = (int)(aspect * scale * iWidth);
+            bScale = true;
+        }
           break;
         default:
           return false;
