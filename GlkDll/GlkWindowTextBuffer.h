@@ -173,6 +173,8 @@ protected:
     void AddColourChange(const CTextColours& colours);
 
     bool ClearFormatting(void);
+    void SetGraphicSize(CWinGlkGraphic* pGraphic, CRect* pWindowSize);
+    void ResizeGraphics(CRect* pWindowSize);
     void Format(CPaintInfo& Info);
     void Update(CPaintInfo& Info, int& iOffset, CWinGlkWnd* pWnd);
     bool Paint(CPaintInfo& Info, int& iFinalLeft, int& iFinalTop, bool bMark);
@@ -251,6 +253,7 @@ protected:
   void AddNewParagraph(void);
   void GetLastShown(int &iLastPara, int& iLastChar);
   void ClearFormatting(int iPara);
+  void ResizeGraphics(CRect* pWindowSize);
 
   template<class XCHAR> void PaintInputBuffer(
     CWinGlkDC& dc, const XCHAR* input, int inputLen, CPaintInfo& Info);

@@ -30,8 +30,15 @@ CWinGlkGraphic::CWinGlkGraphic()
 
   m_iWidth = 0;
   m_iHeight = 0;
-  m_iDisplay = 0;
   m_bAlpha = false;
+
+  m_iDisplay = 0;
+  m_ImageRule = 0;
+  m_iFixedWidth = 0;
+  m_iFixedHeight = 0;
+  m_ScaleWidth = 1.0;
+  m_ScaleHeight = 1.0;
+  m_MaxWidth = 1.0;
 };
 
 CWinGlkGraphic::~CWinGlkGraphic()

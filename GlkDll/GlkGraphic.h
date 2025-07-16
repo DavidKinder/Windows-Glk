@@ -32,8 +32,15 @@ public:
 
   int m_iWidth;
   int m_iHeight;
-  int m_iDisplay;
   bool m_bAlpha;
+
+  int m_iDisplay;
+  unsigned int m_ImageRule;
+  int m_iFixedWidth;
+  int m_iFixedHeight;
+  double m_ScaleWidth;
+  double m_ScaleHeight;
+  double m_MaxWidth;
 };
 
 /////////////////////////////////////////////////////////////////////////////

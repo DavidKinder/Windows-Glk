@@ -237,8 +237,10 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
         {
           // Create a temporary DIBSection
           CDC* pWndDC = GetDC();
-          DibSection.CreateBitmap(pWndDC->GetSafeHdc(),iWidth,iHeight);
+          BOOL created = DibSection.CreateBitmap(pWndDC->GetSafeHdc(),iWidth,iHeight);
           ReleaseDC(pWndDC);
+          if (!created)
+            return false;
 
           // Draw the graphic into the temporary DIBSection
           ppvBits = DibSection.GetBits();

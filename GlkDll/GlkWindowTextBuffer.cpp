@@ -143,6 +143,7 @@ void CWinGlkWndTextBuffer::SizeWindow(CRect* pSize)
 {
   CWinGlkWnd::SizeWindow(pSize);
   ClearFormatting(-1);
+  ResizeGraphics(pSize);
 }
 
 void CWinGlkWndTextBuffer::ClearWindow(void)
@@ -538,13 +539,21 @@ bool CWinGlkWndTextBuffer::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, in
   {
     if (pGraphic->m_pPixels && pGraphic->m_pHeader)
     {
-      // Get the width and height
+      // Save the arguments needed later to recalculate the size of the graphic
+      pGraphic->m_iDisplay = iValue1;
+      pGraphic->m_ImageRule = iImageRule;
+      pGraphic->m_MaxWidth = (double)iMaxWidth / 0x10000;
+
       switch (iImageRule & imagerule_WidthMask)
       {
       case imagerule_WidthOrig:
-        iWidth = pGraphic->m_pHeader->biWidth;
+        pGraphic->m_iFixedWidth = pGraphic->m_pHeader->biWidth;
         break;
       case imagerule_WidthFixed:
+        pGraphic->m_iFixedWidth = iWidth;
+        break;
+      case imagerule_WidthRatio:
+        pGraphic->m_ScaleWidth = (double)iWidth / 0x10000;
         break;
       default:
         return false;
@@ -552,25 +561,31 @@ bool CWinGlkWndTextBuffer::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, in
       switch (iImageRule & imagerule_HeightMask)
       {
       case imagerule_HeightOrig:
-        iHeight = abs(pGraphic->m_pHeader->biHeight);
+        pGraphic->m_iFixedHeight = abs(pGraphic->m_pHeader->biHeight);
         break;
       case imagerule_HeightFixed:
+        pGraphic->m_iFixedHeight = iHeight;
+        break;
+      case imagerule_AspectRatio:
+        {
+          double aspect = ((double)abs(pGraphic->m_pHeader->biHeight)) / pGraphic->m_pHeader->biWidth;
+          pGraphic->m_ScaleHeight = aspect * ((double)iHeight / 0x10000);
+        }
         break;
       default:
         return false;
       }
 
+      // Store the graphic
       if (m_TextBuffer.GetSize() == 0)
         AddNewParagraph();
       CParagraph* last = m_TextBuffer[m_TextBuffer.GetUpperBound()];
-
-      pGraphic->m_iWidth = iWidth;
-      pGraphic->m_iHeight = iHeight;
-      pGraphic->m_iDisplay = iValue1;
-
-      // Store the graphic
       if (last->AddGraphic(pGraphic))
       {
+        CRect ClientArea;
+        GetClientRect(ClientArea);
+        last->SetGraphicSize(pGraphic,&ClientArea);
+
         ClearFormatting(m_TextBuffer.GetUpperBound());
         bDelete = false;
         return true;
@@ -915,6 +930,12 @@ void CWinGlkWndTextBuffer::ClearFormatting(int iPara)
     for (int i = 0; i < m_TextBuffer.GetSize(); i++)
       m_TextBuffer[i]->ClearFormatting();
   }
+}
+
+void CWinGlkWndTextBuffer::ResizeGraphics(CRect* pWindowSize)
+{
+  for (int i = 0; i < m_TextBuffer.GetSize(); i++)
+    m_TextBuffer[i]->ResizeGraphics(pWindowSize);
 }
 
 template<class XCHAR> void CWinGlkWndTextBuffer::PaintInputBuffer(
@@ -1363,8 +1384,8 @@ void CWinGlkWndTextBuffer::CPaintInfo::DrawGraphic(CWinGlkGraphic* pGraphic, int
 
   // Create a temporary DIBSection
   CDibSection DibSection;
-  DibSection.CreateBitmap(m_DeviceContext.GetSafeHdc(),
-    pGraphic->m_iWidth,pGraphic->m_iHeight);
+  if (!DibSection.CreateBitmap(m_DeviceContext.GetSafeHdc(),pGraphic->m_iWidth,pGraphic->m_iHeight))
+    return;
   CBitmap* pOldBitmap = CDibSection::SelectDibSection(dcMem,&DibSection);
 
   // Is this graphic being scaled?
@@ -1595,6 +1616,39 @@ bool CWinGlkWndTextBuffer::CParagraph::ClearFormatting(void)
     delete m_Formatting[i];
   m_Formatting.RemoveAll();
   return m_bClearAll;
+}
+
+void CWinGlkWndTextBuffer::CParagraph::SetGraphicSize(CWinGlkGraphic* pGraphic, CRect* pWindowSize)
+{
+  int width = pWindowSize->Width();
+
+  if ((pGraphic->m_ImageRule & imagerule_WidthMask) == imagerule_WidthRatio)
+    pGraphic->m_iWidth = (int)(pGraphic->m_ScaleWidth * width);
+  else
+    pGraphic->m_iWidth = pGraphic->m_iFixedWidth;
+
+  if ((pGraphic->m_ImageRule & imagerule_HeightMask) == imagerule_AspectRatio)
+    pGraphic->m_iHeight = (int)(pGraphic->m_ScaleHeight * pGraphic->m_iWidth);
+  else
+    pGraphic->m_iHeight = pGraphic->m_iFixedHeight;
+
+  if (pGraphic->m_MaxWidth > 0.0)
+  {
+    double ratio = (double)pGraphic->m_iHeight / (double)pGraphic->m_iWidth;
+    if (pGraphic->m_iWidth > (width * pGraphic->m_MaxWidth))
+    {
+      pGraphic->m_iWidth = (int)(width * pGraphic->m_MaxWidth);
+      pGraphic->m_iHeight = (int)(ratio * pGraphic->m_iWidth);
+    }
+  }
+}
+
+void CWinGlkWndTextBuffer::CParagraph::ResizeGraphics(CRect* pWindowSize)
+{
+  for (int i = 0; i < m_InlineGraphics.GetSize(); i++)
+    SetGraphicSize(m_InlineGraphics[i],pWindowSize);
+  for (int i = 0; i < m_MarginGraphics.GetSize(); i++)
+    SetGraphicSize(m_MarginGraphics[i],pWindowSize);
 }
 
 void CWinGlkWndTextBuffer::CParagraph::Format(CPaintInfo& Info)
