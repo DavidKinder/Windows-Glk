@@ -207,7 +207,7 @@ bool CWinGlkWndGraphics::DrawGraphic(CWinGlkGraphic* pGraphic, int iValue1, int 
             double scale = ((double)iHeight) / 0x10000;
             iHeight = (int)(aspect * scale * iWidth);
             bScale = true;
-        }
+          }
           break;
         default:
           return false;
