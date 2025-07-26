@@ -1619,7 +1619,9 @@ extern "C" glui32 glk_gestalt_ext(glui32 sel, glui32 val, glui32 *arr, glui32 ar
     return 1;
 
   case gestalt_DrawImageScale:
-    return 1;
+    if ((val == wintype_Graphics) || (val == wintype_TextBuffer))
+      return 1;
+    return 0;
 
   case gestalt_GarglkText:
     return 1;
