@@ -1330,7 +1330,6 @@ LRESULT AboutGameDialog::OnDpiChanged(WPARAM wparam, LPARAM)
           CWindowDC dc(this);
           if (m_CoverBitmap.CreateBitmap(dc,m_CoverRect.Width(),m_CoverRect.Height()))
           {
-            CGlkApp* pApp = (CGlkApp*)AfxGetApp();
             DarkMode* dark = DarkMode::GetActive(this);
 
             m_CoverBitmap.FillSolid(pApp->GetSysOrDarkColour(COLOR_3DFACE,dark));

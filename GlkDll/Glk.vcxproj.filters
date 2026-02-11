@@ -1,28 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Windows Glk">
-      <UniqueIdentifier>{dc889913-bd0d-4c32-ab40-d3566ad72ccb}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
-    </Filter>
-    <Filter Include="Windows Glk\Source Files">
-      <UniqueIdentifier>{55e2409f-ec51-43db-b8b7-c322530e8250}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Windows Glk\Header Files">
-      <UniqueIdentifier>{3565f2be-c8d7-4dda-85a2-70d1055c3285}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Windows Glk\Resource Files">
-      <UniqueIdentifier>{23bcefed-eb69-4089-baaf-872a3f5c8d67}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
-    </Filter>
     <Filter Include="Generic Glk">
       <UniqueIdentifier>{3f84c674-665f-420f-aa54-b30f71a3c97f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Libraries">
       <UniqueIdentifier>{52a893fc-efb3-4146-849c-b3aaada50042}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\JPEG">
-      <UniqueIdentifier>{d35094e1-be0d-47d6-8ab7-d486a16c47fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Libraries\PNG">
       <UniqueIdentifier>{b47e32b7-89eb-4006-a380-bb0024b28b3d}</UniqueIdentifier>
@@ -38,6 +21,20 @@
     </Filter>
     <Filter Include="Libraries\MFC">
       <UniqueIdentifier>{7b776732-c046-4651-a4e6-cfdf13e667c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows Glk">
+      <UniqueIdentifier>{dc889913-bd0d-4c32-ab40-d3566ad72ccb}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Windows Glk\Source Files">
+      <UniqueIdentifier>{55e2409f-ec51-43db-b8b7-c322530e8250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows Glk\Header Files">
+      <UniqueIdentifier>{3565f2be-c8d7-4dda-85a2-70d1055c3285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows Glk\Resource Files">
+      <UniqueIdentifier>{23bcefed-eb69-4089-baaf-872a3f5c8d67}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,90 +123,6 @@
     </ClCompile>
     <ClCompile Include="gi_dispa.c">
       <Filter>Generic Glk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jcomapi.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdapimin.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdapistd.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdatadst.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdatasrc.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdcoefct.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdcolor.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jddctmgr.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdhuff.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdinput.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdmainct.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdmarker.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdmaster.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdmerge.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdphuff.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdpostct.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdsample.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jdtrans.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jerror.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jidctflt.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jidctfst.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jidctint.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jidctred.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jmemmgr.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jmemnobs.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jquant1.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jquant2.c">
-      <Filter>Libraries\JPEG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Libraries\jpeg\jutils.c">
-      <Filter>Libraries\JPEG</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Libraries\libpng\png.c">
       <Filter>Libraries\PNG</Filter>
