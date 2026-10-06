@@ -12,7 +12,6 @@
 
 #include "GlkGraphic.h"
 #include "MenuBar.h"
-#include "TextOutput.h"
 #include "Resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -83,8 +82,6 @@ public:
 
   void SetWindowMask(CWinGlkGraphic* pGraphic);
 
-  TextOutput& GetTextOut(void) { return m_TextOut; }
-
 // Generated message map functions
 protected:
   //{{AFX_MSG(CWinGlkMainWnd)
@@ -129,7 +126,6 @@ protected:
   CRgn m_Mask;
   UINT m_CodePage;
   int m_dpi;
-  TextOutput m_TextOut;
   CRect m_NormalSize;
   CWnd* m_ModalDialog;
 };

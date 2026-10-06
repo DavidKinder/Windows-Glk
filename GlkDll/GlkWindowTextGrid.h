@@ -150,7 +150,7 @@ public:
   virtual CString GetFontName(void) const;
   virtual void SetFontStyles(LOGFONT& Font);
   virtual int GetStyleFontSize(void) const;
-  virtual bool UseFontSubstitution(void) const;
+  virtual bool UseCharacterCells(void) const;
 
 protected:
   int m_iSize;

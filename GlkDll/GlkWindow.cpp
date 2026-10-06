@@ -1183,30 +1183,18 @@ CWinGlkDC::CWinGlkDC(CWinGlkWnd* pWnd) : m_Display(style_Normal,0,NULL)
 {
   m_pWnd = pWnd;
   m_pFont = NULL;
-  m_pOldFont = NULL;
   memset(&m_FontMetrics,0,sizeof(TEXTMETRIC));
-
-  for (int i = 0; i < style_NUMSTYLES * 2; i++)
-    m_Fonts[i] = NULL;
 }
 
 CWinGlkDC::~CWinGlkDC()
 {
-  if (m_pOldFont)
-    SelectObject(m_pOldFont);
-
-  for (int i = 0; i < style_NUMSTYLES * 2; i++)
-  {
-    if (m_Fonts[i])
-      delete m_Fonts[i];
-  }
 }
 
 CWinGlkDC::CDisplay::CDisplay()
 {
   m_iStyle = 0;
   m_iLink = 0;
-  m_iIndex = 0;
+  m_pColours = NULL;
 }
 
 CWinGlkDC::CDisplay::CDisplay(int iStyle, unsigned int iLink, const CTextColours* pColours)
@@ -1214,7 +1202,6 @@ CWinGlkDC::CDisplay::CDisplay(int iStyle, unsigned int iLink, const CTextColours
   m_iStyle = iStyle;
   m_iLink = iLink;
   m_pColours = pColours;
-  m_iIndex = (iStyle * 2) + ((iLink != 0) ? 1 : 0);
 }
 
 bool CWinGlkDC::CDisplay::operator==(const CDisplay& Compare)
@@ -1252,54 +1239,44 @@ void CWinGlkDC::SetDisplay(const CDisplay& Display, DarkMode* dark)
   else
     m_Style.SetStyle(style_Normal);
 
-  // Is there already a font previously allocated for this style?
-  if (m_Fonts[m_Display.m_iIndex])
-    m_pFont = m_Fonts[m_Display.m_iIndex];
+  CString name = GetFontName();
+
+  LOGFONT TextLogFont = { 0 };
+  strncpy(TextLogFont.lfFaceName,(LPCSTR)name,LF_FACESIZE-1);
+  SetFontStyles(TextLogFont);
+
+  if (m_Display.m_iLink != 0)
+    TextLogFont.lfUnderline = TRUE;
+
+  int iPointSize = pApp->GetFontPointSize();
+  int iStyleSize = GetStyleFontSize();
+  double dPointInc = iPointSize*fabs((double)iStyleSize)*0.1;
+  if (dPointInc < 1.0)
+    dPointInc = 1.0;
+  if (iStyleSize > 0)
+    iPointSize += (int)ceil(dPointInc);
+  else if (iStyleSize < 0)
+    iPointSize -= (int)ceil(dPointInc);
+  if (iPointSize < 4)
+    iPointSize = 4;
+  if (m_pWnd)
+    TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getWindowDPI(m_pWnd),72);
+  else
+    TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getSystemDPI(),72);
+
+  // Get the font and its metrics
+  m_pFont = WinGlkDirectWrite::GetFont(TextLogFont);
+  if (m_pFont)
+    WinGlkDirectWrite::GetMetrics(m_pFont,m_FontMetrics);
   else
   {
-    CString name = GetFontName();
-
-    LOGFONT TextLogFont = { 0 };
-    strncpy(TextLogFont.lfFaceName,(LPCSTR)name,LF_FACESIZE);
-    SetFontStyles(TextLogFont);
-
-    if (m_Display.m_iLink != 0)
-      TextLogFont.lfUnderline = TRUE;
-
-    TextLogFont.lfCharSet = ANSI_CHARSET;
-    TextLogFont.lfOutPrecision = OUT_TT_PRECIS;
-    TextLogFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-    TextLogFont.lfQuality = PROOF_QUALITY;
-    TextLogFont.lfPitchAndFamily = DEFAULT_PITCH|FF_DONTCARE;
-
-    int iPointSize = pApp->GetFontPointSize();
-    int iStyleSize = GetStyleFontSize();
-    double dPointInc = iPointSize*fabs((double)iStyleSize)*0.1;
-    if (dPointInc < 1.0)
-      dPointInc = 1.0;
-    if (iStyleSize > 0)
-      iPointSize += (int)ceil(dPointInc);
-    else if (iStyleSize < 0)
-      iPointSize -= (int)ceil(dPointInc);
-    if (iPointSize < 4)
-      iPointSize = 4;
-    if (m_pWnd)
-      TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getWindowDPI(m_pWnd),72);
-    else
-      TextLogFont.lfHeight = -MulDiv(iPointSize,DPI::getSystemDPI(),72);
-
-    m_pFont = new CFont;
-    m_pFont->CreateFontIndirect(&TextLogFont);
-    m_Fonts[m_Display.m_iIndex] = m_pFont;
+    int iPixels = -TextLogFont.lfHeight;
+    memset(&m_FontMetrics,0,sizeof(TEXTMETRIC));
+    m_FontMetrics.tmAscent = iPixels;
+    m_FontMetrics.tmDescent = max(iPixels/4,1);
+    m_FontMetrics.tmHeight = m_FontMetrics.tmAscent + m_FontMetrics.tmDescent;
+    m_FontMetrics.tmAveCharWidth = max(iPixels/2,1);
   }
-
-  if (m_pOldFont)
-    SelectObject(m_pOldFont);
-  if (m_pFont)
-    m_pOldFont = SelectObject(m_pFont);
-
-  // Get the metrics of the currently selected font
-  GetTextMetrics(&m_FontMetrics);
 
   // Set the text and background colours
   CTextColours overColours;
@@ -1332,28 +1309,32 @@ CWinGlkStyle* CWinGlkDC::GetStyleFromWindow(int iStyle)
   return pStyle;
 }
 
+// Glk's 8-bit strings are Latin-1, which maps directly to the start of Unicode
+static CStringW Latin1ToUni(LPCSTR lpszString, int nCount)
+{
+  CStringW str;
+  wchar_t* pStr = str.GetBufferSetLength(nCount);
+  for (int i = 0; i < nCount; i++)
+    pStr[i] = (unsigned char)lpszString[i];
+  str.ReleaseBuffer(nCount);
+  return str;
+}
+
 BOOL CWinGlkDC::TextOut(int x, int y, LPCSTR lpszString, int nCount)
 {
-  return ::TextOut(m_hDC,x,y,lpszString,nCount);
+  return TextOut(x,y,Latin1ToUni(lpszString,nCount));
 }
 
 CSize CWinGlkDC::GetTextExtent(LPCSTR lpszString, int nCount) const
 {
-  SIZE size;
-  ::GetTextExtentPoint32(m_hDC,lpszString,nCount,&size);
-  return size;
+  return GetTextExtent(Latin1ToUni(lpszString,nCount));
 }
 
 BOOL CWinGlkDC::TextOut(int x, int y, LPCWSTR lpszString, int nCount)
 {
-  if (UseFontSubstitution())
-  {
-    ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
-      TextOut(m_hDC,x,y,lpszString,nCount);
-    return TRUE;
-  }
-  else
-    return ::TextOutW(m_hDC,x,y,lpszString,nCount);
+  int iFitWidth = UseCharacterCells() ? m_FontMetrics.tmAveCharWidth*nCount : 0;
+  WinGlkDirectWrite::TextOut(m_pFont,m_hDC,x,y,lpszString,nCount,iFitWidth);
+  return TRUE;
 }
 
 BOOL CWinGlkDC::TextOut(int x, int y, const CStringW& str)
@@ -1363,20 +1344,27 @@ BOOL CWinGlkDC::TextOut(int x, int y, const CStringW& str)
 
 CSize CWinGlkDC::GetTextExtent(LPCWSTR lpszString, int nCount) const
 {
-  if (UseFontSubstitution())
-  {
-    return ((CWinGlkMainWnd*)AfxGetApp()->GetMainWnd())->GetTextOut().
-      GetTextExtent(m_hDC,lpszString,nCount);
-  }
-  else
-  {
-    SIZE size;
-    ::GetTextExtentPoint32W(m_hDC,lpszString,nCount,&size);
-    return size;
-  }
+  if (UseCharacterCells())
+    return CSize(m_FontMetrics.tmAveCharWidth*nCount,m_FontMetrics.tmHeight);
+  return WinGlkDirectWrite::GetTextExtent(m_pFont,lpszString,nCount);
 }
 
 CSize CWinGlkDC::GetTextExtent(const CStringW& str) const
 {
   return GetTextExtent(str,(int)str.GetLength());
+}
+
+void CWinGlkDC::BeginDraw(const CRect& Rect)
+{
+  WinGlkDirectWrite::BeginDraw(m_hDC,Rect);
+}
+
+void CWinGlkDC::EndDraw(void)
+{
+  WinGlkDirectWrite::EndDraw();
+}
+
+bool CWinGlkDC::CanOutput(UINT32 c) const
+{
+  return WinGlkDirectWrite::CanOutput(m_pFont,c);
 }

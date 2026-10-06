@@ -451,6 +451,7 @@ void CWinGlkWndTextGrid::OnPaint(void)
       m_BackColour == zcolor_Default ? pNormal->m_BackColour : m_BackColour,dark));
 
   // Draw the text
+  dcMem.BeginDraw(ClientArea);
   int y = 0;
   for (int i = 0; i < m_TextGrid.GetSize(); i++)
   {
@@ -475,6 +476,7 @@ void CWinGlkWndTextGrid::OnPaint(void)
     if (GetActiveWindow() == this)
       SetCaretPos(CPoint(m_iLineX,m_iLineY));
   }
+  dcMem.EndDraw();
 
   dcPaint.BitBlt(0,0,size.cx,size.cy,&dcMem,0,0,SRCCOPY);
   dcMem.SelectObject(pbmpOld);
@@ -697,7 +699,7 @@ int CWinGlkGridDC::GetStyleFontSize(void) const
   return m_iSize;
 }
 
-bool CWinGlkGridDC::UseFontSubstitution(void) const
+bool CWinGlkGridDC::UseCharacterCells(void) const
 {
-  return false;
+  return true;
 }
