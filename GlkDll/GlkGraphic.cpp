@@ -11,6 +11,10 @@
 #include "GlkGraphicJPEG.h"
 #include "GlkGraphicPNG.h"
 
+#ifdef ADRIFT
+#include "GlkGraphicGIF.h"
+#endif
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -58,6 +62,9 @@ void CWinGlkGraphicLoader::InitLoaders(void)
 {
   m_Loaders.Add(new CWinGlkJPEGGraphicLoader());
   m_Loaders.Add(new CWinGlkPNGGraphicLoader());
+#ifdef ADRIFT
+  m_Loaders.Add(new CWinGlkGIFGraphicLoader());
+#endif
 }
 
 // Delete the loaders
