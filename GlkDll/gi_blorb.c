@@ -33,7 +33,6 @@
 #define giblorb_ID_FORM (giblorb_make_id('F', 'O', 'R', 'M'))
 #define giblorb_ID_IFRS (giblorb_make_id('I', 'F', 'R', 'S'))
 #define giblorb_ID_RIdx (giblorb_make_id('R', 'I', 'd', 'x'))
-#define giblorb_ID_ADRI (giblorb_make_id('A', 'D', 'R', 'I'))
 
 /* giblorb_chunkdesc_t: Describes one chunk of the Blorb file. */
 typedef struct giblorb_chunkdesc_struct {
