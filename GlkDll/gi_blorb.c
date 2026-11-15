@@ -33,6 +33,7 @@
 #define giblorb_ID_FORM (giblorb_make_id('F', 'O', 'R', 'M'))
 #define giblorb_ID_IFRS (giblorb_make_id('I', 'F', 'R', 'S'))
 #define giblorb_ID_RIdx (giblorb_make_id('R', 'I', 'd', 'x'))
+#define giblorb_ID_ADRI (giblorb_make_id('A', 'D', 'R', 'I'))
 
 /* giblorb_chunkdesc_t: Describes one chunk of the Blorb file. */
 typedef struct giblorb_chunkdesc_struct {
@@ -180,7 +181,22 @@ giblorb_err_t giblorb_create_map(strid_t file, giblorb_map_t **newmap)
         }
         chu->ptr = NULL;
         chu->auxdatnum = -1;
-        
+
+        /* ADRIFT 5 Developer writes Blorbs whose FORM length under counts
+           the chunks actually present; use the actual file length instead.
+           If the file length is odd, assume that the final pad byte is
+           missing and increase the length by one. */
+        if (type == giblorb_ID_ADRI) {
+          glui32 filelength;
+
+          glk_stream_set_position(file, 0, seekmode_End);
+          filelength = glk_stream_get_position(file);
+          if (filelength & 1)
+              filelength++;
+          if (totallength < filelength)
+              totallength = filelength;
+        }
+
         nextpos = nextpos + len + 8;
         if (nextpos & 1)
             nextpos++;
