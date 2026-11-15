@@ -14,6 +14,10 @@
 #include "GlkSoundOGG.h"
 #include "GlkSoundSONG.h"
 
+#ifdef ADRIFT
+#include "GlkSoundWAV.h"
+#endif
+
 #include <math.h>
 
 #ifdef _DEBUG
@@ -95,6 +99,9 @@ void CWinGlkSoundLoader::InitLoaders(void)
   m_Loaders.Add(new CWinGlkOGGSoundLoader());
   m_Loaders.Add(new CWinGlkMP3SoundLoader());
   m_Loaders.Add(new CWinGlkMODSoundLoader());
+#ifdef ADRIFT
+  m_Loaders.Add(new CWinGlkWAVSoundLoader());
+#endif
 #ifndef I7GLK
   m_Loaders.Add(new CWinGlkSONGSoundLoader());
 #endif

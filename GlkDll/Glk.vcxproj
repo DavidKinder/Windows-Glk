@@ -848,6 +848,10 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="GlkGraphicGIF.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="GlkGraphicJPEG.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\jpeg\include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\jpeg\include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
@@ -882,6 +886,10 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\libogg\include;..\..\..\Libraries\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="GlkSoundSONG.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="GlkSoundWAV.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
@@ -952,6 +960,7 @@
     <ClInclude Include="GlkDll.h" />
     <ClInclude Include="GlkFileRef.h" />
     <ClInclude Include="GlkGraphic.h" />
+    <ClInclude Include="GlkGraphicGIF.h" />
     <ClInclude Include="GlkGraphicJPEG.h" />
     <ClInclude Include="GlkGraphicPNG.h" />
     <ClInclude Include="GlkMainWnd.h" />
@@ -962,6 +971,7 @@
     <ClInclude Include="GlkSoundMP3.h" />
     <ClInclude Include="GlkSoundOGG.h" />
     <ClInclude Include="GlkSoundSONG.h" />
+    <ClInclude Include="GlkSoundWAV.h" />
     <ClInclude Include="GlkStream.h" />
     <ClInclude Include="GlkStyle.h" />
     <ClInclude Include="GlkTalk.h" />
