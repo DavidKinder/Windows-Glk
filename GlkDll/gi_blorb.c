@@ -186,7 +186,7 @@ giblorb_err_t giblorb_create_map(strid_t file, giblorb_map_t **newmap)
            the chunks actually present; use the actual file length instead.
            If the file length is odd, assume that the final pad byte is
            missing and increase the length by one. */
-        if (type == giblorb_ID_ADRI) {
+        if (type == giblorb_make_id('A', 'D', 'R', 'I')) {
           glui32 filelength;
 
           glk_stream_set_position(file, 0, seekmode_End);
