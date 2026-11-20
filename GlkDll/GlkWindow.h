@@ -10,6 +10,7 @@
 #ifndef WINGLK_WINDOW_H_
 #define WINGLK_WINDOW_H_
 
+#include "GlkDirectWrite.h"
 #include "GlkGraphic.h"
 #include "GlkStyle.h"
 
@@ -269,7 +270,6 @@ public:
     int m_iStyle;
     unsigned int m_iLink;
     const CTextColours* m_pColours;
-    int m_iIndex;
   };
 
   void SetStyle(int iStyle, unsigned int iLink, const CTextColours* pColours, DarkMode* dark);
@@ -285,7 +285,8 @@ public:
   virtual CString GetFontName(void) const = 0;
   virtual void SetFontStyles(LOGFONT& Font) = 0;
   virtual int GetStyleFontSize(void) const = 0;
-  virtual bool UseFontSubstitution(void) const = 0;
+  // If true, each character is drawn in a cell of the average character width
+  virtual bool UseCharacterCells(void) const = 0;
 
   BOOL TextOut(int x, int y, LPCSTR lpszString, int nCount);
   CSize GetTextExtent(LPCSTR lpszString, int nCount) const;
@@ -295,16 +296,19 @@ public:
   CSize GetTextExtent(LPCWSTR lpszString, int nCount) const;
   CSize GetTextExtent(const CStringW& str) const;
 
+  // Draw all text output between these calls together, which is much faster.
+  // There cannot be any other drawing into the rectangle until the end.
+  void BeginDraw(const CRect& Rect);
+  void EndDraw(void);
+
+  bool CanOutput(UINT32 c) const;
+
 public:
   TEXTMETRIC m_FontMetrics;
   CWinGlkWnd* m_pWnd;
-  CFont* m_pFont;
-  CFont* m_pOldFont;
+  CWinGlkFont* m_pFont;
   CWinGlkStyle m_Style;
   CDisplay m_Display;
-
-protected:
-  CFont* m_Fonts[style_NUMSTYLES * 2];
 };
 
 #endif // WINGLK_WINDOW_H_

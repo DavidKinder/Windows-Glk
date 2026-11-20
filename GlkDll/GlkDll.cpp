@@ -374,7 +374,7 @@ void CGlkApp::LoadInternationalResources(void)
   switch (PRIMARYLANGID(::GetUserDefaultLangID()))
   {
   case LANG_FRENCH:
-    resDllName = "GlkFrançais.dll";
+    resDllName = "GlkFranÃ§ais.dll";
     break;
   case LANG_GERMAN:
     resDllName = "GlkDeutsch.dll";
@@ -386,7 +386,7 @@ void CGlkApp::LoadInternationalResources(void)
     resDllName = "GlkRussian.dll";
     break;
   case LANG_SPANISH:
-    resDllName = "GlkEspañol.dll";
+    resDllName = "GlkEspaÃ±ol.dll";
     break;
   }
 
@@ -910,20 +910,7 @@ bool CGlkApp::CanOutputChar(glui32 c)
   pDesktop->ReleaseDC(pDC);
 
   dc.SetStyle(style_Normal,0,NULL,NULL);
-
-  CWinGlkMainWnd* pMainWnd = (CWinGlkMainWnd*)AfxGetMainWnd();
-  if (pMainWnd)
-  {
-    TextOutput& TextOut = pMainWnd->GetTextOut();
-    return TextOut.CanOutput(dc.GetSafeHdc(),c);
-  }
-  else
-  {
-    TextOutput TextOut;
-    return TextOut.CanOutput(dc.GetSafeHdc(),c);
-  }
-
-  return false;
+  return dc.CanOutput(c);
 }
 
 void CGlkApp::DebugOutput(const char* msg)

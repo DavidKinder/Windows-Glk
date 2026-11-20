@@ -955,8 +955,6 @@ void CWinGlkMainWnd::OnOptions()
     else if (bVoiceChanged || bRateChanged)
       TextToSpeech::GetSpeechEngine().Update(pApp->GetSpeechVoice(),pApp->GetSpeechRate());
 
-    if (bFontChanged)
-      GetTextOut().Reset();
     if (bBorderChanged || bGUIChanged || bFontChanged)
       GetView()->SizeWindows();
 
