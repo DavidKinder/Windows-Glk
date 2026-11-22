@@ -869,6 +869,10 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="GlkSoundCustom.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="GlkSoundMOD.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\libmodplug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc;..\..\..\Libraries\libmodplug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -958,6 +962,7 @@
     <ClInclude Include="GlkSndChannel.h" />
     <ClInclude Include="GlkSound.h" />
     <ClInclude Include="GlkSoundAIFF.h" />
+    <ClInclude Include="GlkSoundCustom.h" />
     <ClInclude Include="GlkSoundMOD.h" />
     <ClInclude Include="GlkSoundMP3.h" />
     <ClInclude Include="GlkSoundOGG.h" />

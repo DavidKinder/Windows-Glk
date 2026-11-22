@@ -100,6 +100,12 @@ void CWinGlkSoundLoader::InitLoaders(void)
 #endif
 }
 
+// Add a loader
+void CWinGlkSoundLoader::AddLoader(CWinGlkSoundLoader* pLoader)
+{
+  m_Loaders.Add(pLoader);
+}
+
 // Notify loaders to clean up after sound playback has been stopped
 void CWinGlkSoundLoader::AllSoundStopped(void)
 {

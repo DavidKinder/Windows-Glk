@@ -14,6 +14,7 @@
 #include "GlkFileRef.h"
 #include "GlkMainWnd.h"
 #include "GlkSndChannel.h"
+#include "GlkSoundCustom.h"
 #include "GlkTalk.h"
 #include "GlkTime.h"
 #include "GlkUnicode.h"
@@ -3453,6 +3454,19 @@ extern "C" void winglk_show_game_dialog(void)
 
   theApp.GetGameInfo().showOptions = true;
   ShowGameDialog = true;
+}
+
+extern "C" void winglk_add_graphic_format(struct winglk_graphic_format* format)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+}
+
+extern "C" void winglk_add_sound_format(struct winglk_sound_format* format)
+{
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+  CWinGlkSoundLoader::AddLoader(new CWinGlkCustomSoundLoader(format));
 }
 
 /////////////////////////////////////////////////////////////////////////////

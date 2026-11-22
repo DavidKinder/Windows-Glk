@@ -223,3 +223,7 @@ glkunix_fileref_get_filename          @169
 
 ; Glk 0.7.6 API function
 glk_image_draw_scaled_ext             @170
+
+; Windows Glk functions
+winglk_add_graphic_format             @171
+winglk_add_sound_format               @172

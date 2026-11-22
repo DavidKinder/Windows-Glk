@@ -8,6 +8,7 @@ extern "C" {
 #include "WinGlk.h"
 }
 
+#include <math.h>
 #include <stdio.h>
 #include <windows.h>
 #include "resource.h"
@@ -93,8 +94,8 @@ void test_file_unicode()
   static glui32 unicode_data[] = {
     0xbf, 0x51, 0x75, 0xe9, 0x20, 0x65, 0x73, 0x20,
     0x55, 0x6e, 0x69, 0x63, 0x6f, 0x64, 0x65, 0x3f,
-    0x427, 0x442, 0x43e, 0x20, 0x442, 0x430, 0x43a, 0x43e, 
-    0x435, 0x20, 0x55, 0x6e, 0x69, 0x63, 0x6f, 0x64, 
+    0x427, 0x442, 0x43e, 0x20, 0x442, 0x430, 0x43a, 0x43e,
+    0x435, 0x20, 0x55, 0x6e, 0x69, 0x63, 0x6f, 0x64,
     0x65, 0x3f, 0 };
 
   for (int i = 0; i < 2; i++)
@@ -696,6 +697,156 @@ void load_res(char* resname)
   }
 }
 
+// Support for WAV format resources
+
+unsigned short read_riff_short(const unsigned char* bytes)
+{
+  return (unsigned short)(
+    ((unsigned short)(bytes[0] & 0xFF)) |
+    ((unsigned short)(bytes[1] & 0xFF) << 8));
+}
+
+unsigned long read_riff_long(const unsigned char* bytes)
+{
+  return (unsigned long)(
+    ((unsigned long)(bytes[0] & 0xFF)) |
+    ((unsigned long)(bytes[1] & 0xFF) << 8) |
+    ((unsigned long)(bytes[2] & 0xFF) << 16) |
+    ((unsigned long)(bytes[3] & 0xFF) << 24));
+}
+
+// Find an RIFF chunk, limiting its length to the data available
+BYTE* find_riff_chunk(BYTE* data, int dataLen, const char* chunk, unsigned long& chunkLen)
+{
+  BYTE* ptr = data+12;
+  BYTE* end = data+dataLen;
+  while (end - ptr >= 8)
+  {
+    unsigned long size = read_riff_long(ptr+4);
+    if (strncmp((char*)ptr,chunk,4) == 0)
+    {
+      unsigned long avail = (unsigned long)(end - (ptr+8));
+      chunkLen = (size < avail) ? size : avail;
+      return ptr+8;
+    }
+
+    // Move to the next chunk
+    if (size >= (unsigned long)(end - ptr))
+      break;
+    ptr += size+8+(size % 2);
+  }
+  return NULL;
+}
+
+struct sound_wav
+{
+  BYTE* ptr;
+  BYTE* min;
+  BYTE* max;
+  int bytes;
+
+  sound_wav(BYTE* p, int len, int by)
+  {
+    ptr = p;
+    min = p;
+    max = p+len;
+    bytes = by;
+  }
+};
+
+DWORD_PTR sound_wav_start(BYTE* data, int len, int* channels, int* freq, int* bits, int* duration)
+{
+  if ((data == NULL) || (len < 12))
+    return 0;
+
+  // Check for WAV header
+  if (strncmp((char*)data,"RIFF",4) != 0)
+    return 0;
+  if (strncmp((char*)(data+8),"WAVE",4) != 0)
+    return 0;
+
+  // Find the format chunk
+  unsigned long length = 0;
+  BYTE* chunk = find_riff_chunk(data,len,"fmt ",length);
+  if ((chunk == NULL) || (length < 16))
+    return 0;
+
+  // Only uncompressed PCM data is supported, either directly or
+  // as the sub-format of WAVE_FORMAT_EXTENSIBLE (0xFFFE)
+  unsigned short format = read_riff_short(chunk);
+  if ((format == 0xFFFE) && (length >= 40))
+    format = read_riff_short(chunk+24);
+  if (format != WAVE_FORMAT_PCM)
+    return 0;
+
+  // Read in details of the sample
+  *channels = read_riff_short(chunk+2);
+  *freq = read_riff_long(chunk+4);
+  unsigned short align = read_riff_short(chunk+12);
+  *bits = read_riff_short(chunk+14);
+  if ((*channels < 1) || (*channels > 2) || (*freq == 0))
+    return 0;
+  if ((*bits != 8) && (*bits != 16))
+    return 0;
+  if (align != (*channels)*(*bits>>3))
+    return 0;
+
+  // Find the data chunk
+  BYTE* sample_data = find_riff_chunk(data,len,"data",length);
+  if (sample_data == NULL)
+    return 0;
+  int samples = length / align;
+  *duration = (int)ceil((samples*1000.0)/(*freq));
+  return (DWORD_PTR)(new sound_wav(sample_data,length,(*bits>>3)));
+}
+
+void sound_wav_stop(DWORD_PTR cookie)
+{
+  sound_wav* snd = (sound_wav*)cookie;
+  delete snd;
+}
+
+// Test that the current point into the WAV buffer is valid
+bool sound_wav_check_ptr(sound_wav* snd, int* repeat)
+{
+  if (snd->ptr >= snd->max)
+  {
+    // Fail if this is the end of the last repeat
+    if (*repeat == 0)
+      return false;
+
+    // If not looping forever, decrement the repeat counter
+    if (*repeat > 0)
+      (*repeat)--;
+
+    // Reset the pointer
+    snd->ptr = snd->min;
+  }
+  return true;
+}
+
+void sound_wav_write(DWORD_PTR cookie, unsigned char* buffer, int length, int* repeat)
+{
+  // WAV data is already in the format DirectSound expects: unsigned
+  // 8-bit samples, or little-endian signed 16-bit samples.
+  sound_wav* snd = (sound_wav*)cookie;
+  unsigned char silence = (snd->bytes == 1) ? 0x80 : 0x00;
+
+  for (int i = 0; i < length; i += snd->bytes)
+  {
+    if (sound_wav_check_ptr(snd,repeat))
+    {
+      CopyMemory(buffer,snd->ptr,snd->bytes);
+      snd->ptr += snd->bytes;
+    }
+    else
+      FillMemory(buffer,snd->bytes,silence);
+    buffer += snd->bytes;
+  }
+}
+
+// Glk entry point
+
 void glk_main(void)
 {
   update_character_output(0);
@@ -719,6 +870,15 @@ void glk_main(void)
     }
   }
   winglk_set_gui(IDR_TEST);
+
+  struct winglk_sound_format WavFormat;
+  WavFormat.id = giblorb_make_id('W','A','V','E');
+  WavFormat.prefix = "snd";
+  WavFormat.ext = "wav";
+  WavFormat.start = sound_wav_start;
+  WavFormat.stop = sound_wav_stop;
+  WavFormat.write = sound_wav_write;
+  winglk_add_sound_format(&WavFormat);
 
   main = glk_window_open(0,0,0,wintype_TextBuffer,0);
 

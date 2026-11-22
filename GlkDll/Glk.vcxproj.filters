@@ -373,6 +373,9 @@
     <ClCompile Include="GlkSoundMP3.cpp">
       <Filter>Windows Glk\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlkSoundCustom.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlkDialogs.h">
@@ -493,6 +496,9 @@
       <Filter>Libraries\MFC</Filter>
     </ClInclude>
     <ClInclude Include="GlkSoundMP3.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkSoundCustom.h">
       <Filter>Windows Glk\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

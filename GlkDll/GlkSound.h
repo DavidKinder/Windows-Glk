@@ -79,6 +79,9 @@ public:
   // Set up the loaders
   static void InitLoaders(void);
 
+  // Add a loader
+  static void AddLoader(CWinGlkSoundLoader* pLoader);
+
   // Notify loaders to clean up after sound playback has been stopped
   static void AllSoundStopped(void);
 

@@ -1,6 +1,6 @@
 /*
    Header file for Windows specific Glk features.
-   Glk API version 0.7.6, WinGlk release 1.55.
+   Glk API version 0.7.6, WinGlk release 1.56.
 */
 
 #ifndef WINGLK_H_
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define WINGLK_BUILD_NUMBER 155
+#define WINGLK_BUILD_NUMBER 156
 
 /* Function to be implemented in the Glk program. */
 int winglk_startup_code(const char* cmdline);
@@ -34,6 +34,57 @@ void winglk_set_menu_name(const char* name);
 void winglk_set_help_file(const char* filename);
 frefid_t winglk_fileref_create_by_name(glui32 usage, char *name, glui32 rock, int validate);
 void winglk_show_game_dialog(void);
+
+struct winglk_graphic_format
+{
+  glui32 id;
+  const char* ext;
+};
+
+void winglk_add_graphic_format(struct winglk_graphic_format* format);
+
+struct winglk_sound_format
+{
+  /* The identifier for the format in a Blorb file, e.g. for Ogg Vorbis
+     sound files, this is "giblorb_make_id('O','G','G','V')". */
+  glui32 id;
+  /* The string prefixing file names when loading sounds not in a Blorb
+     file. This is usually "snd" or "mus". */
+  const char* prefix;
+  /* The string extension for file names when loading sounds not in a
+     Blorb file, e.g. for Ogg Vorbis sound files, this is "ogg". */
+  const char* ext;
+
+  /* This function is called by Windows Glk to start decoding a sound
+     resource. "data" gives the byte addresses of the resource and "len"
+     its length.
+     If successful, the function should set:
+      *channels: the number of channels, either one (mono) or two (stereo).
+      *freq: the frequency, in Hz.
+      *bits: the number of bits per sample, either 8 or 16.
+      *duration: the duration of the sound, in milliseconds.
+     If successful the function should return a non-zero "cookie" value
+     that is passed to the "write" function to identify the sound resource.
+     If unsuccessful, the function should return zero. */
+  DWORD_PTR (*start)(BYTE* data, int len, int* channels, int* freq, int* bits, int* duration);
+  /* This function is called by Windows Glk when a sound is no longer
+     needed. */
+  void (*stop)(DWORD_PTR cookie);
+  /* This function is called by Windows Glk when some of the decoded sound
+     sample data is needed. The buffer to fill with sample data, and its
+     length in bytes, is given by the "buffer" and "len" arguments.
+     If the end of the sound is reached before the buffer is full, the
+     value in "*repeat" should be checked. If it is negative, the sound
+     repeats indefinitely, and the remainder of the buffer should be filled
+     by decoding from the start of the sound. If "*repeat" is zero, the
+     remainder of the buffer should be filled with silence (0x80 for bits=8,
+     0x00 for bits=16). If "*repeat" is positive it should be decremented by
+     one, and the remainder of the buffer should be filled by decoding from
+     the start. */
+  void (*write)(DWORD_PTR,unsigned char* buffer, int len, int* repeat);
+};
+
+void winglk_add_sound_format(struct winglk_sound_format* format);
 
 /* Windows Glk specific events. */
 #define winglk_evtype_GuiInput (0x80000000)
