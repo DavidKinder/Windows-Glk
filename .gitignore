@@ -9,6 +9,8 @@ GlkDll/GlkEspañol/Release/
 GlkDll/GlkItaliano/Release/
 GlkDll/GlkRussian/Release/
 Scare/
+Test/Debug/
+Test/Release/
 Glk.txt
 *.user
 *.chm

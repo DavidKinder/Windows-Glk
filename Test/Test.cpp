@@ -754,7 +754,7 @@ struct sound_wav
   }
 };
 
-DWORD_PTR sound_wav_start(BYTE* data, int len, int* channels, int* freq, int* bits, int* duration)
+DWORD_PTR sound_wav_start(BYTE* data, int len, struct winglk_sound* sound)
 {
   if ((data == NULL) || (len < 12))
     return 0;
@@ -780,15 +780,15 @@ DWORD_PTR sound_wav_start(BYTE* data, int len, int* channels, int* freq, int* bi
     return 0;
 
   // Read in details of the sample
-  *channels = read_riff_short(chunk+2);
-  *freq = read_riff_long(chunk+4);
+  sound->channels = read_riff_short(chunk+2);
+  sound->freq = read_riff_long(chunk+4);
   unsigned short align = read_riff_short(chunk+12);
-  *bits = read_riff_short(chunk+14);
-  if ((*channels < 1) || (*channels > 2) || (*freq == 0))
+  sound->bits = read_riff_short(chunk+14);
+  if ((sound->channels < 1) || (sound->channels > 2) || (sound->freq == 0))
     return 0;
-  if ((*bits != 8) && (*bits != 16))
+  if ((sound->bits != 8) && (sound->bits != 16))
     return 0;
-  if (align != (*channels)*(*bits>>3))
+  if (align != (sound->channels)*(sound->bits>>3))
     return 0;
 
   // Find the data chunk
@@ -796,8 +796,8 @@ DWORD_PTR sound_wav_start(BYTE* data, int len, int* channels, int* freq, int* bi
   if (sample_data == NULL)
     return 0;
   int samples = length / align;
-  *duration = (int)ceil((samples*1000.0)/(*freq));
-  return (DWORD_PTR)(new sound_wav(sample_data,length,(*bits>>3)));
+  sound->duration = (int)ceil((samples*1000.0)/(sound->freq));
+  return (DWORD_PTR)(new sound_wav(sample_data,length,(sound->bits>>3)));
 }
 
 void sound_wav_stop(DWORD_PTR cookie)

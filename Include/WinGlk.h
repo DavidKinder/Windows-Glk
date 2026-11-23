@@ -43,6 +43,18 @@ struct winglk_graphic_format
 
 void winglk_add_graphic_format(struct winglk_graphic_format* format);
 
+struct winglk_sound
+{
+  /* The number of channels, either one (mono) or two (stereo). */
+  int channels;
+  /* The frequency, in Hz. */
+  int freq;
+  /* The number of bits per sample, either 8 or 16. */
+  int bits;
+  /* The duration of the sound, in milliseconds. */
+  int duration;
+};
+
 struct winglk_sound_format
 {
   /* The identifier for the format in a Blorb file, e.g. for Ogg Vorbis
@@ -58,15 +70,11 @@ struct winglk_sound_format
   /* This function is called by Windows Glk to start decoding a sound
      resource. "data" gives the byte addresses of the resource and "len"
      its length.
-     If successful, the function should set:
-      *channels: the number of channels, either one (mono) or two (stereo).
-      *freq: the frequency, in Hz.
-      *bits: the number of bits per sample, either 8 or 16.
-      *duration: the duration of the sound, in milliseconds.
-     If successful the function should return a non-zero "cookie" value
-     that is passed to the "write" function to identify the sound resource.
+     If successful, the function should set the values in the structure
+     pointed to by the "sound" argument, and return a non-zero "cookie"
+     value that is passed to the "write" function to identify the sound
      If unsuccessful, the function should return zero. */
-  DWORD_PTR (*start)(BYTE* data, int len, int* channels, int* freq, int* bits, int* duration);
+  DWORD_PTR (*start)(BYTE* data, int len, struct winglk_sound* sound);
   /* This function is called by Windows Glk when a sound is no longer
      needed. */
   void (*stop)(DWORD_PTR cookie);

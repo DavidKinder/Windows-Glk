@@ -103,18 +103,18 @@ bool CWinGlkCustomSound::Play(int iRepeat, int iVolume, bool PauseState)
   }
 
   // Get details of the sound
-  int iChannels, iFrequency, iBitsPerSample, iDuration;
-  m_Cookie = m_SoundFormat.start(m_pData,m_iLength,&iChannels,&iFrequency,&iBitsPerSample,&iDuration);
+  struct winglk_sound Info {};
+  m_Cookie = m_SoundFormat.start(m_pData,m_iLength,&Info);
   if (m_Cookie == 0)
     return false;
 
   // Create a buffer
-  if (CreateBuffer(iChannels,iFrequency,iBitsPerSample) == false)
+  if (CreateBuffer(Info.channels,Info.freq,Info.bits) == false)
     return false;
 
   // Set the duration of the sound
   if (iRepeat > 0)
-    m_Duration = (DWORD)(iDuration * iRepeat);
+    m_Duration = (DWORD)(Info.duration * iRepeat);
   else
     m_Duration = -1;
 
