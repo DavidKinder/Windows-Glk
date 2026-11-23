@@ -754,7 +754,7 @@ struct sound_wav
   }
 };
 
-DWORD_PTR sound_wav_start(BYTE* data, int len, struct winglk_sound* sound)
+DWORD_PTR sound_wav_create(BYTE* data, int len, struct winglk_sound* sound)
 {
   if ((data == NULL) || (len < 12))
     return 0;
@@ -800,7 +800,7 @@ DWORD_PTR sound_wav_start(BYTE* data, int len, struct winglk_sound* sound)
   return (DWORD_PTR)(new sound_wav(sample_data,length,(sound->bits>>3)));
 }
 
-void sound_wav_stop(DWORD_PTR cookie)
+void sound_wav_destroy(DWORD_PTR cookie)
 {
   sound_wav* snd = (sound_wav*)cookie;
   delete snd;
@@ -825,7 +825,7 @@ bool sound_wav_check_ptr(sound_wav* snd, int* repeat)
   return true;
 }
 
-void sound_wav_write(DWORD_PTR cookie, unsigned char* buffer, int length, int* repeat)
+void sound_wav_play(DWORD_PTR cookie, unsigned char* buffer, int length, int* repeat)
 {
   // WAV data is already in the format DirectSound expects: unsigned
   // 8-bit samples, or little-endian signed 16-bit samples.
@@ -875,9 +875,9 @@ void glk_main(void)
   WavFormat.id = giblorb_make_id('W','A','V','E');
   WavFormat.prefix = "snd";
   WavFormat.ext = "wav";
-  WavFormat.start = sound_wav_start;
-  WavFormat.stop = sound_wav_stop;
-  WavFormat.write = sound_wav_write;
+  WavFormat.create = sound_wav_create;
+  WavFormat.destroy = sound_wav_destroy;
+  WavFormat.play = sound_wav_play;
   winglk_add_sound_format(&WavFormat);
 
   main = glk_window_open(0,0,0,wintype_TextBuffer,0);

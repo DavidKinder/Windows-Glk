@@ -67,20 +67,20 @@ struct winglk_sound_format
      Blorb file, e.g. for Ogg Vorbis sound files, this is "ogg". */
   const char* ext;
 
-  /* This function is called by Windows Glk to start decoding a sound
+  /* This function is called by Windows Glk to create a sound from its
      resource. "data" gives the byte addresses of the resource and "len"
      its length.
      If successful, the function should set the values in the structure
      pointed to by the "sound" argument, and return a non-zero "cookie"
      value that is passed to the "write" function to identify the sound
      If unsuccessful, the function should return zero. */
-  DWORD_PTR (*start)(BYTE* data, int len, struct winglk_sound* sound);
+  DWORD_PTR (*create)(BYTE* data, int len, struct winglk_sound* sound);
   /* This function is called by Windows Glk when a sound is no longer
-     needed. */
-  void (*stop)(DWORD_PTR cookie);
+     needed and should be destroyed. */
+  void (*destroy)(DWORD_PTR cookie);
   /* This function is called by Windows Glk when some of the decoded sound
-     sample data is needed. The buffer to fill with sample data, and its
-     length in bytes, is given by the "buffer" and "len" arguments.
+     sample data is to be played. The buffer to fill with sample data, and
+     its length in bytes, is given by the "buffer" and "len" arguments.
      If the end of the sound is reached before the buffer is full, the
      value in "*repeat" should be checked. If it is negative, the sound
      repeats indefinitely, and the remainder of the buffer should be filled
@@ -89,7 +89,7 @@ struct winglk_sound_format
      0x00 for bits=16). If "*repeat" is positive it should be decremented by
      one, and the remainder of the buffer should be filled by decoding from
      the start. */
-  void (*write)(DWORD_PTR,unsigned char* buffer, int len, int* repeat);
+  void (*play)(DWORD_PTR,unsigned char* buffer, int len, int* repeat);
 };
 
 void winglk_add_sound_format(struct winglk_sound_format* format);

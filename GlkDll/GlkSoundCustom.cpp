@@ -91,20 +91,20 @@ CWinGlkCustomSound::~CWinGlkCustomSound()
 {
   RemoveFromList();
   if (m_Cookie)
-    m_SoundFormat.stop(m_Cookie);
+    m_SoundFormat.destroy(m_Cookie);
 }
 
 bool CWinGlkCustomSound::Play(int iRepeat, int iVolume, bool PauseState)
 {
   if (m_Cookie)
   {
-    m_SoundFormat.stop(m_Cookie);
+    m_SoundFormat.destroy(m_Cookie);
     m_Cookie = 0;
   }
 
   // Get details of the sound
   struct winglk_sound Info {};
-  m_Cookie = m_SoundFormat.start(m_pData,m_iLength,&Info);
+  m_Cookie = m_SoundFormat.create(m_pData,m_iLength,&Info);
   if (m_Cookie == 0)
     return false;
 
@@ -168,7 +168,7 @@ void CWinGlkCustomSound::SetVolume(int iVolume)
 void CWinGlkCustomSound::WriteSampleData(unsigned char* pSample, int iSampleLen)
 {
   if (m_Cookie)
-    m_SoundFormat.write(m_Cookie,pSample,iSampleLen,&m_iRepeat);
+    m_SoundFormat.play(m_Cookie,pSample,iSampleLen,&m_iRepeat);
 }
 
 // Check if the sound has finished playing
