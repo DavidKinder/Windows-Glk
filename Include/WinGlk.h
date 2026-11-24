@@ -58,9 +58,9 @@ struct winglk_graphic_format
   void (*destroy)(DWORD_PTR id);
   /* This function is called by Windows Glk to draw a graphic. The graphic
      should be drawn into the buffer pointed to by the "pixels" argument
-     in RGBA format: pixels[0] is the red component of the first pixel;
-     pixels[1] the blue component; pixels[2] the green component; and
-     pixels[3] the alpha channel (or 0xFF) if the graphic is completely
+     in BGRA format: pixels[0] is the blue component of the first pixel;
+     pixels[1] the green component; pixels[2] the red component; and
+     pixels[3] the alpha channel (or 0xFF if the graphic is completely
      opaque). */
   int (*draw)(DWORD_PTR id, BYTE* pixels);
 };
