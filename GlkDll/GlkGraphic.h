@@ -70,6 +70,9 @@ public:
   // Set up the loaders
   static void InitLoaders(void);
 
+  // Add a loader
+  static void AddLoader(CWinGlkGraphicLoader* pLoader);
+
   // Delete the loaders
   static void RemoveLoaders(void);
 

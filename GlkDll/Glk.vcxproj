@@ -848,6 +848,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="GlkGraphicCustom.cpp" />
     <ClCompile Include="GlkGraphicJPEG.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Include;..\..\..\Libraries\jpeg\include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Include;..\..\..\Libraries\jpeg\include;..\..\..\Libraries\mfc</AdditionalIncludeDirectories>
@@ -956,6 +957,7 @@
     <ClInclude Include="GlkDll.h" />
     <ClInclude Include="GlkFileRef.h" />
     <ClInclude Include="GlkGraphic.h" />
+    <ClInclude Include="GlkGraphicCustom.h" />
     <ClInclude Include="GlkGraphicJPEG.h" />
     <ClInclude Include="GlkGraphicPNG.h" />
     <ClInclude Include="GlkMainWnd.h" />

@@ -376,6 +376,9 @@
     <ClCompile Include="GlkSoundCustom.cpp">
       <Filter>Windows Glk\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlkGraphicCustom.cpp">
+      <Filter>Windows Glk\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlkDialogs.h">
@@ -499,6 +502,9 @@
       <Filter>Windows Glk\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GlkSoundCustom.h">
+      <Filter>Windows Glk\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlkGraphicCustom.h">
       <Filter>Windows Glk\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

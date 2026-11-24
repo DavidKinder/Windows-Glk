@@ -60,6 +60,12 @@ void CWinGlkGraphicLoader::InitLoaders(void)
   m_Loaders.Add(new CWinGlkPNGGraphicLoader());
 }
 
+// Add a loader
+void CWinGlkGraphicLoader::AddLoader(CWinGlkGraphicLoader* pLoader)
+{
+  m_Loaders.Add(pLoader);
+}
+
 // Delete the loaders
 void CWinGlkGraphicLoader::RemoveLoaders(void)
 {

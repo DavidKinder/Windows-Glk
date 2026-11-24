@@ -8,10 +8,15 @@ extern "C" {
 #include "WinGlk.h"
 }
 
+#include "resource.h"
+
 #include <math.h>
 #include <stdio.h>
-#include <windows.h>
-#include "resource.h"
+
+#include <memory>
+
+#include <atlbase.h>
+#include <wincodec.h>
 
 winid_t main = 0;
 winid_t grid = 0;
@@ -58,6 +63,7 @@ void print_list(void)
   glk_put_string("18. Change the Window Height\n");
   glk_put_string("19. Char Input from Graphics Window\n");
   glk_put_string("20. Get File Name\n");
+  glk_put_string("21. Draw Picture\n");
 }
 
 void line_input_margins()
@@ -615,6 +621,19 @@ void test_get_filename()
   }
 }
 
+void test_picture(void)
+{
+  glk_set_style(style_Emphasized);
+  glk_put_string("\nDraw a Picture\n");
+  glk_set_style(style_Normal);
+
+  int resource = get_number("Enter picture resource number: ");
+
+  int drawn = glk_image_draw(main,resource,imagealign_InlineCenter,0);
+  if (drawn == 0)
+    glk_put_string("Failed to draw picture\n");
+}
+
 void test(int number)
 {
   switch (number)
@@ -682,6 +701,9 @@ void test(int number)
   case 20:
     test_get_filename();
     break;
+  case 21:
+    test_picture();
+    break;
   }
 }
 
@@ -697,7 +719,71 @@ void load_res(char* resname)
   }
 }
 
-// Support for WAV format resources
+// Support for GIF format graphics
+
+struct graphic_gif
+{
+  CComPtr<IWICImagingFactory> factory;
+  CComPtr<IWICStream> stream;
+  CComPtr<IWICBitmapDecoder> decoder;
+  CComPtr<IWICBitmapFrameDecode> frame;
+  CComPtr<IWICFormatConverter> converter;
+  UINT width = 0;
+  UINT height = 0;
+};
+
+DWORD_PTR graphic_gif_create(BYTE* data, int len, int* width, int* height)
+{
+  if ((len < 6) || (memcmp(data,"GIF",3) != 0))
+    return 0;
+
+  std::unique_ptr<graphic_gif> gfx(new graphic_gif());
+
+  if (FAILED(gfx->factory.CoCreateInstance(CLSID_WICImagingFactory)))
+    return 0;
+  if (FAILED(gfx->factory->CreateStream(&(gfx->stream))))
+    return 0;
+  if (FAILED(gfx->stream->InitializeFromMemory(data,len)))
+    return 0;
+  if (FAILED(gfx->factory->CreateDecoder(GUID_ContainerFormatGif,NULL,&(gfx->decoder))))
+    return 0;
+  if (FAILED(gfx->decoder->Initialize(gfx->stream,WICDecodeMetadataCacheOnDemand)))
+    return 0;
+  if (FAILED(gfx->decoder->GetFrame(0,&(gfx->frame))))
+    return 0;
+
+  if (FAILED(gfx->frame->GetSize(&(gfx->width),&(gfx->height))))
+    return 0;
+  if ((gfx->width == 0) || (gfx->height == 0))
+    return 0;
+
+  *width = gfx->width;
+  *height = gfx->height;
+  return (DWORD_PTR)(gfx.release());
+}
+
+void graphic_gif_destroy(DWORD_PTR id)
+{
+  graphic_gif* gfx = (graphic_gif*)id;
+  delete gfx;
+}
+
+int graphic_gif_draw(DWORD_PTR id, BYTE* pixels)
+{
+  graphic_gif* gfx = (graphic_gif*)id;
+
+  CComPtr<IWICFormatConverter> converter;
+  if (FAILED(gfx->factory->CreateFormatConverter(&converter)))
+    return 0;
+  if (FAILED(converter->Initialize(gfx->frame,GUID_WICPixelFormat32bppBGRA,
+      WICBitmapDitherTypeNone,NULL,0.0,WICBitmapPaletteTypeCustom)))
+    return 0;
+
+  UINT size = gfx->width*gfx->height*4;
+  return SUCCEEDED(converter->CopyPixels(NULL,gfx->width*4,size,pixels)) ? 1 : 0;
+}
+
+// Support for WAV format sounds
 
 unsigned short read_riff_short(const unsigned char* bytes)
 {
@@ -800,9 +886,9 @@ DWORD_PTR sound_wav_create(BYTE* data, int len, struct winglk_sound* sound)
   return (DWORD_PTR)(new sound_wav(sample_data,length,(sound->bits>>3)));
 }
 
-void sound_wav_destroy(DWORD_PTR cookie)
+void sound_wav_destroy(DWORD_PTR id)
 {
-  sound_wav* snd = (sound_wav*)cookie;
+  sound_wav* snd = (sound_wav*)id;
   delete snd;
 }
 
@@ -825,11 +911,11 @@ bool sound_wav_check_ptr(sound_wav* snd, int* repeat)
   return true;
 }
 
-void sound_wav_play(DWORD_PTR cookie, unsigned char* buffer, int length, int* repeat)
+void sound_wav_play(DWORD_PTR id, unsigned char* buffer, int length, int* repeat)
 {
   // WAV data is already in the format DirectSound expects: unsigned
   // 8-bit samples, or little-endian signed 16-bit samples.
-  sound_wav* snd = (sound_wav*)cookie;
+  sound_wav* snd = (sound_wav*)id;
   unsigned char silence = (snd->bytes == 1) ? 0x80 : 0x00;
 
   for (int i = 0; i < length; i += snd->bytes)
@@ -879,6 +965,14 @@ void glk_main(void)
   WavFormat.destroy = sound_wav_destroy;
   WavFormat.play = sound_wav_play;
   winglk_add_sound_format(&WavFormat);
+
+  struct winglk_graphic_format GifFormat;
+  GifFormat.id = giblorb_make_id('G','I','F',' ');
+  GifFormat.ext = "gif";
+  GifFormat.create = graphic_gif_create;
+  GifFormat.destroy = graphic_gif_destroy;
+  GifFormat.draw = graphic_gif_draw;
+  winglk_add_graphic_format(&GifFormat);
 
   main = glk_window_open(0,0,0,wintype_TextBuffer,0);
 

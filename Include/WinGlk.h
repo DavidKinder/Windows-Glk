@@ -37,8 +37,32 @@ void winglk_show_game_dialog(void);
 
 struct winglk_graphic_format
 {
+  /* The identifier for the format in a Blorb file, e.g. for PNG images,
+     this is "giblorb_make_id('P','N','G',' ')". */
   glui32 id;
+  /* The string extension for file names when loading graphics not in a
+     Blorb file, e.g. for PNG images, this is "png". */
   const char* ext;
+
+  /* This function is called by Windows Glk to create a graphic from its
+     resource. "data" gives the byte addresses of the resource and "len"
+     its length.
+     If successful, the function should set the width and height of the
+     graphic to the variables pointed to by the "width" and "height"
+     arguments, and return a non-zero "id" value that is passed to the
+     "draw" function to identify the graphic.
+     If unsuccessful, the function should return zero. */
+  DWORD_PTR (*create)(BYTE* data, int len, int* width, int* height);
+  /* This function is called by Windows Glk when a graphic has been drawn
+     and should be destroyed. */
+  void (*destroy)(DWORD_PTR id);
+  /* This function is called by Windows Glk to draw a graphic. The graphic
+     should be drawn into the buffer pointed to by the "pixels" argument
+     in RGBA format: pixels[0] is the red component of the first pixel;
+     pixels[1] the blue component; pixels[2] the green component; and
+     pixels[3] the alpha channel (or 0xFF) if the graphic is completely
+     opaque). */
+  int (*draw)(DWORD_PTR id, BYTE* pixels);
 };
 
 void winglk_add_graphic_format(struct winglk_graphic_format* format);
@@ -71,13 +95,13 @@ struct winglk_sound_format
      resource. "data" gives the byte addresses of the resource and "len"
      its length.
      If successful, the function should set the values in the structure
-     pointed to by the "sound" argument, and return a non-zero "cookie"
+     pointed to by the "sound" argument, and return a non-zero "id"
      value that is passed to the "write" function to identify the sound
      If unsuccessful, the function should return zero. */
   DWORD_PTR (*create)(BYTE* data, int len, struct winglk_sound* sound);
   /* This function is called by Windows Glk when a sound is no longer
      needed and should be destroyed. */
-  void (*destroy)(DWORD_PTR cookie);
+  void (*destroy)(DWORD_PTR id);
   /* This function is called by Windows Glk when some of the decoded sound
      sample data is to be played. The buffer to fill with sample data, and
      its length in bytes, is given by the "buffer" and "len" arguments.
@@ -89,7 +113,7 @@ struct winglk_sound_format
      0x00 for bits=16). If "*repeat" is positive it should be decremented by
      one, and the remainder of the buffer should be filled by decoding from
      the start. */
-  void (*play)(DWORD_PTR,unsigned char* buffer, int len, int* repeat);
+  void (*play)(DWORD_PTR id, unsigned char* buffer, int len, int* repeat);
 };
 
 void winglk_add_sound_format(struct winglk_sound_format* format);

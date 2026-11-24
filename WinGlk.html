@@ -457,6 +457,15 @@ for the "winglk_sound_format" structure in the header file provide more detail, 
 example of adding the WAV sample format in the "Test" program present in Windows Glk's source
 repository on GitHub.
 
+<h3>void winglk_add_graphic_format(struct winglk_graphic_format* format)</h3>
+
+<p>This function adds a new graphic format to Windows Glk, beyond those recognized by default.
+To do this, the function pointers in the "format" structure must be set to functions implemented
+in the calling program that perform the appropriate decoding of the new graphic format. The comments
+for the "winglk_graphic_format" structure in the header file provide more detail, and there is an
+example of adding the GIF format in the "Test" program present in Windows Glk's source repository on
+GitHub.
+
 <h3>void void garglk_set_zcolors_stream(glui32 fg, glui32 bg)</h3>
 
 <p>If the given stream is a window stream, this function sets the foreground and background
@@ -618,8 +627,8 @@ minimp3 by lieff.
 
 <ul>
 
-<li>A new function <b>winglk_add_sound_format</b> has been added, which lets callers specify custom sound
-formats.
+<li>New functions <b>winglk_add_sound_format</b> and <b>winglk_add_graphic_format</b> have been added,
+which let callers specify custom sound and graphics formats.
 
 </ul>
 

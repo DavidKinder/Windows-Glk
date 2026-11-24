@@ -72,8 +72,8 @@ protected:
 
   // Details of the custom format
   winglk_sound_format m_SoundFormat;
-  // Cookie identifying the custom sound
-  DWORD_PTR m_Cookie;
+  // Identifier for the custom sound
+  DWORD_PTR m_Id;
 };
 
 #endif // WINGLK_SOUND_CUSTOM_H_

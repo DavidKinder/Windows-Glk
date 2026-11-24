@@ -76,7 +76,7 @@ CWinGlkCustomSound::CWinGlkCustomSound(winglk_sound_format& SoundFormat, BYTE* p
 {
   m_Duration = 0;
   m_SoundFormat = SoundFormat;
-  m_Cookie = 0;
+  m_Id = 0;
 }
 
 CWinGlkCustomSound::CWinGlkCustomSound(winglk_sound_format& SoundFormat, LPCTSTR pszFileName)
@@ -84,28 +84,28 @@ CWinGlkCustomSound::CWinGlkCustomSound(winglk_sound_format& SoundFormat, LPCTSTR
 {
   m_Duration = 0;
   m_SoundFormat = SoundFormat;
-  m_Cookie = 0;
+  m_Id = 0;
 }
 
 CWinGlkCustomSound::~CWinGlkCustomSound()
 {
   RemoveFromList();
-  if (m_Cookie)
-    m_SoundFormat.destroy(m_Cookie);
+  if (m_Id)
+    m_SoundFormat.destroy(m_Id);
 }
 
 bool CWinGlkCustomSound::Play(int iRepeat, int iVolume, bool PauseState)
 {
-  if (m_Cookie)
+  if (m_Id)
   {
-    m_SoundFormat.destroy(m_Cookie);
-    m_Cookie = 0;
+    m_SoundFormat.destroy(m_Id);
+    m_Id = 0;
   }
 
   // Get details of the sound
   struct winglk_sound Info {};
-  m_Cookie = m_SoundFormat.create(m_pData,m_iLength,&Info);
-  if (m_Cookie == 0)
+  m_Id = m_SoundFormat.create(m_pData,m_iLength,&Info);
+  if (m_Id == 0)
     return false;
 
   // Create a buffer
@@ -167,8 +167,8 @@ void CWinGlkCustomSound::SetVolume(int iVolume)
 // Write sound data into the supplied PCM sample buffers
 void CWinGlkCustomSound::WriteSampleData(unsigned char* pSample, int iSampleLen)
 {
-  if (m_Cookie)
-    m_SoundFormat.play(m_Cookie,pSample,iSampleLen,&m_iRepeat);
+  if (m_Id)
+    m_SoundFormat.play(m_Id,pSample,iSampleLen,&m_iRepeat);
 }
 
 // Check if the sound has finished playing
