@@ -63,20 +63,20 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 198, 151
+IDD_ABOUT DIALOGEX 0, 0, 234, 151
 STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_FIXEDSYS | WS_POPUP | 
     WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "О программе"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "ОК",IDOK,142,130,50,14
-    GROUPBOX        "О Glk",IDC_ABOUT_GROUP,7,7,184,50
+    DEFPUSHBUTTON   "ОК",IDOK,178,130,50,14
+    GROUPBOX        "О Glk",IDC_ABOUT_GROUP,7,7,220,50
     ICON            30020,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Windows Glk - Дэвид Киндер\nРусский перевод - Никита Цейковец\nСпецификация Glk - Эндрю Плоткин\nGlk %glk%, Windows выпуск %winglk%",
-                    IDC_ABOUT_TEXT,42,19,146,33
+                    IDC_ABOUT_TEXT,42,19,182,33
     GROUPBOX        "Дополнительная благодарность",IDC_ADDITION_GROUP,7,59,
-                    184,65
-    LTEXT           "",IDC_ADDITION_TEXT,12,71,172,50
+                    220,65
+    LTEXT           "",IDC_ADDITION_TEXT,12,71,208,50
 END
 
 IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
@@ -401,7 +401,7 @@ BEGIN
     IDS_NO_DSOUND           "Не удалось инициализировать DirectSound"
     IDS_MORE                "[Далее]"
     IDS_FULLSCREEN          "Это приложение собирается перейти в полноэкранный режим . Вы хотите продолжить?\n\nПримечание: Чтобы вернуться к обычному экрану, нажмите Alt+Enter ещё раз."
-    IDS_ADDITION_TEXT       "jpeglib, созданная Independent JPEG Group.\nlibpng, созданная Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson и другими.\nzlib, созданная Jean-loup Gailly и Mark Adler.\nModPlug, созданная Olivier Lapicque.\nlibogg и libvorbis, созданные Xiph.org Foundation."
+    IDS_ADDITION_TEXT       "libjpeg-turbo, созданная Independent JPEG Group и другими\nlibpng, созданная The PNG Reference Library Authors\nzlib, созданная Jean-loup Gailly и Mark Adler\nlibogg и libvorbis, созданные Xiph.org Foundation\nminimp3, созданная lieff\nModPlug, созданная Olivier Lapicque"
 END
 
 STRINGTABLE 

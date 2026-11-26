@@ -102,19 +102,19 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 173, 146
+IDD_ABOUT DIALOGEX 0, 0, 206, 146
 STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_FIXEDSYS | WS_POPUP | 
     WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,116,125,50,14
-    GROUPBOX        "About Glk",IDC_ABOUT_GROUP,7,7,159,43
+    DEFPUSHBUTTON   "OK",IDOK,149,125,50,14
+    GROUPBOX        "About Glk",IDC_ABOUT_GROUP,7,7,192,43
     ICON            IDR_GLK,IDC_LOGO,15,21,20,20,0,WS_EX_CLIENTEDGE
     LTEXT           "Windows Glk by David Kinder\nGlk Specification by Andrew Plotkin\nGlk %glk%, Windows release %winglk%",
-                    IDC_ABOUT_TEXT,42,19,118,25
-    GROUPBOX        "Additional Credits",IDC_ADDITION_GROUP,7,53,159,65
-    LTEXT           "",IDC_ADDITION_TEXT,12,65,149,50
+                    IDC_ABOUT_TEXT,42,19,151,25
+    GROUPBOX        "Additional Credits",IDC_ADDITION_GROUP,7,53,192,65
+    LTEXT           "",IDC_ADDITION_TEXT,12,65,184,50
 END
 
 IDD_SCROLLBACK DIALOGEX 0, 0, 288, 121
@@ -458,7 +458,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ADDITION_TEXT       "jpeglib by the Independent JPEG Group.\nlibpng by Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, and others.\nzlib by Jean-loup Gailly and Mark Adler.\nModPlug by Olivier Lapicque.\nlibogg and libvorbis by Xiph.org Foundation."
+    IDS_ADDITION_TEXT       "libjpeg-turbo by the Independent JPEG Group && others\nlibpng by The PNG Reference Library Authors\nzlib by Jean-loup Gailly and Mark Adler\nlibogg and libvorbis by the Xiph.org Foundation\nminimp3 by lieff\nModPlug by Olivier Lapicque"
 END
 
 #endif    // English (U.K.) resources
