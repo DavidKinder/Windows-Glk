@@ -114,6 +114,8 @@ protected:
     int GetMaxMarginHeight(void);
     void CheckHyperlink(const CRect& Rect);
     void DrawGraphic(CWinGlkGraphic* pGraphic, int iLeft, int iTop);
+    void AddText(const CRect& Rect, const CStringW& Text);
+    void DrawText(void);
 
   public:
     int m_iLeft;
@@ -122,6 +124,17 @@ protected:
     int m_iHeight;
     CWinGlkDC& m_DeviceContext;
     DarkMode* m_Dark;
+
+  protected:
+    struct CTextOut
+    {
+      CWinGlkDC::CDisplay m_Display;
+      CRect m_Rect;
+      CStringW m_Text;
+    };
+
+    // Text is drawn after everything else, so that overhanging text is not clipped
+    CArray<CTextOut,CTextOut&> m_TextOut;
 
   protected:
     class CMarginInsert
@@ -208,14 +221,6 @@ protected:
     };
 
   protected:
-    struct CTextOut
-    {
-      CWinGlkDC::CDisplay m_Display;
-      CPoint m_Position;
-      CStringW m_Text;
-    };
-
-  protected:
     bool TestLineLength(CPaintInfo& Info, CStringW& strLine,
       CSize& Size, int& iLeftEdge, int iIndent, bool bFinal,
       int& iIndex, int& iLastBreak, int& iLastPossible,
@@ -233,7 +238,6 @@ protected:
     CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_InlineGraphics;
     CArray<CWinGlkGraphic*,CWinGlkGraphic*> m_MarginGraphics;
     CArray<CTextColours*,CTextColours*> m_TextColours;
-    CArray<CTextOut,CTextOut&> m_TextOut;
     int m_iInitialStyle;
     unsigned int m_iInitialLink;
     CTextColours* m_pInitialColours;
@@ -297,7 +301,7 @@ public:
   virtual CString GetFontName(void) const;
   virtual void SetFontStyles(LOGFONT& Font);
   virtual int GetStyleFontSize(void) const;
-  virtual bool UseFontSubstitution(void) const;
+  virtual bool UseCharacterCells(void) const;
 };
 
 #endif // WINGLK_WINDOW_TEXTBUFFER_H_

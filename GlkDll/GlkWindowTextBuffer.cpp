@@ -677,6 +677,7 @@ void CWinGlkWndTextBuffer::Paint(bool bMark)
   }
   if (PaintInfo.m_iWidth < size.cx)
     m_TextBuffer[numParas-1]->SetClearAll();
+  PaintInfo.DrawText();
 
   // Is there a [More] prompt now pending?
   if (m_bMorePending)
@@ -1370,6 +1371,43 @@ void CWinGlkWndTextBuffer::CPaintInfo::CheckHyperlink(const CRect& Rect)
   }
 }
 
+void CWinGlkWndTextBuffer::CPaintInfo::AddText(const CRect& Rect, const CStringW& Text)
+{
+  CTextOut Out;
+  Out.m_Display = m_DeviceContext.GetDisplay();
+  Out.m_Rect = Rect;
+  Out.m_Text = Text;
+  m_TextOut.Add(Out);
+}
+
+void CWinGlkWndTextBuffer::CPaintInfo::DrawText(void)
+{
+  // Leave room around the text for any overhang
+  CRect DrawRect(0,0,0,0);
+  int overhang = 0;
+  for (int i = 0; i < m_TextOut.GetSize(); i++)
+  {
+    DrawRect.UnionRect(DrawRect,m_TextOut[i].m_Rect);
+    overhang = max(overhang,m_TextOut[i].m_Rect.Height());
+  }
+
+  if (!DrawRect.IsRectEmpty())
+  {
+    DrawRect.InflateRect(overhang,overhang);
+    m_DeviceContext.BeginDraw(DrawRect);
+    for (int i = 0; i < m_TextOut.GetSize(); i++)
+    {
+      CTextOut& Out = m_TextOut[i];
+      m_DeviceContext.SetDisplay(Out.m_Display,m_Dark);
+      m_DeviceContext.SetBkMode(TRANSPARENT);
+      m_DeviceContext.TextOut(Out.m_Rect.left,Out.m_Rect.top,Out.m_Text);
+    }
+    m_DeviceContext.EndDraw();
+  }
+  m_TextOut.RemoveAll();
+  m_DeviceContext.SetBkMode(OPAQUE);
+}
+
 CWinGlkWndTextBuffer::CPaintInfo::CMarginInsert::CMarginInsert()
 {
   m_iHeightLeft = 0;
@@ -2010,9 +2048,8 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
   // displayable area.
   bool result = true;
 
-  // Initialize the device context and text output array
+  // Initialize the device context
   Info.m_DeviceContext.SetStyle(m_iInitialStyle,m_iInitialLink,m_pInitialColours,Info.m_Dark);
-  m_TextOut.RemoveAll();
 
   // Set up indentation and justification
   int in1 = m_iIndentStep * Info.m_DeviceContext.m_Style.m_Indent;
@@ -2243,17 +2280,6 @@ bool CWinGlkWndTextBuffer::CParagraph::Paint(CPaintInfo& Info, int& iFinalLeft, 
     Info.NextLine(lf->m_iMaxAboveBaseline + lf->m_iMaxBelowBaseline,true);
   }
 
-  // Draw the text after everything else to prevent clipping of overhanging text
-  for (int i = 0; i < m_TextOut.GetSize(); i++)
-  {
-    CTextOut& Out = m_TextOut[i];
-    Info.m_DeviceContext.SetDisplay(Out.m_Display,Info.m_Dark);
-    Info.m_DeviceContext.SetBkMode(TRANSPARENT);
-    Info.m_DeviceContext.TextOut(Out.m_Position.x,Out.m_Position.y,Out.m_Text);
-  }
-  m_TextOut.RemoveAll();
-  Info.m_DeviceContext.SetBkMode(OPAQUE);
-
   delete buffer;
   return result;
 }
@@ -2290,15 +2316,11 @@ void CWinGlkWndTextBuffer::CParagraph::TextOut(CLineFormat* pFormat,
   int offset = pFormat->m_iMaxAboveBaseline - Info.m_DeviceContext.m_FontMetrics.tmAscent;
 
   // Store where to output the text
-  CTextOut Out;
-  Out.m_Display = Info.m_DeviceContext.m_Display;
-  Out.m_Position = CPoint(Info.m_iLeft + iLeft,Info.m_iTop + offset);
-  Out.m_Text = CStringW(pBuffer,iBufferPos);
-  m_TextOut.Add(Out);
-
-  // Fill the text background
   CSize sz = Info.m_DeviceContext.GetTextExtent(pBuffer,iBufferPos);
   CRect Rect(CPoint(Info.m_iLeft + iLeft,Info.m_iTop + offset),sz);
+  Info.AddText(Rect,CStringW(pBuffer,iBufferPos));
+
+  // Fill the text background
   Info.m_DeviceContext.FillSolidRect(Rect,Info.m_DeviceContext.GetBkColor());
 
   // If this is a hyperlink, store in the hyperlink array
@@ -2649,7 +2671,7 @@ int CWinGlkBufferDC::GetStyleFontSize(void) const
   return m_Style.m_Size;
 }
 
-bool CWinGlkBufferDC::UseFontSubstitution(void) const
+bool CWinGlkBufferDC::UseCharacterCells(void) const
 {
-  return m_Style.m_Proportional;
+  return false;
 }
